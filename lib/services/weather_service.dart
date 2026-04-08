@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// Данные о погоде
 class WeatherData {
@@ -8,6 +9,8 @@ class WeatherData {
   final double pressure;
   final double windSpeed;
   final String description;
+  final DateTime fetchedAt;
+  final bool isCached;
 
   WeatherData({
     required this.temperature,
@@ -15,24 +18,44 @@ class WeatherData {
     required this.pressure,
     required this.windSpeed,
     required this.description,
-  });
+    DateTime? fetchedAt,
+    this.isCached = false,
+  }) : fetchedAt = fetchedAt ?? DateTime.now();
+
+  /// Сколько минут назад загружены данные
+  int get minutesAgo => DateTime.now().difference(fetchedAt).inMinutes;
+
+  Map<String, dynamic> toJson() => {
+    'temperature': temperature,
+    'humidity': humidity,
+    'pressure': pressure,
+    'windSpeed': windSpeed,
+    'description': description,
+    'fetchedAt': fetchedAt.toIso8601String(),
+  };
+
+  factory WeatherData.fromJson(Map<String, dynamic> json) => WeatherData(
+    temperature: (json['temperature'] as num).toDouble(),
+    humidity: (json['humidity'] as num).toDouble(),
+    pressure: (json['pressure'] as num).toDouble(),
+    windSpeed: (json['windSpeed'] as num).toDouble(),
+    description: json['description'] as String,
+    fetchedAt: DateTime.parse(json['fetchedAt'] as String),
+    isCached: true,
+  );
 }
 
-/// Сервис погоды через OpenWeatherMap API
+/// Сервис погоды через OpenWeatherMap API с кэшированием
 class WeatherService {
-  // TODO: Вынести в .env / настройки приложения
-  // Бесплатный ключ OpenWeatherMap (1000 запросов/день)
-  static const String _apiKey = 'YOUR_API_KEY';
+  static const String _apiKey = '963fe87900f276da9f0957b422accfea';
   static const String _baseUrl = 'https://api.openweathermap.org/data/2.5';
+  static const String _cacheKey = 'cached_weather';
+  static const int _cacheMaxMinutes = 30;
 
   /// Получить текущую погоду по координатам
+  /// Если API недоступен - вернёт кэш с пометкой isCached=true
   Future<WeatherData?> getCurrentWeather(
       double latitude, double longitude) async {
-    // Если ключ не настроен - вернуть заглушку
-    if (_apiKey == 'YOUR_API_KEY') {
-      return _getMockWeather();
-    }
-
     try {
       final url = Uri.parse(
         '$_baseUrl/weather?lat=$latitude&lon=$longitude'
@@ -40,34 +63,45 @@ class WeatherService {
       );
 
       final response = await http.get(url).timeout(
-        const Duration(seconds: 10),
+        const Duration(seconds: 5),
       );
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        return WeatherData(
+        final weather = WeatherData(
           temperature: (data['main']['temp'] as num).toDouble(),
           humidity: (data['main']['humidity'] as num).toDouble(),
           pressure: (data['main']['pressure'] as num).toDouble(),
           windSpeed: (data['wind']['speed'] as num).toDouble(),
           description: data['weather'][0]['description'] as String,
         );
+        await _saveToCache(weather);
+        return weather;
       }
-    } catch (e) {
-      // Если нет интернета - возвращаем null
-      return null;
+    } catch (_) {
+      // Нет сети / таймаут - пробуем кэш
     }
-    return null;
+    return _loadFromCache();
   }
 
-  /// Заглушка для демо (пока нет API ключа)
-  WeatherData _getMockWeather() {
-    return WeatherData(
-      temperature: 5.0,
-      humidity: 75.0,
-      pressure: 1013.0,
-      windSpeed: 3.5,
-      description: 'демо-режим (настрой API ключ)',
-    );
+  /// Сохранить погоду в кэш
+  Future<void> _saveToCache(WeatherData data) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_cacheKey, json.encode(data.toJson()));
+  }
+
+  /// Загрузить кэшированную погоду (не старше _cacheMaxMinutes)
+  Future<WeatherData?> _loadFromCache() async {
+    final prefs = await SharedPreferences.getInstance();
+    final cached = prefs.getString(_cacheKey);
+    if (cached == null) return null;
+
+    try {
+      final data = WeatherData.fromJson(
+        json.decode(cached) as Map<String, dynamic>,
+      );
+      if (data.minutesAgo <= _cacheMaxMinutes) return data;
+    } catch (_) {}
+    return null;
   }
 }

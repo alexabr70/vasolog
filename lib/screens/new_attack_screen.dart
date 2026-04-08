@@ -26,13 +26,13 @@ class _NewAttackScreenState extends State<NewAttackScreen> {
   String? _photoPath;
   bool _isLoading = false;
 
-  double? _temperature;
-  double? _humidity;
-  double? _pressure;
-  double? _windSpeed;
-  String? _weatherDesc;
+  WeatherData? _weatherData;
   double? _latitude;
   double? _longitude;
+  bool _weatherLoading = true;
+
+  /// Триггеры, подсвеченные на основе погоды
+  final Set<String> _suggestedTriggers = {};
 
   @override
   void initState() {
@@ -53,14 +53,23 @@ class _NewAttackScreenState extends State<NewAttackScreen> {
       );
       if (data != null && mounted) {
         setState(() {
-          _temperature = data.temperature;
-          _humidity = data.humidity;
-          _pressure = data.pressure;
-          _windSpeed = data.windSpeed;
-          _weatherDesc = data.description;
+          _weatherData = data;
+          _weatherLoading = false;
+          _updateSuggestedTriggers(data);
         });
+        return;
       }
     }
+    if (mounted) setState(() => _weatherLoading = false);
+  }
+
+  /// Подсказка триггеров на основе погоды
+  void _updateSuggestedTriggers(WeatherData data) {
+    _suggestedTriggers.clear();
+    if (data.temperature <= 10) _suggestedTriggers.add('Холод');
+    if (data.temperature <= 5) _suggestedTriggers.add('Холодная вода');
+    if (data.windSpeed >= 5) _suggestedTriggers.add('Холод');
+    if (data.humidity >= 85) _suggestedTriggers.add('Стресс');
   }
 
   Future<void> _takePhoto() async {
@@ -89,11 +98,11 @@ class _NewAttackScreenState extends State<NewAttackScreen> {
       triggers: _selectedTriggers.toList(),
       notes: _notesController.text.isNotEmpty ? _notesController.text : null,
       photoPath: _photoPath,
-      temperature: _temperature,
-      humidity: _humidity,
-      pressure: _pressure,
-      windSpeed: _windSpeed,
-      weatherDescription: _weatherDesc,
+      temperature: _weatherData?.temperature,
+      humidity: _weatherData?.humidity,
+      pressure: _weatherData?.pressure,
+      windSpeed: _weatherData?.windSpeed,
+      weatherDescription: _weatherData?.description,
       latitude: _latitude,
       longitude: _longitude,
     );
@@ -134,107 +143,76 @@ class _NewAttackScreenState extends State<NewAttackScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Погода
-            if (_temperature != null)
-              Card(
-                color: Colors.blue[50],
-                child: Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.thermostat, color: Colors.blue),
-                      const SizedBox(width: 8),
-                      Text(
-                        '${_temperature!.toStringAsFixed(1)}°C',
-                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(width: 16),
-                      Text('Влажн. ${_humidity?.toStringAsFixed(0)}%'),
-                      const SizedBox(width: 16),
-                      Text('Ветер ${_windSpeed?.toStringAsFixed(1)} м/с'),
-                    ],
-                  ),
-                ),
-              )
-            else
-              const Card(
-                child: Padding(
-                  padding: EdgeInsets.all(12),
-                  child: Row(
-                    children: [
-                      SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2)),
-                      SizedBox(width: 8),
-                      Text('Загрузка погоды...'),
-                    ],
-                  ),
-                ),
-              ),
+            _buildWeatherCard(),
             const SizedBox(height: 16),
 
-            // Тяжесть
+            // Тяжесть с динамическим цветом
             const Text('Тяжесть (RCS)', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),
             Row(
               children: [
-                Text('$_severity', style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold, color: severityColor(_severity))),
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: severityColor(_severity).withValues(alpha: 0.15),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Text('$_severity', style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold, color: severityColor(_severity))),
+                ),
                 const Text('/10', style: TextStyle(fontSize: 24)),
-                const SizedBox(width: 16),
+                const SizedBox(width: 12),
                 Expanded(
-                  child: Slider(
-                    value: _severity.toDouble(),
-                    min: 0, max: 10, divisions: 10,
-                    activeColor: severityColor(_severity),
-                    label: '$_severity',
-                    onChanged: (v) => setState(() => _severity = v.round()),
+                  child: SliderTheme(
+                    data: SliderThemeData(
+                      activeTrackColor: severityColor(_severity),
+                      thumbColor: severityColor(_severity),
+                      inactiveTrackColor: severityColor(_severity).withValues(alpha: 0.2),
+                      overlayColor: severityColor(_severity).withValues(alpha: 0.1),
+                    ),
+                    child: Slider(
+                      value: _severity.toDouble(),
+                      min: 0, max: 10, divisions: 10,
+                      label: '$_severity',
+                      onChanged: (v) => setState(() => _severity = v.round()),
+                    ),
                   ),
                 ),
               ],
             ),
             const SizedBox(height: 16),
 
-            // Цвет пальцев
+            // Цвет пальцев - градиентные плашки
             const Text('Цвет пальцев', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),
-            Wrap(
-              spacing: 8,
+            Row(
               children: colorPhases.entries.map((e) {
                 final isSelected = _colorPhase == e.key;
-                Color chipColor;
-                switch (e.key) {
-                  case 'white': chipColor = AppColors.phaseWhite; break;
-                  case 'blue': chipColor = AppColors.phaseBlue; break;
-                  case 'red': chipColor = AppColors.phaseRed; break;
-                  default: chipColor = Colors.grey;
-                }
-                return ChoiceChip(
-                  label: Text(e.value),
-                  selected: isSelected,
-                  selectedColor: chipColor,
-                  onSelected: (_) => setState(() => _colorPhase = e.key),
+                return Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 3),
+                    child: _buildColorPhaseChip(e.key, e.value, isSelected),
+                  ),
                 );
               }).toList(),
             ),
             const SizedBox(height: 16),
 
-            // Триггеры
-            const Text('Что вызвало?', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            // Триггеры с умной подсветкой по погоде
+            Row(
+              children: [
+                const Text('Что вызвало?', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                if (_suggestedTriggers.isNotEmpty) ...[
+                  const SizedBox(width: 8),
+                  Icon(Icons.auto_awesome, size: 16, color: AppColors.secondary.withValues(alpha: 0.7)),
+                ],
+              ],
+            ),
             const SizedBox(height: 8),
             Wrap(
               spacing: 8,
               runSpacing: 4,
-              children: availableTriggers.map((trigger) {
-                final isSelected = _selectedTriggers.contains(trigger);
-                return FilterChip(
-                  label: Text(trigger),
-                  selected: isSelected,
-                  selectedColor: AppColors.secondary.withValues(alpha: 0.3),
-                  onSelected: (selected) {
-                    setState(() {
-                      if (selected) { _selectedTriggers.add(trigger); }
-                      else { _selectedTriggers.remove(trigger); }
-                    });
-                  },
-                );
-              }).toList(),
+              children: _buildSortedTriggers(),
             ),
             const SizedBox(height: 16),
 
@@ -332,6 +310,129 @@ class _NewAttackScreenState extends State<NewAttackScreen> {
         ),
       ),
     );
+  }
+
+  /// Карточка погоды с поддержкой кэша
+  Widget _buildWeatherCard() {
+    if (_weatherData != null) {
+      final w = _weatherData!;
+      final cacheLabel = w.isCached ? ' (${w.minutesAgo} мин назад)' : '';
+      return Card(
+        color: w.isCached ? Colors.orange[50] : Colors.blue[50],
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Row(
+            children: [
+              Icon(
+                w.isCached ? Icons.cached : Icons.thermostat,
+                color: w.isCached ? Colors.orange : Colors.blue,
+              ),
+              const SizedBox(width: 8),
+              Text(
+                '${w.temperature.toStringAsFixed(1)}°C',
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  'Влажн. ${w.humidity.toStringAsFixed(0)}% · Ветер ${w.windSpeed.toStringAsFixed(1)} м/с$cacheLabel',
+                  style: TextStyle(fontSize: 13, color: Colors.grey[700]),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+    if (_weatherLoading) {
+      return const Card(
+        child: Padding(
+          padding: EdgeInsets.all(12),
+          child: Row(
+            children: [
+              SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2)),
+              SizedBox(width: 8),
+              Text('Загрузка погоды...'),
+            ],
+          ),
+        ),
+      );
+    }
+    return const SizedBox.shrink();
+  }
+
+  /// Градиентная плашка для фазы цвета
+  Widget _buildColorPhaseChip(String key, String label, bool isSelected) {
+    final colors = switch (key) {
+      'white' => [const Color(0xFFECEFF1), const Color(0xFFCFD8DC)],
+      'blue' => [const Color(0xFF42A5F5), const Color(0xFF1565C0)],
+      'red' => [const Color(0xFFEF5350), const Color(0xFFC62828)],
+      _ => [const Color(0xFF9E9E9E), const Color(0xFF616161)],
+    };
+    final textColor = key == 'white' ? Colors.black87 : Colors.white;
+    // Короткое название для плашки
+    final shortLabel = switch (key) {
+      'white' => 'Белый',
+      'blue' => 'Синий',
+      'red' => 'Красный',
+      _ => 'Смешан.',
+    };
+
+    return GestureDetector(
+      onTap: () => setState(() => _colorPhase = key),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(colors: colors, begin: Alignment.topLeft, end: Alignment.bottomRight),
+          borderRadius: BorderRadius.circular(12),
+          border: isSelected ? Border.all(color: Colors.white, width: 3) : null,
+          boxShadow: isSelected
+              ? [BoxShadow(color: colors[0].withValues(alpha: 0.5), blurRadius: 8, offset: const Offset(0, 2))]
+              : null,
+        ),
+        child: Column(
+          children: [
+            Text(shortLabel, style: TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: 13)),
+            if (isSelected) Icon(Icons.check_circle, color: textColor, size: 18),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// Триггеры отсортированные: подсказанные погодой - первые
+  List<Widget> _buildSortedTriggers() {
+    final sorted = [...availableTriggers];
+    // Подсказанные погодой поднимаем наверх
+    sorted.sort((a, b) {
+      final aSug = _suggestedTriggers.contains(a) ? 0 : 1;
+      final bSug = _suggestedTriggers.contains(b) ? 0 : 1;
+      return aSug.compareTo(bSug);
+    });
+
+    return sorted.map((trigger) {
+      final isSelected = _selectedTriggers.contains(trigger);
+      final isSuggested = _suggestedTriggers.contains(trigger);
+      return FilterChip(
+        label: Text(trigger),
+        selected: isSelected,
+        selectedColor: AppColors.secondary.withValues(alpha: 0.3),
+        backgroundColor: isSuggested ? AppColors.secondary.withValues(alpha: 0.1) : null,
+        side: isSuggested && !isSelected
+            ? BorderSide(color: AppColors.secondary.withValues(alpha: 0.5))
+            : null,
+        avatar: isSuggested && !isSelected
+            ? Icon(Icons.auto_awesome, size: 14, color: AppColors.secondary.withValues(alpha: 0.7))
+            : null,
+        onSelected: (selected) {
+          setState(() {
+            if (selected) { _selectedTriggers.add(trigger); }
+            else { _selectedTriggers.remove(trigger); }
+          });
+        },
+      );
+    }).toList();
   }
 
   @override
