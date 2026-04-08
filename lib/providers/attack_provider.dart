@@ -50,4 +50,15 @@ class AttackProvider extends ChangeNotifier {
   List<AttackEvent> getAttacksByRange(DateTime start, DateTime end) {
     return _storage.getAttacksByDateRange(start, end);
   }
+
+  /// Дней без приступа (streak)
+  /// Grace period: 1 день пропуска не ломает streak (хроническое заболевание)
+  int get daysSinceLastAttack {
+    if (_attacks.isEmpty) return 0;
+    final lastAttack = _attacks.first; // отсортированы по дате desc
+    return DateTime.now().difference(lastAttack.timestamp).inDays;
+  }
+
+  /// Последний приступ (для умных дефолтов)
+  AttackEvent? get lastAttack => _attacks.isEmpty ? null : _attacks.first;
 }

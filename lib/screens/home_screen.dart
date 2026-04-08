@@ -45,7 +45,15 @@ class HomeScreen extends StatelessWidget {
                     avgSeverity: provider.weeklyAverageSeverity,
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 16),
+
+                // Streak - дней без приступа
+                if (provider.totalCount > 0)
+                  _AnimatedEntry(
+                    delay: 80,
+                    child: _StreakCard(days: provider.daysSinceLastAttack),
+                  ),
+                const SizedBox(height: 16),
 
                 _AnimatedEntry(
                   delay: 100,
@@ -326,6 +334,76 @@ class _StatItem extends StatelessWidget {
         Text(label, style: const TextStyle(fontSize: 12, color: Colors.white60)),
       ],
     );
+  }
+}
+
+class _StreakCard extends StatelessWidget {
+  final int days;
+  const _StreakCard({required this.days});
+
+  @override
+  Widget build(BuildContext context) {
+    final isMilestone = days >= 7 && days % 7 == 0;
+    final emoji = days == 0 ? '💪' : days < 3 ? '🌱' : days < 7 ? '✨' : '🔥';
+    final message = days == 0
+        ? 'Держись, ты справишься!'
+        : days < 3
+            ? 'Хорошее начало!'
+            : days < 7
+                ? 'Отличная серия!'
+                : 'Потрясающий результат!';
+
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        child: Row(
+          children: [
+            Text(emoji, style: const TextStyle(fontSize: 32)),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      TweenAnimationBuilder<int>(
+                        tween: IntTween(begin: 0, end: days),
+                        duration: const Duration(milliseconds: 800),
+                        curve: Curves.easeOutCubic,
+                        builder: (context, val, _) => Text(
+                          '$val',
+                          style: TextStyle(
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
+                            color: days >= 7 ? AppColors.severityLow : AppColors.primary,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        ' ${_daysLabel(days)} без приступа',
+                        style: const TextStyle(fontSize: 15),
+                      ),
+                    ],
+                  ),
+                  Text(
+                    message,
+                    style: TextStyle(fontSize: 13, color: Colors.grey[600]),
+                  ),
+                ],
+              ),
+            ),
+            if (isMilestone)
+              Icon(Icons.emoji_events_rounded, color: Colors.amber[600], size: 28),
+          ],
+        ),
+      ),
+    );
+  }
+
+  String _daysLabel(int d) {
+    if (d % 10 == 1 && d % 100 != 11) return 'день';
+    if (d % 10 >= 2 && d % 10 <= 4 && (d % 100 < 10 || d % 100 >= 20)) return 'дня';
+    return 'дней';
   }
 }
 

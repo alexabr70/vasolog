@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 import '../models/attack_event.dart';
 import '../providers/attack_provider.dart';
@@ -46,6 +48,31 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
       duration: const Duration(milliseconds: 1500),
     )..repeat();
     _loadWeather();
+    _applySmartDefaults();
+  }
+
+  /// Умные дефолты из последнего приступа
+  void _applySmartDefaults() {
+    final last = context.read<AttackProvider>().lastAttack;
+    if (last != null) {
+      _colorPhase = last.colorPhase;
+    }
+  }
+
+  /// Заполнить всё как в прошлый раз
+  void _applyLastAttack() {
+    final last = context.read<AttackProvider>().lastAttack;
+    if (last == null) return;
+    HapticFeedback.mediumImpact();
+    setState(() {
+      _severity = last.severity;
+      _durationMinutes = last.durationMinutes;
+      _colorPhase = last.colorPhase;
+      _selectedTriggers.clear();
+      _selectedTriggers.addAll(last.triggers);
+      _selectedFingers.clear();
+      _selectedFingers.addAll(last.affectedFingers);
+    });
   }
 
   Future<void> _loadWeather() async {
@@ -123,7 +150,8 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
     );
 
     try {
-      await context.read<AttackProvider>().addAttack(event);
+      final provider = context.read<AttackProvider>();
+      await provider.addAttack(event);
 
       if (mounted) {
         Navigator.pop(context);
@@ -133,6 +161,8 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
             backgroundColor: Colors.green,
           ),
         );
+        // In-app review после 5-го приступа, макс 1 раз
+        _maybeRequestReview(provider.totalCount);
       }
     } catch (e) {
       if (mounted) {
@@ -145,6 +175,18 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
           ),
         );
       }
+    }
+  }
+
+  /// Запросить отзыв после 5-го приступа (макс 1 раз)
+  Future<void> _maybeRequestReview(int totalAttacks) async {
+    if (totalAttacks != 5) return;
+    final prefs = await SharedPreferences.getInstance();
+    if (prefs.getBool('review_requested') ?? false) return;
+    final review = InAppReview.instance;
+    if (await review.isAvailable()) {
+      await review.requestReview();
+      await prefs.setBool('review_requested', true);
     }
   }
 
@@ -172,7 +214,22 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
           children: [
             // Погода
             _buildWeatherCard(),
-            const SizedBox(height: 16),
+            const SizedBox(height: 12),
+
+            // Кнопка "Как прошлый раз"
+            if (context.read<AttackProvider>().lastAttack != null)
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton.icon(
+                  onPressed: _applyLastAttack,
+                  icon: const Icon(Icons.replay_rounded, size: 18),
+                  label: const Text('Как прошлый раз'),
+                  style: TextButton.styleFrom(
+                    foregroundColor: AppColors.secondary,
+                  ),
+                ),
+              ),
+            const SizedBox(height: 4),
 
             // Тяжесть с динамическим цветом
             const Text('Тяжесть (RCS)', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
