@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
@@ -16,7 +17,7 @@ class NewAttackScreen extends StatefulWidget {
   State<NewAttackScreen> createState() => _NewAttackScreenState();
 }
 
-class _NewAttackScreenState extends State<NewAttackScreen> {
+class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProviderStateMixin {
   int _severity = 5;
   int _durationMinutes = 0;
   String _colorPhase = 'white';
@@ -34,9 +35,16 @@ class _NewAttackScreenState extends State<NewAttackScreen> {
   /// Триггеры, подсвеченные на основе погоды
   final Set<String> _suggestedTriggers = {};
 
+  /// Shimmer анимация для загрузки погоды
+  late final AnimationController _shimmerController;
+
   @override
   void initState() {
     super.initState();
+    _shimmerController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1500),
+    )..repeat();
     _loadWeather();
   }
 
@@ -174,7 +182,13 @@ class _NewAttackScreenState extends State<NewAttackScreen> {
                       value: _severity.toDouble(),
                       min: 0, max: 10, divisions: 10,
                       label: '$_severity',
-                      onChanged: (v) => setState(() => _severity = v.round()),
+                      onChanged: (v) {
+                        final newVal = v.round();
+                        if (newVal != _severity) {
+                          HapticFeedback.selectionClick();
+                          setState(() => _severity = newVal);
+                        }
+                      },
                     ),
                   ),
                 ),
@@ -252,7 +266,13 @@ class _NewAttackScreenState extends State<NewAttackScreen> {
                     value: _durationMinutes.toDouble(),
                     min: 0, max: 120, divisions: 24,
                     label: '$_durationMinutes мин',
-                    onChanged: (v) => setState(() => _durationMinutes = v.round()),
+                    onChanged: (v) {
+                      final newVal = v.round();
+                      if (newVal != _durationMinutes) {
+                        HapticFeedback.selectionClick();
+                        setState(() => _durationMinutes = newVal);
+                      }
+                    },
                   ),
                 ),
               ],
@@ -345,17 +365,24 @@ class _NewAttackScreenState extends State<NewAttackScreen> {
       );
     }
     if (_weatherLoading) {
-      return const Card(
-        child: Padding(
-          padding: EdgeInsets.all(12),
-          child: Row(
-            children: [
-              SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2)),
-              SizedBox(width: 8),
-              Text('Загрузка погоды...'),
-            ],
-          ),
-        ),
+      return AnimatedBuilder(
+        animation: _shimmerController,
+        builder: (context, child) {
+          return Card(
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Row(
+                children: [
+                  _shimmerBox(24, 24, circular: true),
+                  const SizedBox(width: 8),
+                  _shimmerBox(60, 20),
+                  const SizedBox(width: 12),
+                  Expanded(child: _shimmerBox(double.infinity, 14)),
+                ],
+              ),
+            ),
+          );
+        },
       );
     }
     return const SizedBox.shrink();
@@ -435,8 +462,27 @@ class _NewAttackScreenState extends State<NewAttackScreen> {
     }).toList();
   }
 
+  /// Shimmer-блок для скелетона загрузки
+  Widget _shimmerBox(double width, double height, {bool circular = false}) {
+    final progress = _shimmerController.value;
+    final baseColor = Colors.grey[300]!;
+    final highlightColor = Colors.grey[100]!;
+    // Плавный блик слева направо
+    final t = (progress * 3 - 1).clamp(0.0, 1.0);
+    final color = Color.lerp(baseColor, highlightColor, t < 0.5 ? t * 2 : 2 - t * 2)!;
+    return Container(
+      width: width,
+      height: height,
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(circular ? height / 2 : 4),
+      ),
+    );
+  }
+
   @override
   void dispose() {
+    _shimmerController.dispose();
     _notesController.dispose();
     super.dispose();
   }
