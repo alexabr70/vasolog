@@ -11,9 +11,10 @@ import '../services/weather_service.dart';
 import '../services/location_service.dart';
 import '../utils/constants.dart';
 
-/// Экран записи нового приступа
+/// Экран записи / редактирования приступа
 class NewAttackScreen extends StatefulWidget {
-  const NewAttackScreen({super.key});
+  final AttackEvent? editAttack;
+  const NewAttackScreen({super.key, this.editAttack});
 
   @override
   State<NewAttackScreen> createState() => _NewAttackScreenState();
@@ -48,7 +49,22 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
       duration: const Duration(milliseconds: 1500),
     )..repeat();
     _loadWeather();
-    _applySmartDefaults();
+    if (widget.editAttack != null) {
+      _loadFromExisting(widget.editAttack!);
+    } else {
+      _applySmartDefaults();
+    }
+  }
+
+  /// Загрузить данные из существующего приступа (редактирование)
+  void _loadFromExisting(AttackEvent attack) {
+    _severity = attack.severity;
+    _durationMinutes = attack.durationMinutes;
+    _colorPhase = attack.colorPhase;
+    _selectedTriggers.addAll(attack.triggers);
+    _selectedFingers.addAll(attack.affectedFingers);
+    _photoPath = attack.photoPath;
+    if (attack.notes != null) _notesController.text = attack.notes!;
   }
 
   /// Умные дефолты из последнего приступа
@@ -130,9 +146,17 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
   Future<void> _saveAttack() async {
     setState(() => _isLoading = true);
 
+    final provider = context.read<AttackProvider>();
+
+    // При редактировании удаляем старую запись
+    final isEdit = widget.editAttack != null;
+    if (isEdit) {
+      await provider.deleteAttack(widget.editAttack!.id);
+    }
+
     final event = AttackEvent(
-      id: const Uuid().v4(),
-      timestamp: DateTime.now(),
+      id: isEdit ? widget.editAttack!.id : const Uuid().v4(),
+      timestamp: isEdit ? widget.editAttack!.timestamp : DateTime.now(),
       severity: _severity,
       colorPhase: _colorPhase,
       durationMinutes: _durationMinutes,
@@ -150,19 +174,18 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
     );
 
     try {
-      final provider = context.read<AttackProvider>();
       await provider.addAttack(event);
 
       if (mounted) {
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Приступ записан'),
+          SnackBar(
+            content: Text(isEdit ? 'Приступ обновлён' : 'Приступ записан'),
             backgroundColor: Colors.green,
           ),
         );
         // In-app review после 5-го приступа, макс 1 раз
-        _maybeRequestReview(provider.totalCount);
+        if (!isEdit) _maybeRequestReview(provider.totalCount);
       }
     } catch (e) {
       if (mounted) {
@@ -195,7 +218,7 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
     return Scaffold(
 
       appBar: AppBar(
-        title: const Text('Записать приступ'),
+        title: Text(widget.editAttack != null ? 'Редактировать' : 'Записать приступ'),
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -425,8 +448,11 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
     if (_weatherData != null) {
       final w = _weatherData!;
       final cacheLabel = w.isCached ? ' (${w.minutesAgo} мин назад)' : '';
+      final isDark = Theme.of(context).brightness == Brightness.dark;
       return Card(
-        color: w.isCached ? Colors.orange[50] : Colors.blue[50],
+        color: w.isCached
+            ? (isDark ? Colors.orange[900]?.withValues(alpha: 0.3) : Colors.orange[50])
+            : (isDark ? Colors.blue[900]?.withValues(alpha: 0.3) : Colors.blue[50]),
         child: Padding(
           padding: const EdgeInsets.all(12),
           child: Row(

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import '../providers/attack_provider.dart';
 import '../services/weather_service.dart';
 import '../services/location_service.dart';
 import '../utils/constants.dart';
+import 'new_attack_screen.dart';
 
 /// Главный экран - дашборд (встраивается в MainShell)
 class HomeScreen extends StatefulWidget {
@@ -88,8 +90,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 const SizedBox(height: 16),
 
+                // Мини-график тренда за 7 дней
+                if (recentAttacks.isNotEmpty)
+                  _AnimatedEntry(
+                    delay: 100,
+                    child: _WeekTrendChart(provider: provider),
+                  ),
+                if (recentAttacks.isNotEmpty) const SizedBox(height: 16),
+
                 _AnimatedEntry(
-                  delay: 100,
+                  delay: 120,
                   child: const Text(
                     'Последние приступы',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -112,6 +122,22 @@ class _HomeScreenState extends State<HomeScreen> {
                         onDelete: () {
                           HapticFeedback.mediumImpact();
                           provider.deleteAttack(attack.id);
+                          // Undo через SnackBar
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: const Text('Приступ удалён'),
+                              action: SnackBarAction(
+                                label: 'Отменить',
+                                onPressed: () => provider.addAttack(attack),
+                              ),
+                              duration: const Duration(seconds: 5),
+                            ),
+                          );
+                        },
+                        onEdit: () {
+                          Navigator.push(context, MaterialPageRoute(
+                            builder: (_) => NewAttackScreen(editAttack: attack),
+                          ));
                         },
                       ),
                     );
@@ -240,6 +266,100 @@ class _AnimatedEntryState extends State<_AnimatedEntry>
   }
 }
 
+/// Мини-график тренда тяжести за 7 дней
+class _WeekTrendChart extends StatelessWidget {
+  final AttackProvider provider;
+  const _WeekTrendChart({required this.provider});
+
+  @override
+  Widget build(BuildContext context) {
+    final now = DateTime.now();
+    final spots = <FlSpot>[];
+    final days = <String>[];
+
+    for (int i = 6; i >= 0; i--) {
+      final day = now.subtract(Duration(days: i));
+      final dayStart = DateTime(day.year, day.month, day.day);
+      final dayEnd = dayStart.add(const Duration(days: 1));
+      final dayAttacks = provider.getAttacksByRange(dayStart, dayEnd);
+
+      double avg = 0;
+      if (dayAttacks.isNotEmpty) {
+        avg = dayAttacks.map((a) => a.severity).reduce((a, b) => a + b) / dayAttacks.length;
+      }
+      spots.add(FlSpot((6 - i).toDouble(), avg));
+      days.add(DateFormat('E', 'ru').format(day).substring(0, 2));
+    }
+
+    // Если все нули - не показывать
+    if (spots.every((s) => s.y == 0)) return const SizedBox.shrink();
+
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('Тренд за неделю', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+            const SizedBox(height: 12),
+            SizedBox(
+              height: 100,
+              child: LineChart(
+                LineChartData(
+                  minY: 0,
+                  maxY: 10,
+                  gridData: const FlGridData(show: false),
+                  borderData: FlBorderData(show: false),
+                  titlesData: FlTitlesData(
+                    leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    bottomTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        getTitlesWidget: (value, meta) {
+                          final idx = value.toInt();
+                          if (idx >= 0 && idx < days.length) {
+                            return Text(days[idx], style: TextStyle(fontSize: 10, color: Colors.grey[500]));
+                          }
+                          return const Text('');
+                        },
+                        reservedSize: 20,
+                      ),
+                    ),
+                  ),
+                  lineBarsData: [
+                    LineChartBarData(
+                      spots: spots,
+                      isCurved: true,
+                      curveSmoothness: 0.3,
+                      color: AppColors.primary,
+                      barWidth: 2.5,
+                      dotData: FlDotData(
+                        show: true,
+                        getDotPainter: (spot, percent, bar, index) => FlDotCirclePainter(
+                          radius: spot.y > 0 ? 3 : 0,
+                          color: severityColor(spot.y.round()),
+                          strokeWidth: 0,
+                        ),
+                      ),
+                      belowBarData: BarAreaData(
+                        show: true,
+                        color: AppColors.primary.withValues(alpha: 0.1),
+                      ),
+                    ),
+                  ],
+                  lineTouchData: const LineTouchData(enabled: false),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 /// Карточка погоды с предупреждением о холоде
 class _WeatherAlert extends StatelessWidget {
   final WeatherData weather;
@@ -250,13 +370,14 @@ class _WeatherAlert extends StatelessWidget {
     final temp = weather.temperature;
     final isCold = temp <= 10;
     final isVeryCold = temp <= 0;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Card(
       color: isVeryCold
-          ? Colors.red[50]
+          ? (isDark ? Colors.red[900]?.withValues(alpha: 0.3) : Colors.red[50])
           : isCold
-              ? Colors.orange[50]
-              : Colors.blue[50],
+              ? (isDark ? Colors.orange[900]?.withValues(alpha: 0.3) : Colors.orange[50])
+              : (isDark ? Colors.blue[900]?.withValues(alpha: 0.3) : Colors.blue[50]),
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: Row(
@@ -513,8 +634,9 @@ class _StreakCard extends StatelessWidget {
 class _AttackTile extends StatelessWidget {
   final dynamic attack;
   final VoidCallback onDelete;
+  final VoidCallback? onEdit;
 
-  const _AttackTile({required this.attack, required this.onDelete});
+  const _AttackTile({required this.attack, required this.onDelete, this.onEdit});
 
   @override
   Widget build(BuildContext context) {
@@ -536,6 +658,7 @@ class _AttackTile extends StatelessWidget {
         trailing: attack.temperature != null
             ? Text('${attack.temperature!.toStringAsFixed(0)}°C', style: const TextStyle(fontSize: 14, color: Colors.grey))
             : null,
+        onTap: onEdit,
         onLongPress: () {
           HapticFeedback.heavyImpact();
           showDialog(
@@ -545,7 +668,7 @@ class _AttackTile extends StatelessWidget {
               actions: [
                 TextButton(onPressed: () => Navigator.pop(context), child: const Text('Отмена')),
                 TextButton(
-                  onPressed: () { onDelete(); Navigator.pop(context); },
+                  onPressed: () { Navigator.pop(context); onDelete(); },
                   child: const Text('Удалить', style: TextStyle(color: Colors.red)),
                 ),
               ],
