@@ -66,6 +66,12 @@ class VasoLogApp extends StatelessWidget {
       brightness: Brightness.light,
       useMaterial3: true,
       scaffoldBackgroundColor: AppColors.background,
+      pageTransitionsTheme: const PageTransitionsTheme(
+        builders: {
+          TargetPlatform.android: PredictiveBackPageTransitionsBuilder(),
+          TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+        },
+      ),
       cardTheme: CardThemeData(
         elevation: 0,
         color: Colors.white,
@@ -98,6 +104,12 @@ class VasoLogApp extends StatelessWidget {
       colorSchemeSeed: AppColors.primary,
       brightness: Brightness.dark,
       useMaterial3: true,
+      pageTransitionsTheme: const PageTransitionsTheme(
+        builders: {
+          TargetPlatform.android: PredictiveBackPageTransitionsBuilder(),
+          TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+        },
+      ),
       cardTheme: CardThemeData(
         elevation: 0,
         surfaceTintColor: Colors.transparent,

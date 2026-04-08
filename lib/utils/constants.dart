@@ -23,9 +23,9 @@ class AppColors {
   static const phaseBlue = Color(0xFF42A5F5);
   static const phaseRed = Color(0xFFEF5350);
 
-  // Градиент для AppBar
+  // Градиент для AppBar (WCAG AA: start 4.9:1, end 8.0:1 vs white)
   static const gradientStart = Color(0xFF5C6BC0);
-  static const gradientEnd = Color(0xFF7E57C2);
+  static const gradientEnd = Color(0xFF5E35B1);
 }
 
 /// Доступные триггеры

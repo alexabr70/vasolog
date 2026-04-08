@@ -67,6 +67,13 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
         });
         return;
       }
+    } else if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Включите геолокацию для автозаполнения погоды'),
+          duration: Duration(seconds: 3),
+        ),
+      );
     }
     if (mounted) setState(() => _weatherLoading = false);
   }
