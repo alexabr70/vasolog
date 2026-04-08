@@ -123,7 +123,7 @@ class _NewAttackScreenState extends State<NewAttackScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+
       appBar: AppBar(
         title: const Text('Записать приступ'),
         flexibleSpace: Container(

@@ -6,6 +6,7 @@ import '../utils/constants.dart';
 import 'new_attack_screen.dart';
 import 'history_screen.dart';
 import 'report_screen.dart';
+import 'about_screen.dart';
 
 /// Главный экран - дашборд
 class HomeScreen extends StatelessWidget {
@@ -14,7 +15,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+
       appBar: AppBar(
         title: const Text('VasoLog', style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1)),
         flexibleSpace: Container(
@@ -43,6 +44,14 @@ class HomeScreen extends StatelessWidget {
             onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(builder: (_) => const ReportScreen()),
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.info_outline_rounded),
+            tooltip: 'О приложении',
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const AboutScreen()),
             ),
           ),
         ],

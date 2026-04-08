@@ -1,7 +1,7 @@
 name: vasolog
 description: "VasoLog - Raynaud's Phenomenon Tracker"
 publish_to: 'none'
-version: 1.0.0+1
+version: 1.1.0+2
 
 environment:
   sdk: ^3.11.4
@@ -35,11 +35,36 @@ dependencies:
   # Разрешения
   permission_handler: ^11.4.0
   shared_preferences: ^2.5.5
+  flutter_native_splash: ^2.4.7
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.4
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/icon.png"
+  adaptive_icon_background: "#5C6BC0"
+  adaptive_icon_foreground: "assets/icon/icon_foreground.png"
+  min_sdk_android: 21
+
+flutter_native_splash:
+  color: "#5C6BC0"
+  image: "assets/icon/icon_foreground.png"
+  color_dark: "#1A237E"
+  image_dark: "assets/icon/icon_foreground.png"
+  android_12:
+    color: "#5C6BC0"
+    icon_background_color: "#5C6BC0"
+    image: "assets/icon/icon_foreground.png"
+    color_dark: "#1A237E"
+    icon_background_color_dark: "#1A237E"
+    image_dark: "assets/icon/icon_foreground.png"
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/icon/

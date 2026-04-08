@@ -68,7 +68,7 @@ class _ReportScreenState extends State<ReportScreen> {
     final attacksInRange = provider.getAttacksByRange(_startDate, _endDate);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+
       appBar: AppBar(
         title: const Text('Отчёт для врача'),
         flexibleSpace: Container(
