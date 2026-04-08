@@ -15,7 +15,15 @@ class HistoryScreen extends StatelessWidget {
       backgroundColor: AppColors.background,
       appBar: AppBar(
         title: const Text('История'),
-        backgroundColor: AppColors.primary,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [AppColors.gradientStart, AppColors.gradientEnd],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
         foregroundColor: Colors.white,
       ),
       body: Consumer<AttackProvider>(
@@ -161,13 +169,17 @@ class HistoryScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               if (attack.triggers.isNotEmpty)
-                                Text('Triggers: ${attack.triggers.join(", ")}'),
+                                Text('Триггеры: ${attack.triggers.join(", ")}'),
+                              if (attack.affectedFingers.isNotEmpty)
+                                Text('Пальцы: ${attack.affectedFingers.join(", ")}'),
+                              if (attack.durationMinutes > 0)
+                                Text('Длительность: ${attack.durationMinutes} мин'),
                               if (attack.temperature != null)
                                 Text(
-                                    'Weather: ${attack.temperature!.toStringAsFixed(1)}°C, '
-                                    '${attack.humidity?.toStringAsFixed(0)}% humidity'),
+                                    'Погода: ${attack.temperature!.toStringAsFixed(1)}°C, '
+                                    'влажн. ${attack.humidity?.toStringAsFixed(0)}%'),
                               if (attack.notes != null)
-                                Text('Notes: ${attack.notes}'),
+                                Text('Заметки: ${attack.notes}'),
                             ],
                           ),
                         ),

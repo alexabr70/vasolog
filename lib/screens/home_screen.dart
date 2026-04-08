@@ -16,20 +16,30 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text('VasoLog'),
-        backgroundColor: AppColors.primary,
+        title: const Text('VasoLog', style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1)),
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [AppColors.gradientStart, AppColors.gradientEnd],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
         foregroundColor: Colors.white,
         elevation: 0,
         actions: [
           IconButton(
-            icon: const Icon(Icons.history),
+            icon: const Icon(Icons.history_rounded),
+            tooltip: 'История',
             onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(builder: (_) => const HistoryScreen()),
             ),
           ),
           IconButton(
-            icon: const Icon(Icons.picture_as_pdf),
+            icon: const Icon(Icons.picture_as_pdf_rounded),
+            tooltip: 'Отчёт',
             onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(builder: (_) => const ReportScreen()),
@@ -61,14 +71,24 @@ class HomeScreen extends StatelessWidget {
                 const SizedBox(height: 8),
 
                 if (recentAttacks.isEmpty)
-                  const Card(
+                  Card(
                     child: Padding(
-                      padding: EdgeInsets.all(24),
+                      padding: const EdgeInsets.all(32),
                       child: Center(
-                        child: Text(
-                          'Приступов пока нет.\nНажми + чтобы записать первый.',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.grey, fontSize: 16),
+                        child: Column(
+                          children: [
+                            Icon(Icons.health_and_safety_rounded, size: 48, color: Colors.grey[300]),
+                            const SizedBox(height: 12),
+                            const Text(
+                              'Приступов пока нет',
+                              style: TextStyle(color: AppColors.textSecondary, fontSize: 16, fontWeight: FontWeight.w500),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              'Нажми кнопку ниже чтобы записать первый',
+                              style: TextStyle(color: Colors.grey[400], fontSize: 14),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -125,9 +145,9 @@ class HomeScreen extends StatelessWidget {
           context,
           MaterialPageRoute(builder: (_) => const NewAttackScreen()),
         ),
-        backgroundColor: AppColors.primary,
+        backgroundColor: AppColors.secondary,
         foregroundColor: Colors.white,
-        icon: const Icon(Icons.add, size: 28),
+        icon: const Icon(Icons.add_rounded, size: 28),
         label: const Text(
           'Записать приступ',
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -151,21 +171,35 @@ class _StatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        gradient: const LinearGradient(
+          colors: [AppColors.gradientStart, AppColors.gradientEnd],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primary.withValues(alpha: 0.3),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(24),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _StatItem(label: 'Всего', value: '$totalAttacks', icon: Icons.summarize),
-            _StatItem(label: 'За неделю', value: '$weeklyAttacks', icon: Icons.calendar_today),
+            _StatItem(label: 'Всего', value: '$totalAttacks', icon: Icons.summarize_rounded, isWhite: true),
+            _StatItem(label: 'За неделю', value: '$weeklyAttacks', icon: Icons.calendar_today_rounded, isWhite: true),
             _StatItem(
               label: 'Средн. RCS',
               value: avgSeverity.toStringAsFixed(1),
-              icon: Icons.speed,
-              color: severityColor(avgSeverity.round()),
+              icon: Icons.speed_rounded,
+              color: Colors.amber[300],
+              isWhite: true,
             ),
           ],
         ),
@@ -179,17 +213,18 @@ class _StatItem extends StatelessWidget {
   final String value;
   final IconData icon;
   final Color? color;
+  final bool isWhite;
 
-  const _StatItem({required this.label, required this.value, required this.icon, this.color});
+  const _StatItem({required this.label, required this.value, required this.icon, this.color, this.isWhite = false});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Icon(icon, color: color ?? AppColors.primary, size: 28),
+        Icon(icon, color: color ?? (isWhite ? Colors.white70 : AppColors.primary), size: 28),
         const SizedBox(height: 4),
-        Text(value, style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: color ?? Colors.black87)),
-        Text(label, style: const TextStyle(fontSize: 12, color: Colors.grey)),
+        Text(value, style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: isWhite ? Colors.white : (color ?? AppColors.textPrimary))),
+        Text(label, style: TextStyle(fontSize: 12, color: isWhite ? Colors.white60 : AppColors.textSecondary)),
       ],
     );
   }

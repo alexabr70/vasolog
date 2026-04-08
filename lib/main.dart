@@ -33,14 +33,28 @@ class VasoLogApp extends StatelessWidget {
           useMaterial3: true,
           scaffoldBackgroundColor: AppColors.background,
           cardTheme: CardThemeData(
-            elevation: 1,
+            elevation: 0,
+            color: Colors.white,
+            surfaceTintColor: Colors.transparent,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(16),
+              side: BorderSide(color: Colors.grey.shade200),
             ),
           ),
           appBarTheme: const AppBarTheme(
             centerTitle: true,
             elevation: 0,
+          ),
+          chipTheme: ChipThemeData(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+          ),
+          floatingActionButtonTheme: FloatingActionButtonThemeData(
+            elevation: 4,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
           ),
         ),
         home: const HomeScreen(),

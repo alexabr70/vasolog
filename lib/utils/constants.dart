@@ -2,18 +2,30 @@ import 'package:flutter/material.dart';
 
 /// Константы приложения
 class AppColors {
-  static const primary = Color(0xFFE57373); // Тёплый красный
-  static const secondary = Color(0xFFFF8A65); // Оранжевый
-  static const background = Color(0xFFFFF3E0); // Тёплый фон
+  // Основная палитра - медицинский синий + тёплые акценты
+  static const primary = Color(0xFF5C6BC0); // Индиго
+  static const primaryDark = Color(0xFF3949AB); // Тёмный индиго
+  static const secondary = Color(0xFFFF7043); // Тёплый оранжевый
+  static const accent = Color(0xFF26C6DA); // Циановый акцент
+  static const background = Color(0xFFF5F7FA); // Светло-серый фон
   static const surface = Colors.white;
-  static const severityLow = Color(0xFF81C784); // Зелёный
-  static const severityMedium = Color(0xFFFFB74D); // Оранжевый
-  static const severityHigh = Color(0xFFE57373); // Красный
-  static const severityCritical = Color(0xFFD32F2F); // Тёмно-красный
+  static const textPrimary = Color(0xFF263238);
+  static const textSecondary = Color(0xFF607D8B);
 
+  // Тяжесть
+  static const severityLow = Color(0xFF66BB6A); // Зелёный
+  static const severityMedium = Color(0xFFFFA726); // Оранжевый
+  static const severityHigh = Color(0xFFEF5350); // Красный
+  static const severityCritical = Color(0xFFC62828); // Тёмно-красный
+
+  // Фазы Рейно
   static const phaseWhite = Color(0xFFECEFF1);
-  static const phaseBlue = Color(0xFF64B5F6);
+  static const phaseBlue = Color(0xFF42A5F5);
   static const phaseRed = Color(0xFFEF5350);
+
+  // Градиент для AppBar
+  static const gradientStart = Color(0xFF5C6BC0);
+  static const gradientEnd = Color(0xFF7E57C2);
 }
 
 /// Доступные триггеры

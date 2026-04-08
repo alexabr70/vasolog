@@ -71,7 +71,15 @@ class _ReportScreenState extends State<ReportScreen> {
       backgroundColor: AppColors.background,
       appBar: AppBar(
         title: const Text('Отчёт для врача'),
-        backgroundColor: AppColors.primary,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [AppColors.gradientStart, AppColors.gradientEnd],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
         foregroundColor: Colors.white,
       ),
       body: Padding(

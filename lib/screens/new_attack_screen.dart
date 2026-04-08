@@ -18,6 +18,7 @@ class NewAttackScreen extends StatefulWidget {
 
 class _NewAttackScreenState extends State<NewAttackScreen> {
   int _severity = 5;
+  int _durationMinutes = 0;
   String _colorPhase = 'white';
   final Set<String> _selectedTriggers = {};
   final Set<String> _selectedFingers = {};
@@ -83,6 +84,7 @@ class _NewAttackScreenState extends State<NewAttackScreen> {
       timestamp: DateTime.now(),
       severity: _severity,
       colorPhase: _colorPhase,
+      durationMinutes: _durationMinutes,
       affectedFingers: _selectedFingers.toList(),
       triggers: _selectedTriggers.toList(),
       notes: _notesController.text.isNotEmpty ? _notesController.text : null,
@@ -115,7 +117,15 @@ class _NewAttackScreenState extends State<NewAttackScreen> {
       backgroundColor: AppColors.background,
       appBar: AppBar(
         title: const Text('Записать приступ'),
-        backgroundColor: AppColors.primary,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [AppColors.gradientStart, AppColors.gradientEnd],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
         foregroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
@@ -225,6 +235,49 @@ class _NewAttackScreenState extends State<NewAttackScreen> {
                   },
                 );
               }).toList(),
+            ),
+            const SizedBox(height: 16),
+
+            // Поражённые пальцы
+            const Text('Поражённые пальцы', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            Wrap(
+              spacing: 8,
+              runSpacing: 4,
+              children: fingerNames.map((finger) {
+                final isSelected = _selectedFingers.contains(finger);
+                return FilterChip(
+                  label: Text(finger, style: const TextStyle(fontSize: 12)),
+                  selected: isSelected,
+                  selectedColor: AppColors.phaseBlue.withValues(alpha: 0.3),
+                  onSelected: (selected) {
+                    setState(() {
+                      if (selected) { _selectedFingers.add(finger); }
+                      else { _selectedFingers.remove(finger); }
+                    });
+                  },
+                );
+              }).toList(),
+            ),
+            const SizedBox(height: 16),
+
+            // Длительность
+            const Text('Длительность (мин)', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                Text('$_durationMinutes', style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                const Text(' мин', style: TextStyle(fontSize: 16)),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Slider(
+                    value: _durationMinutes.toDouble(),
+                    min: 0, max: 120, divisions: 24,
+                    label: '$_durationMinutes мин',
+                    onChanged: (v) => setState(() => _durationMinutes = v.round()),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 16),
 
