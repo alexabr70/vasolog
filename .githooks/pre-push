@@ -1,0 +1,9 @@
+#!/bin/bash
+# VasoLog pre-push hook: тесты перед push
+# Установка: git config core.hooksPath .githooks
+set -e
+
+echo "Pre-push: запускаю тесты..."
+flutter analyze --no-pub
+flutter test
+echo "Pre-push: OK"
