@@ -1,10 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../services/notification_service.dart';
 import '../utils/constants.dart';
 
 /// Экран "О приложении" с medical disclaimer и privacy policy
-class AboutScreen extends StatelessWidget {
+class AboutScreen extends StatefulWidget {
   const AboutScreen({super.key});
+
+  @override
+  State<AboutScreen> createState() => _AboutScreenState();
+}
+
+class _AboutScreenState extends State<AboutScreen> {
+  bool _notificationsEnabled = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadNotificationState();
+  }
+
+  Future<void> _loadNotificationState() async {
+    final enabled = await NotificationService().isEnabled;
+    if (mounted) setState(() => _notificationsEnabled = enabled);
+  }
+
+  Future<void> _toggleNotifications(bool value) async {
+    final result = await NotificationService().setEnabled(value);
+    if (mounted) {
+      setState(() => _notificationsEnabled = result);
+      if (value && !result) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Разрешите уведомления в настройках устройства'),
+            duration: Duration(seconds: 3),
+          ),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -110,6 +144,35 @@ class AboutScreen extends StatelessWidget {
               '- Вы можете удалить все данные, удалив приложение\n'
               '- Вы можете отозвать разрешения в настройках устройства\n'
               '- Приложение работает полностью офлайн (кроме погоды)',
+            ),
+            const SizedBox(height: 16),
+
+            // Уведомления
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: Row(
+                  children: [
+                    const Icon(Icons.notifications_rounded, size: 20, color: AppColors.secondary),
+                    const SizedBox(width: 8),
+                    const Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Напоминания', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                          Text('Ежедневно в 12:30', style: TextStyle(fontSize: 12, color: Colors.grey)),
+                        ],
+                      ),
+                    ),
+                    Switch.adaptive(
+                      value: _notificationsEnabled,
+                      onChanged: _toggleNotifications,
+                      activeTrackColor: AppColors.secondary.withValues(alpha: 0.5),
+                      activeThumbColor: AppColors.secondary,
+                    ),
+                  ],
+                ),
+              ),
             ),
             const SizedBox(height: 16),
 

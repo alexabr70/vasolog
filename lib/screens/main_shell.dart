@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../services/deep_link_service.dart';
 import '../utils/constants.dart';
 import 'home_screen.dart';
 import 'history_screen.dart';
@@ -19,6 +21,7 @@ class _MainShellState extends State<MainShell> with TickerProviderStateMixin {
   int _currentIndex = 0;
   late final AnimationController _fabController;
   late final Animation<double> _fabScale;
+  StreamSubscription<DeepLinkAction>? _deepLinkSub;
 
   final _pages = const [
     HomeScreen(),
@@ -41,10 +44,35 @@ class _MainShellState extends State<MainShell> with TickerProviderStateMixin {
     Future.delayed(const Duration(milliseconds: 300), () {
       if (mounted) _fabController.forward();
     });
+
+    // Deep linking: push уведомление → конкретный экран
+    _deepLinkSub = DeepLinkService().actions.listen(_handleDeepLink);
+
+    // Проверить pending action от холодного старта
+    final pending = DeepLinkService().consumePendingAction();
+    if (pending != null) {
+      // Дождаться первого кадра перед навигацией
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) _handleDeepLink(pending);
+      });
+    }
+  }
+
+  void _handleDeepLink(DeepLinkAction action) {
+    if (!mounted) return;
+    switch (action) {
+      case DeepLinkAction.newAttack:
+        _openNewAttack();
+      case DeepLinkAction.history:
+        setState(() => _currentIndex = 1);
+      case DeepLinkAction.home:
+        setState(() => _currentIndex = 0);
+    }
   }
 
   @override
   void dispose() {
+    _deepLinkSub?.cancel();
     _fabController.dispose();
     super.dispose();
   }

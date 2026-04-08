@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../services/notification_service.dart';
 import '../utils/constants.dart';
 import 'main_shell.dart';
 
@@ -37,6 +38,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           'Покажи ревматологу полную картину.',
       color: AppColors.secondary,
     ),
+    _OnboardingPage(
+      icon: Icons.notifications_active_rounded,
+      title: 'Напоминания',
+      description: 'Ежедневное напоминание в 12:30 поможет не забыть '
+          'записать приступ. Можно отключить в любой момент.',
+      color: Color(0xFF26A69A),
+    ),
   ];
 
   Future<void> _finishOnboarding() async {
@@ -48,6 +56,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         MaterialPageRoute(builder: (_) => const MainShell()),
       );
     }
+  }
+
+  /// Включить уведомления и перейти к финалу
+  Future<void> _enableNotificationsAndFinish() async {
+    await NotificationService().setEnabled(true);
+    await _finishOnboarding();
   }
 
   @override
@@ -94,37 +108,65 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 ),
               ),
             ),
-            // Кнопка
+            // Кнопки
             Padding(
               padding: const EdgeInsets.fromLTRB(24, 0, 24, 32),
-              child: SizedBox(
-                width: double.infinity,
-                height: 56,
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (_currentPage < _pages.length - 1) {
-                      _controller.nextPage(
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeInOut,
-                      );
-                    } else {
-                      _finishOnboarding();
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
+              child: _currentPage == _pages.length - 1
+                  // Последний экран (уведомления) - 2 кнопки
+                  ? Column(
+                      children: [
+                        SizedBox(
+                          width: double.infinity,
+                          height: 56,
+                          child: ElevatedButton(
+                            onPressed: _enableNotificationsAndFinish,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF26A69A),
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                            ),
+                            child: const Text(
+                              'Включить напоминания',
+                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        TextButton(
+                          onPressed: _finishOnboarding,
+                          child: Text(
+                            'Не сейчас',
+                            style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                          ),
+                        ),
+                      ],
+                    )
+                  // Обычные экраны - кнопка "Далее"
+                  : SizedBox(
+                      width: double.infinity,
+                      height: 56,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          _controller.nextPage(
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.easeInOut,
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primary,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                        ),
+                        child: const Text(
+                          'Далее',
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                      ),
                     ),
-                  ),
-                  child: Text(
-                    _currentPage < _pages.length - 1 ? 'Далее' : 'Начать',
-                    style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
             ),
           ],
         ),

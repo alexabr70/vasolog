@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import '../models/attack_event.dart';
 import '../services/storage_service.dart';
+import '../services/notification_service.dart';
+import '../services/widget_service.dart';
 
 /// Провайдер состояния приступов
 class AttackProvider extends ChangeNotifier {
@@ -18,12 +20,16 @@ class AttackProvider extends ChangeNotifier {
   void _loadAttacks() {
     _attacks = _storage.getAllAttacks();
     notifyListeners();
+    // Обновить home widget при изменении данных
+    _updateWidget();
   }
 
   /// Добавить приступ
   Future<void> addAttack(AttackEvent event) async {
     await _storage.saveAttack(event);
     _loadAttacks();
+    // Сбросить таймер неактивности - запись только что была
+    NotificationService().resetInactivityTimer();
   }
 
   /// Удалить приступ
@@ -61,4 +67,13 @@ class AttackProvider extends ChangeNotifier {
 
   /// Последний приступ (для умных дефолтов)
   AttackEvent? get lastAttack => _attacks.isEmpty ? null : _attacks.first;
+
+  /// Обновить данные home screen widget
+  void _updateWidget() {
+    WidgetService.update(
+      daysSinceLastAttack: daysSinceLastAttack,
+      weeklyCount: recentAttacks(7).length,
+      avgSeverity: weeklyAverageSeverity,
+    );
+  }
 }

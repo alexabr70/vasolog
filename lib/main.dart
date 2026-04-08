@@ -3,6 +3,9 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'services/storage_service.dart';
+import 'services/notification_service.dart';
+import 'services/deep_link_service.dart';
+import 'services/widget_service.dart';
 import 'providers/attack_provider.dart';
 import 'screens/main_shell.dart';
 import 'screens/onboarding_screen.dart';
@@ -32,6 +35,11 @@ void main() async {
       debugPrint('Storage init retry failed');
     }
   }
+
+  // Инициализация сервисов
+  await NotificationService().init();
+  await DeepLinkService().init();
+  await WidgetService.init();
 
   // Убираем splash в любом случае
   FlutterNativeSplash.remove();
