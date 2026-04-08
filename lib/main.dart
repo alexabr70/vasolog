@@ -22,9 +22,15 @@ void main() async {
     final prefs = await SharedPreferences.getInstance();
     onboardingDone = prefs.getBool('onboarding_done') ?? false;
   } catch (e) {
-    // Если инициализация упала - всё равно запускаем приложение
-    storage ??= StorageService();
     debugPrint('Init error: $e');
+    // Гарантируем что storage инициализирован даже после ошибки
+    storage ??= StorageService();
+    try {
+      await storage.init();
+    } catch (_) {
+      // Hive init провалился повторно - приложение запустится, но без данных
+      debugPrint('Storage init retry failed');
+    }
   }
 
   // Убираем splash в любом случае

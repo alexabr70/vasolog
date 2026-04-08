@@ -47,7 +47,7 @@ class WeatherData {
 
 /// Сервис погоды через OpenWeatherMap API с кэшированием
 class WeatherService {
-  static const String _apiKey = '963fe87900f276da9f0957b422accfea';
+  static const String _apiKey = String.fromEnvironment('WEATHER_API_KEY');
   static const String _baseUrl = 'https://api.openweathermap.org/data/2.5';
   static const String _cacheKey = 'cached_weather';
   static const int _cacheMaxMinutes = 30;
@@ -56,6 +56,9 @@ class WeatherService {
   /// Если API недоступен - вернёт кэш с пометкой isCached=true
   Future<WeatherData?> getCurrentWeather(
       double latitude, double longitude) async {
+    // Без ключа API запрос бессмысленен - сразу идём в кэш
+    if (_apiKey.isEmpty) return _loadFromCache();
+
     try {
       final url = Uri.parse(
         '$_baseUrl/weather?lat=$latitude&lon=$longitude'
@@ -67,16 +70,20 @@ class WeatherService {
       );
 
       if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        final weather = WeatherData(
-          temperature: (data['main']['temp'] as num).toDouble(),
-          humidity: (data['main']['humidity'] as num).toDouble(),
-          pressure: (data['main']['pressure'] as num).toDouble(),
-          windSpeed: (data['wind']['speed'] as num).toDouble(),
-          description: data['weather'][0]['description'] as String,
-        );
-        await _saveToCache(weather);
-        return weather;
+        try {
+          final data = json.decode(response.body);
+          final weather = WeatherData(
+            temperature: (data['main']['temp'] as num).toDouble(),
+            humidity: (data['main']['humidity'] as num).toDouble(),
+            pressure: (data['main']['pressure'] as num).toDouble(),
+            windSpeed: (data['wind']['speed'] as num).toDouble(),
+            description: data['weather'][0]['description'] as String,
+          );
+          await _saveToCache(weather);
+          return weather;
+        } catch (_) {
+          // Неожиданный формат JSON - идём в кэш
+        }
       }
     } catch (_) {
       // Нет сети / таймаут - пробуем кэш

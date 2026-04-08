@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../utils/constants.dart';
 
 /// Экран "О приложении" с medical disclaimer и privacy policy
@@ -86,6 +87,17 @@ class AboutScreen extends StatelessWidget {
               '- Все данные хранятся исключительно на вашем устройстве\n'
               '- Вы можете удалить все данные удалив приложение\n'
               '- PDF-отчёты создаются локально',
+            ),
+            const SizedBox(height: 8),
+            Center(
+              child: TextButton.icon(
+                onPressed: () => launchUrl(
+                  Uri.parse('https://vasolog-app.github.io/privacy_policy.html'),
+                  mode: LaunchMode.externalApplication,
+                ),
+                icon: const Icon(Icons.open_in_new, size: 16),
+                label: const Text('Полный текст Privacy Policy'),
+              ),
             ),
             const SizedBox(height: 16),
 
