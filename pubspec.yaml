@@ -1,0 +1,44 @@
+name: vasolog
+description: "VasoLog - Raynaud's Phenomenon Tracker"
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.11.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  # Локальное хранилище (без кодогенерации)
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  # Геолокация
+  geolocator: ^13.0.2
+  # HTTP для погодного API
+  http: ^1.4.0
+  # Камера / фото
+  image_picker: ^1.1.2
+  # PDF генерация
+  pdf: ^3.11.2
+  printing: ^5.13.5
+  # Графики
+  fl_chart: ^0.70.2
+  # State management
+  provider: ^6.1.4
+  # Форматирование дат
+  intl: ^0.20.2
+  # Хранение файлов
+  path_provider: any
+  # UUID
+  uuid: ^4.5.1
+  # Разрешения
+  permission_handler: ^11.4.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
