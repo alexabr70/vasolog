@@ -202,7 +202,7 @@ class HistoryScreen extends StatelessWidget {
     final result = <BarChartGroupData>[];
 
     for (int i = 0; i < 7; i++) {
-      final day = DateTime(weekStart.year, weekStart.month, weekStart.day + i);
+      final day = weekStart.add(Duration(days: i));
       final dayEnd = day.add(const Duration(days: 1));
       final dayAttacks = provider.getAttacksByRange(day, dayEnd);
 

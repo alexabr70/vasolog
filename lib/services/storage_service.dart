@@ -25,10 +25,10 @@ class StorageService {
     return attacks;
   }
 
-  /// Получить приступы за период
+  /// Получить приступы за период (включая границы)
   List<AttackEvent> getAttacksByDateRange(DateTime start, DateTime end) {
     return getAllAttacks()
-        .where((a) => a.timestamp.isAfter(start) && a.timestamp.isBefore(end))
+        .where((a) => !a.timestamp.isBefore(start) && !a.timestamp.isAfter(end))
         .toList();
   }
 

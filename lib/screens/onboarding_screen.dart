@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../services/notification_service.dart';
+import '../services/location_service.dart';
 import '../utils/constants.dart';
 import 'main_shell.dart';
 
@@ -39,11 +40,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       color: AppColors.secondary,
     ),
     _OnboardingPage(
+      icon: Icons.location_on_rounded,
+      title: 'Геолокация для погоды',
+      description: 'Разрешите доступ к геолокации - приложение '
+          'автоматически зафиксирует температуру, влажность и ветер '
+          'в момент приступа. Данные не передаются третьим лицам.',
+      color: Color(0xFF5C6BC0),
+    ),
+    _OnboardingPage(
       icon: Icons.notifications_active_rounded,
       title: 'Напоминания',
       description: 'Ежедневное напоминание в 12:30 поможет не забыть '
           'записать приступ. Можно отключить в любой момент.',
-      color: Color(0xFF26A69A),
+      color: AppColors.accent,
     ),
   ];
 
@@ -56,6 +65,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         MaterialPageRoute(builder: (_) => const MainShell()),
       );
     }
+  }
+
+  /// Запросить геолокацию и перейти дальше
+  Future<void> _requestLocationAndNext() async {
+    await LocationService().getCurrentPosition();
+    _controller.nextPage(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
   }
 
   /// Включить уведомления и перейти к финалу
@@ -111,65 +129,90 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             // Кнопки
             Padding(
               padding: const EdgeInsets.fromLTRB(24, 0, 24, 32),
-              child: _currentPage == _pages.length - 1
-                  // Последний экран (уведомления) - 2 кнопки
-                  ? Column(
-                      children: [
-                        SizedBox(
-                          width: double.infinity,
-                          height: 56,
-                          child: ElevatedButton(
-                            onPressed: _enableNotificationsAndFinish,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF26A69A),
-                              foregroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                            ),
-                            child: const Text(
-                              'Включить напоминания',
-                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        TextButton(
-                          onPressed: _finishOnboarding,
-                          child: Text(
-                            'Не сейчас',
-                            style: TextStyle(fontSize: 16, color: Colors.grey[600]),
-                          ),
-                        ),
-                      ],
-                    )
-                  // Обычные экраны - кнопка "Далее"
-                  : SizedBox(
-                      width: double.infinity,
-                      height: 56,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          _controller.nextPage(
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeInOut,
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primary,
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                        ),
-                        child: const Text(
-                          'Далее',
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ),
+              child: _buildPageButtons(),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildPageButtons() {
+    final isLastPage = _currentPage == _pages.length - 1;
+    final isLocationPage = _currentPage == _pages.length - 2;
+
+    if (isLastPage) {
+      // Уведомления - финальный экран
+      return Column(
+        children: [
+          SizedBox(
+            width: double.infinity,
+            height: 56,
+            child: ElevatedButton(
+              onPressed: _enableNotificationsAndFinish,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.accent,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              ),
+              child: const Text('Включить напоминания',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            ),
+          ),
+          const SizedBox(height: 8),
+          TextButton(
+            onPressed: _finishOnboarding,
+            child: Text('Не сейчас', style: TextStyle(fontSize: 16, color: Colors.grey[600])),
+          ),
+        ],
+      );
+    }
+
+    if (isLocationPage) {
+      // Геолокация
+      return Column(
+        children: [
+          SizedBox(
+            width: double.infinity,
+            height: 56,
+            child: ElevatedButton(
+              onPressed: _requestLocationAndNext,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              ),
+              child: const Text('Разрешить геолокацию',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            ),
+          ),
+          const SizedBox(height: 8),
+          TextButton(
+            onPressed: () => _controller.nextPage(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+            ),
+            child: Text('Пропустить', style: TextStyle(fontSize: 16, color: Colors.grey[600])),
+          ),
+        ],
+      );
+    }
+
+    // Обычные страницы
+    return SizedBox(
+      width: double.infinity,
+      height: 56,
+      child: ElevatedButton(
+        onPressed: () => _controller.nextPage(
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        ),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.primary,
+          foregroundColor: Colors.white,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        ),
+        child: const Text('Далее', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
       ),
     );
   }

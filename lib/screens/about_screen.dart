@@ -191,9 +191,22 @@ class _AboutScreenState extends State<AboutScreen> {
                       ],
                     ),
                     const SizedBox(height: 8),
-                    Text(
-                      'vasolog.app@gmail.com',
-                      style: TextStyle(color: Colors.grey[600]),
+                    InkWell(
+                      onTap: () => launchUrl(
+                        Uri(scheme: 'mailto', path: 'vasolog.app@gmail.com',
+                            queryParameters: {'subject': 'VasoLog - Обратная связь'}),
+                      ),
+                      borderRadius: BorderRadius.circular(4),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 4),
+                        child: Text(
+                          'vasolog.app@gmail.com',
+                          style: TextStyle(
+                            color: AppColors.primary,
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),

@@ -3,11 +3,36 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import '../providers/attack_provider.dart';
+import '../services/weather_service.dart';
+import '../services/location_service.dart';
 import '../utils/constants.dart';
 
 /// Главный экран - дашборд (встраивается в MainShell)
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  WeatherData? _weather;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadWeather();
+  }
+
+  Future<void> _loadWeather() async {
+    final pos = await LocationService().getCurrentPosition();
+    if (pos != null) {
+      final data = await WeatherService().getCurrentWeather(pos.latitude, pos.longitude);
+      if (mounted) setState(() => _weather = data);
+    } else {
+      if (mounted) setState(() {});
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,9 +61,17 @@ class HomeScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Погода с предупреждением
+                if (_weather != null)
+                  _AnimatedEntry(
+                    delay: 0,
+                    child: _WeatherAlert(weather: _weather!),
+                  ),
+                if (_weather != null) const SizedBox(height: 12),
+
                 // Статкарточка с анимацией появления
                 _AnimatedEntry(
-                  delay: 0,
+                  delay: _weather != null ? 80 : 0,
                   child: _StatCard(
                     totalAttacks: provider.totalCount,
                     weeklyAttacks: recentAttacks.length,
@@ -48,7 +81,7 @@ class HomeScreen extends StatelessWidget {
                 const SizedBox(height: 16),
 
                 // Streak - дней без приступа
-                if (provider.totalCount > 0)
+                if (provider.daysSinceLastAttack >= 0)
                   _AnimatedEntry(
                     delay: 80,
                     child: _StreakCard(days: provider.daysSinceLastAttack),
@@ -202,6 +235,76 @@ class _AnimatedEntryState extends State<_AnimatedEntry>
       child: SlideTransition(
         position: _slide,
         child: widget.child,
+      ),
+    );
+  }
+}
+
+/// Карточка погоды с предупреждением о холоде
+class _WeatherAlert extends StatelessWidget {
+  final WeatherData weather;
+  const _WeatherAlert({required this.weather});
+
+  @override
+  Widget build(BuildContext context) {
+    final temp = weather.temperature;
+    final isCold = temp <= 10;
+    final isVeryCold = temp <= 0;
+
+    return Card(
+      color: isVeryCold
+          ? Colors.red[50]
+          : isCold
+              ? Colors.orange[50]
+              : Colors.blue[50],
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Row(
+          children: [
+            Icon(
+              isVeryCold ? Icons.ac_unit : isCold ? Icons.cloud : Icons.wb_sunny_rounded,
+              color: isVeryCold ? Colors.red : isCold ? Colors.orange : Colors.blue,
+              size: 28,
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        '${temp.toStringAsFixed(0)}°C',
+                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        'Ветер ${weather.windSpeed.toStringAsFixed(0)} м/с · Влажн. ${weather.humidity.toStringAsFixed(0)}%',
+                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                      ),
+                    ],
+                  ),
+                  if (isCold)
+                    Text(
+                      isVeryCold
+                          ? 'Мороз! Высокий риск приступа. Утепляйте руки.'
+                          : 'Прохладно. Берегите руки от холода.',
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                        color: isVeryCold ? Colors.red[700] : Colors.orange[800],
+                      ),
+                    ),
+                ],
+              ),
+            ),
+            if (weather.isCached)
+              Tooltip(
+                message: '${weather.minutesAgo} мин назад',
+                child: Icon(Icons.cached, size: 16, color: Colors.grey[400]),
+              ),
+          ],
+        ),
       ),
     );
   }

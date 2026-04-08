@@ -58,9 +58,9 @@ class AttackProvider extends ChangeNotifier {
   }
 
   /// Дней без приступа (streak)
-  /// Grace period: 1 день пропуска не ломает streak (хроническое заболевание)
+  /// -1 = нет данных, 0 = приступ сегодня, 1+ = дней без приступа
   int get daysSinceLastAttack {
-    if (_attacks.isEmpty) return 0;
+    if (_attacks.isEmpty) return -1;
     final lastAttack = _attacks.first; // отсортированы по дате desc
     return DateTime.now().difference(lastAttack.timestamp).inDays;
   }

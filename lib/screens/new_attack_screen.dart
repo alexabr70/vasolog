@@ -214,7 +214,7 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
           children: [
             // Погода
             _buildWeatherCard(),
-            const SizedBox(height: 12),
+            const SizedBox(height: 8),
 
             // Кнопка "Как прошлый раз"
             if (context.read<AttackProvider>().lastAttack != null)
@@ -224,167 +224,178 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
                   onPressed: _applyLastAttack,
                   icon: const Icon(Icons.replay_rounded, size: 18),
                   label: const Text('Как прошлый раз'),
-                  style: TextButton.styleFrom(
-                    foregroundColor: AppColors.secondary,
-                  ),
+                  style: TextButton.styleFrom(foregroundColor: AppColors.secondary),
                 ),
               ),
-            const SizedBox(height: 4),
 
-            // Тяжесть с динамическим цветом
-            const Text('Тяжесть (RCS)', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 8),
-            Row(
+            // === СЕКЦИЯ 1: Оценка приступа ===
+            _SectionCard(
+              title: 'Оценка приступа',
+              icon: Icons.speed_rounded,
               children: [
-                AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: severityColor(_severity).withValues(alpha: 0.15),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Text('$_severity', style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold, color: severityColor(_severity))),
+                // Тяжесть
+                const Text('Тяжесть (RCS)', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+                const SizedBox(height: 4),
+                Row(
+                  children: [
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: severityColor(_severity).withValues(alpha: 0.15),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text('$_severity', style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold, color: severityColor(_severity))),
+                    ),
+                    const Text('/10', style: TextStyle(fontSize: 24)),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: SliderTheme(
+                        data: SliderThemeData(
+                          activeTrackColor: severityColor(_severity),
+                          thumbColor: severityColor(_severity),
+                          inactiveTrackColor: severityColor(_severity).withValues(alpha: 0.2),
+                          overlayColor: severityColor(_severity).withValues(alpha: 0.1),
+                        ),
+                        child: Slider(
+                          value: _severity.toDouble(),
+                          min: 0, max: 10, divisions: 10,
+                          label: '$_severity',
+                          onChanged: (v) {
+                            final newVal = v.round();
+                            if (newVal != _severity) {
+                              HapticFeedback.selectionClick();
+                              setState(() => _severity = newVal);
+                            }
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                const Text('/10', style: TextStyle(fontSize: 24)),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: SliderTheme(
-                    data: SliderThemeData(
-                      activeTrackColor: severityColor(_severity),
-                      thumbColor: severityColor(_severity),
-                      inactiveTrackColor: severityColor(_severity).withValues(alpha: 0.2),
-                      overlayColor: severityColor(_severity).withValues(alpha: 0.1),
+                const SizedBox(height: 12),
+
+                // Цвет пальцев
+                const Text('Цвет пальцев', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+                const SizedBox(height: 8),
+                Row(
+                  children: colorPhases.entries.map((e) {
+                    final isSelected = _colorPhase == e.key;
+                    return Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 3),
+                        child: _buildColorPhaseChip(e.key, e.value, isSelected),
+                      ),
+                    );
+                  }).toList(),
+                ),
+                const SizedBox(height: 12),
+
+                // Длительность
+                const Text('Длительность', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+                const SizedBox(height: 4),
+                Row(
+                  children: [
+                    Text('$_durationMinutes', style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                    const Text(' мин', style: TextStyle(fontSize: 16)),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Slider(
+                        value: _durationMinutes.toDouble(),
+                        min: 0, max: 120, divisions: 24,
+                        label: '$_durationMinutes мин',
+                        onChanged: (v) {
+                          final newVal = v.round();
+                          if (newVal != _durationMinutes) {
+                            HapticFeedback.selectionClick();
+                            setState(() => _durationMinutes = newVal);
+                          }
+                        },
+                      ),
                     ),
-                    child: Slider(
-                      value: _severity.toDouble(),
-                      min: 0, max: 10, divisions: 10,
-                      label: '$_severity',
-                      onChanged: (v) {
-                        final newVal = v.round();
-                        if (newVal != _severity) {
-                          HapticFeedback.selectionClick();
-                          setState(() => _severity = newVal);
-                        }
-                      },
-                    ),
-                  ),
+                  ],
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 12),
 
-            // Цвет пальцев - градиентные плашки
-            const Text('Цвет пальцев', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 8),
-            Row(
-              children: colorPhases.entries.map((e) {
-                final isSelected = _colorPhase == e.key;
-                return Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 3),
-                    child: _buildColorPhaseChip(e.key, e.value, isSelected),
-                  ),
-                );
-              }).toList(),
-            ),
-            const SizedBox(height: 16),
-
-            // Триггеры с умной подсветкой по погоде
-            Row(
+            // === СЕКЦИЯ 2: Триггеры ===
+            _SectionCard(
+              title: 'Что вызвало?',
+              icon: Icons.flash_on_rounded,
+              trailing: _suggestedTriggers.isNotEmpty
+                  ? Icon(Icons.auto_awesome, size: 16, color: AppColors.secondary.withValues(alpha: 0.7))
+                  : null,
               children: [
-                const Text('Что вызвало?', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                if (_suggestedTriggers.isNotEmpty) ...[
-                  const SizedBox(width: 8),
-                  Icon(Icons.auto_awesome, size: 16, color: AppColors.secondary.withValues(alpha: 0.7)),
-                ],
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 4,
+                  children: _buildSortedTriggers(),
+                ),
               ],
             ),
-            const SizedBox(height: 8),
-            Wrap(
-              spacing: 8,
-              runSpacing: 4,
-              children: _buildSortedTriggers(),
-            ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 12),
 
-            // Поражённые пальцы
-            const Text('Поражённые пальцы', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 8),
-            Wrap(
-              spacing: 8,
-              runSpacing: 4,
-              children: fingerNames.map((finger) {
-                final isSelected = _selectedFingers.contains(finger);
-                return FilterChip(
-                  label: Text(finger, style: const TextStyle(fontSize: 12)),
-                  selected: isSelected,
-                  selectedColor: AppColors.phaseBlue.withValues(alpha: 0.3),
-                  onSelected: (selected) {
+            // === СЕКЦИЯ 3: Поражённые пальцы ===
+            _SectionCard(
+              title: 'Поражённые пальцы',
+              icon: Icons.pan_tool_rounded,
+              children: [
+                _HandDiagram(
+                  selectedFingers: _selectedFingers,
+                  onFingerTap: (finger) {
+                    HapticFeedback.selectionClick();
                     setState(() {
-                      if (selected) { _selectedFingers.add(finger); }
-                      else { _selectedFingers.remove(finger); }
+                      if (_selectedFingers.contains(finger)) {
+                        _selectedFingers.remove(finger);
+                      } else {
+                        _selectedFingers.add(finger);
+                      }
                     });
                   },
-                );
-              }).toList(),
+                ),
+              ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 12),
 
-            // Длительность
-            const Text('Длительность (мин)', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 8),
-            Row(
+            // === СЕКЦИЯ 4: Доп. информация ===
+            _SectionCard(
+              title: 'Дополнительно',
+              icon: Icons.note_add_rounded,
               children: [
-                Text('$_durationMinutes', style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                const Text(' мин', style: TextStyle(fontSize: 16)),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Slider(
-                    value: _durationMinutes.toDouble(),
-                    min: 0, max: 120, divisions: 24,
-                    label: '$_durationMinutes мин',
-                    onChanged: (v) {
-                      final newVal = v.round();
-                      if (newVal != _durationMinutes) {
-                        HapticFeedback.selectionClick();
-                        setState(() => _durationMinutes = newVal);
-                      }
-                    },
+                // Фото
+                Row(
+                  children: [
+                    ElevatedButton.icon(
+                      onPressed: _takePhoto,
+                      icon: const Icon(Icons.camera_alt, size: 18),
+                      label: Text(_photoPath == null ? 'Сделать фото' : 'Переснять'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.secondary,
+                        foregroundColor: Colors.white,
+                      ),
+                    ),
+                    if (_photoPath != null) ...[
+                      const SizedBox(width: 8),
+                      const Icon(Icons.check_circle, color: Colors.green, size: 20),
+                      const Text(' Фото', style: TextStyle(fontSize: 13)),
+                    ],
+                  ],
+                ),
+                const SizedBox(height: 12),
+                // Заметки
+                TextField(
+                  controller: _notesController,
+                  maxLines: 3,
+                  decoration: InputDecoration(
+                    labelText: 'Заметки (необязательно)',
+                    hintText: 'Дополнительные детали...',
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 16),
-
-            // Фото
-            Row(
-              children: [
-                ElevatedButton.icon(
-                  onPressed: _takePhoto,
-                  icon: const Icon(Icons.camera_alt),
-                  label: Text(_photoPath == null ? 'Сделать фото' : 'Переснять'),
-                  style: ElevatedButton.styleFrom(backgroundColor: AppColors.secondary, foregroundColor: Colors.white),
-                ),
-                if (_photoPath != null) ...[
-                  const SizedBox(width: 8),
-                  const Icon(Icons.check_circle, color: Colors.green),
-                  const Text(' Фото сохранено'),
-                ],
-              ],
-            ),
-            const SizedBox(height: 16),
-
-            // Заметки
-            TextField(
-              controller: _notesController,
-              maxLines: 3,
-              decoration: InputDecoration(
-                labelText: 'Заметки (необязательно)',
-                hintText: 'Дополнительные детали...',
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-              ),
-            ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 20),
 
             // Сохранить
             SizedBox(
@@ -530,6 +541,7 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
             ? Icon(Icons.auto_awesome, size: 14, color: AppColors.secondary.withValues(alpha: 0.7))
             : null,
         onSelected: (selected) {
+          HapticFeedback.selectionClick();
           setState(() {
             if (selected) { _selectedTriggers.add(trigger); }
             else { _selectedTriggers.remove(trigger); }
@@ -562,5 +574,148 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
     _shimmerController.dispose();
     _notesController.dispose();
     super.dispose();
+  }
+}
+
+/// Секция-карточка с заголовком и иконкой
+class _SectionCard extends StatelessWidget {
+  final String title;
+  final IconData icon;
+  final Widget? trailing;
+  final List<Widget> children;
+
+  const _SectionCard({
+    required this.title,
+    required this.icon,
+    this.trailing,
+    required this.children,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(icon, size: 20, color: AppColors.primary),
+                const SizedBox(width: 8),
+                Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                if (trailing != null) ...[
+                  const SizedBox(width: 8),
+                  trailing!,
+                ],
+              ],
+            ),
+            const SizedBox(height: 12),
+            ...children,
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Интерактивная схема рук для выбора пальцев
+class _HandDiagram extends StatelessWidget {
+  final Set<String> selectedFingers;
+  final ValueChanged<String> onFingerTap;
+
+  const _HandDiagram({required this.selectedFingers, required this.onFingerTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        // Левая рука
+        Expanded(
+          child: Column(
+            children: [
+              Text('Левая', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.grey[700])),
+              const SizedBox(height: 8),
+              _buildHandGrid([
+                'Большой Л', 'Указат. Л', 'Средний Л', 'Безымян. Л', 'Мизинец Л',
+              ]),
+            ],
+          ),
+        ),
+        Container(width: 1, height: 100, color: Colors.grey[300]),
+        // Правая рука
+        Expanded(
+          child: Column(
+            children: [
+              Text('Правая', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.grey[700])),
+              const SizedBox(height: 8),
+              _buildHandGrid([
+                'Большой П', 'Указат. П', 'Средний П', 'Безымян. П', 'Мизинец П',
+              ]),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildHandGrid(List<String> fingers) {
+    // Расположение пальцев в виде дуги (как настоящая рука)
+    final shortNames = {
+      'Большой Л': '1', 'Указат. Л': '2', 'Средний Л': '3',
+      'Безымян. Л': '4', 'Мизинец Л': '5',
+      'Большой П': '1', 'Указат. П': '2', 'Средний П': '3',
+      'Безымян. П': '4', 'Мизинец П': '5',
+    };
+    final fullNames = {
+      'Большой Л': 'Большой', 'Указат. Л': 'Указат.', 'Средний Л': 'Средний',
+      'Безымян. Л': 'Безым.', 'Мизинец Л': 'Мизинец',
+      'Большой П': 'Большой', 'Указат. П': 'Указат.', 'Средний П': 'Средний',
+      'Безымян. П': 'Безым.', 'Мизинец П': 'Мизинец',
+    };
+
+    return Wrap(
+      spacing: 6,
+      runSpacing: 6,
+      alignment: WrapAlignment.center,
+      children: fingers.map((finger) {
+        final isSelected = selectedFingers.contains(finger);
+        return GestureDetector(
+          onTap: () => onFingerTap(finger),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            width: 52,
+            height: 52,
+            decoration: BoxDecoration(
+              color: isSelected
+                  ? AppColors.phaseBlue.withValues(alpha: 0.25)
+                  : Colors.grey.withValues(alpha: 0.08),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: isSelected ? AppColors.phaseBlue : Colors.grey.withValues(alpha: 0.3),
+                width: isSelected ? 2 : 1,
+              ),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  shortNames[finger] ?? '',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: isSelected ? AppColors.phaseBlue : Colors.grey[600],
+                  ),
+                ),
+                Text(
+                  fullNames[finger] ?? '',
+                  style: TextStyle(fontSize: 8, color: isSelected ? AppColors.phaseBlue : Colors.grey[500]),
+                ),
+              ],
+            ),
+          ),
+        );
+      }).toList(),
+    );
   }
 }
