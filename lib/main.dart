@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'services/storage_service.dart';
 import 'providers/attack_provider.dart';
-import 'screens/home_screen.dart';
+import 'screens/main_shell.dart';
 import 'screens/onboarding_screen.dart';
 import 'utils/constants.dart';
 
@@ -49,7 +49,7 @@ class VasoLogApp extends StatelessWidget {
         theme: _lightTheme(),
         darkTheme: _darkTheme(),
         themeMode: ThemeMode.system,
-        home: showOnboarding ? const OnboardingScreen() : const HomeScreen(),
+        home: showOnboarding ? const OnboardingScreen() : const MainShell(),
       ),
     );
   }

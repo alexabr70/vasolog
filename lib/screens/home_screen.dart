@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import '../providers/attack_provider.dart';
 import '../utils/constants.dart';
-import 'new_attack_screen.dart';
-import 'history_screen.dart';
-import 'report_screen.dart';
-import 'about_screen.dart';
 
-/// Главный экран - дашборд
+/// Главный экран - дашборд (встраивается в MainShell)
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       appBar: AppBar(
         title: const Text('VasoLog', style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1)),
         flexibleSpace: Container(
@@ -29,32 +25,6 @@ class HomeScreen extends StatelessWidget {
         ),
         foregroundColor: Colors.white,
         elevation: 0,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.history_rounded),
-            tooltip: 'История',
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const HistoryScreen()),
-            ),
-          ),
-          IconButton(
-            icon: const Icon(Icons.picture_as_pdf_rounded),
-            tooltip: 'Отчёт',
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const ReportScreen()),
-            ),
-          ),
-          IconButton(
-            icon: const Icon(Icons.info_outline_rounded),
-            tooltip: 'О приложении',
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const AboutScreen()),
-            ),
-          ),
-        ],
       ),
       body: Consumer<AttackProvider>(
         builder: (context, provider, _) {
@@ -62,84 +32,105 @@ class HomeScreen extends StatelessWidget {
           final triggers = provider.monthlyTriggers;
 
           return SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _StatCard(
-                  totalAttacks: provider.totalCount,
-                  weeklyAttacks: recentAttacks.length,
-                  avgSeverity: provider.weeklyAverageSeverity,
+                // Статкарточка с анимацией появления
+                _AnimatedEntry(
+                  delay: 0,
+                  child: _StatCard(
+                    totalAttacks: provider.totalCount,
+                    weeklyAttacks: recentAttacks.length,
+                    avgSeverity: provider.weeklyAverageSeverity,
+                  ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 20),
 
-                const Text(
-                  'Последние приступы',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                _AnimatedEntry(
+                  delay: 100,
+                  child: const Text(
+                    'Последние приступы',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
                 ),
                 const SizedBox(height: 8),
 
                 if (recentAttacks.isEmpty)
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(32),
-                      child: Center(
-                        child: Column(
-                          children: [
-                            Icon(Icons.health_and_safety_rounded, size: 48, color: Colors.grey[300]),
-                            const SizedBox(height: 12),
-                            const Text(
-                              'Приступов пока нет',
-                              style: TextStyle(color: AppColors.textSecondary, fontSize: 16, fontWeight: FontWeight.w500),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              'Нажми кнопку ниже чтобы записать первый',
-                              style: TextStyle(color: Colors.grey[400], fontSize: 14),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                  _AnimatedEntry(
+                    delay: 200,
+                    child: _EmptyState(),
                   )
                 else
-                  ...recentAttacks.take(5).map((attack) => _AttackTile(
+                  ...recentAttacks.take(5).indexed.map((item) {
+                    final (i, attack) = item;
+                    return _AnimatedEntry(
+                      delay: 200 + i * 80,
+                      child: _AttackTile(
                         attack: attack,
-                        onDelete: () => provider.deleteAttack(attack.id),
-                      )),
+                        onDelete: () {
+                          HapticFeedback.mediumImpact();
+                          provider.deleteAttack(attack.id);
+                        },
+                      ),
+                    );
+                  }),
 
-                const SizedBox(height: 16),
+                const SizedBox(height: 20),
 
                 if (triggers.isNotEmpty) ...[
-                  const Text(
-                    'Частые триггеры (30 дней)',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  _AnimatedEntry(
+                    delay: 600,
+                    child: const Text(
+                      'Частые триггеры (30 дней)',
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
                   ),
                   const SizedBox(height: 8),
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        children: triggers.entries.take(5).map((e) {
-                          final maxCount = triggers.values.first;
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 4),
-                            child: Row(
-                              children: [
-                                SizedBox(width: 120, child: Text(e.key)),
-                                Expanded(
-                                  child: LinearProgressIndicator(
-                                    value: e.value / maxCount,
-                                    backgroundColor: Colors.grey[200],
-                                    color: AppColors.primary,
+                  _AnimatedEntry(
+                    delay: 700,
+                    child: Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          children: triggers.entries.take(5).map((e) {
+                            final maxCount = triggers.values.first;
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 6),
+                              child: Row(
+                                children: [
+                                  SizedBox(width: 110, child: Text(e.key, style: const TextStyle(fontSize: 14))),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: TweenAnimationBuilder<double>(
+                                      tween: Tween(begin: 0, end: e.value / maxCount),
+                                      duration: const Duration(milliseconds: 800),
+                                      curve: Curves.easeOutCubic,
+                                      builder: (context, value, child) => ClipRRect(
+                                        borderRadius: BorderRadius.circular(4),
+                                        child: LinearProgressIndicator(
+                                          value: value,
+                                          backgroundColor: Colors.grey[200],
+                                          color: AppColors.primary,
+                                          minHeight: 8,
+                                        ),
+                                      ),
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(width: 8),
-                                Text('${e.value}'),
-                              ],
-                            ),
-                          );
-                        }).toList(),
+                                  const SizedBox(width: 8),
+                                  SizedBox(
+                                    width: 24,
+                                    child: Text(
+                                      '${e.value}',
+                                      textAlign: TextAlign.end,
+                                      style: const TextStyle(fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }).toList(),
+                        ),
                       ),
                     ),
                   ),
@@ -149,20 +140,109 @@ class HomeScreen extends StatelessWidget {
           );
         },
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => const NewAttackScreen()),
-        ),
-        backgroundColor: AppColors.secondary,
-        foregroundColor: Colors.white,
-        icon: const Icon(Icons.add_rounded, size: 28),
-        label: const Text(
-          'Записать приступ',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+    );
+  }
+}
+
+/// Анимация появления элементов снизу с задержкой
+class _AnimatedEntry extends StatefulWidget {
+  final Widget child;
+  final int delay;
+
+  const _AnimatedEntry({required this.child, required this.delay});
+
+  @override
+  State<_AnimatedEntry> createState() => _AnimatedEntryState();
+}
+
+class _AnimatedEntryState extends State<_AnimatedEntry>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+  late final Animation<double> _opacity;
+  late final Animation<Offset> _slide;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    );
+    _opacity = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeOut),
+    );
+    _slide = Tween<Offset>(
+      begin: const Offset(0, 0.15),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic));
+
+    Future.delayed(Duration(milliseconds: widget.delay), () {
+      if (mounted) _controller.forward();
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FadeTransition(
+      opacity: _opacity,
+      child: SlideTransition(
+        position: _slide,
+        child: widget.child,
+      ),
+    );
+  }
+}
+
+/// Красивое пустое состояние
+class _EmptyState extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 32),
+        child: Center(
+          child: Column(
+            children: [
+              // Градиентная иконка
+              Container(
+                width: 80,
+                height: 80,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: LinearGradient(
+                    colors: [
+                      AppColors.primary.withValues(alpha: 0.15),
+                      AppColors.gradientEnd.withValues(alpha: 0.15),
+                    ],
+                  ),
+                ),
+                child: Icon(
+                  Icons.ac_unit_rounded,
+                  size: 40,
+                  color: AppColors.primary.withValues(alpha: 0.5),
+                ),
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                'Пока нет записей',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Нажми + чтобы записать\nпервый приступ',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 14, color: Colors.grey[500], height: 1.5),
+              ),
+            ],
+          ),
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
@@ -201,14 +281,13 @@ class _StatCard extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _StatItem(label: 'Всего', value: '$totalAttacks', icon: Icons.summarize_rounded, isWhite: true),
-            _StatItem(label: 'За неделю', value: '$weeklyAttacks', icon: Icons.calendar_today_rounded, isWhite: true),
+            _StatItem(label: 'Всего', value: '$totalAttacks', icon: Icons.summarize_rounded),
+            _StatItem(label: 'За неделю', value: '$weeklyAttacks', icon: Icons.calendar_today_rounded),
             _StatItem(
               label: 'Средн. RCS',
               value: avgSeverity.toStringAsFixed(1),
               icon: Icons.speed_rounded,
-              color: Colors.amber[300],
-              isWhite: true,
+              valueColor: Colors.amber[300],
             ),
           ],
         ),
@@ -221,19 +300,30 @@ class _StatItem extends StatelessWidget {
   final String label;
   final String value;
   final IconData icon;
-  final Color? color;
-  final bool isWhite;
+  final Color? valueColor;
 
-  const _StatItem({required this.label, required this.value, required this.icon, this.color, this.isWhite = false});
+  const _StatItem({required this.label, required this.value, required this.icon, this.valueColor});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Icon(icon, color: color ?? (isWhite ? Colors.white70 : AppColors.primary), size: 28),
+        Icon(icon, color: Colors.white70, size: 28),
         const SizedBox(height: 4),
-        Text(value, style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: isWhite ? Colors.white : (color ?? AppColors.textPrimary))),
-        Text(label, style: TextStyle(fontSize: 12, color: isWhite ? Colors.white60 : AppColors.textSecondary)),
+        TweenAnimationBuilder<double>(
+          tween: Tween(begin: 0, end: double.tryParse(value) ?? 0),
+          duration: const Duration(milliseconds: 800),
+          curve: Curves.easeOutCubic,
+          builder: (context, val, child) => Text(
+            value.contains('.') ? val.toStringAsFixed(1) : value,
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: valueColor ?? Colors.white,
+            ),
+          ),
+        ),
+        Text(label, style: const TextStyle(fontSize: 12, color: Colors.white60)),
       ],
     );
   }
@@ -266,6 +356,7 @@ class _AttackTile extends StatelessWidget {
             ? Text('${attack.temperature!.toStringAsFixed(0)}°C', style: const TextStyle(fontSize: 14, color: Colors.grey))
             : null,
         onLongPress: () {
+          HapticFeedback.heavyImpact();
           showDialog(
             context: context,
             builder: (_) => AlertDialog(
