@@ -10,16 +10,24 @@ import 'utils/constants.dart';
 
 void main() async {
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  // Держим splash пока инициализация
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
-  final storage = StorageService();
-  await storage.init();
+  StorageService? storage;
+  bool onboardingDone = false;
 
-  final prefs = await SharedPreferences.getInstance();
-  final onboardingDone = prefs.getBool('onboarding_done') ?? false;
+  try {
+    storage = StorageService();
+    await storage.init();
 
-  // Убираем splash
+    final prefs = await SharedPreferences.getInstance();
+    onboardingDone = prefs.getBool('onboarding_done') ?? false;
+  } catch (e) {
+    // Если инициализация упала - всё равно запускаем приложение
+    storage ??= StorageService();
+    debugPrint('Init error: $e');
+  }
+
+  // Убираем splash в любом случае
   FlutterNativeSplash.remove();
 
   runApp(VasoLogApp(storage: storage, showOnboarding: !onboardingDone));
