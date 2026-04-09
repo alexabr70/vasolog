@@ -157,13 +157,9 @@ jobs:
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
-          script: |
-            adb wait-for-device
-            adb install -r build/app/outputs/flutter-apk/app-debug.apk
-            sleep 5
-            maestro test --format junit --output maestro-report.xml .maestro/ || true
-            mkdir -p maestro-artifacts
-            cp -r ~/.maestro/tests/* maestro-artifacts/ 2>/dev/null || true
+          # Однострочник - emulator-runner POSIX sh имеет проблемы с multi-line.
+          # uninstall нужен из-за signature mismatch между debug-сборками (cached AVD snapshot)
+          script: adb wait-for-device && (adb uninstall com.vasolog.vasolog || true) && adb install -r build/app/outputs/flutter-apk/app-debug.apk && sleep 5 && (maestro test --format junit --output maestro-report.xml .maestro/ || true) && mkdir -p maestro-artifacts && (cp -r ~/.maestro/tests/* maestro-artifacts/ 2>/dev/null || true)
 
       - name: Upload Maestro artifacts
         uses: actions/upload-artifact@v4
@@ -208,7 +204,7 @@ jobs:
           disable-animations: true
           # Однострочник - emulator-runner выполняет script через /bin/sh (POSIX),
           # multi-line if/fi блоки парсятся плохо
-          script: adb wait-for-device && adb install -r build/app/outputs/flutter-apk/app-debug.apk && adb logcat -c && (adb shell monkey -p com.vasolog.vasolog -v 2000 --throttle 100 --pct-touch 60 --pct-motion 20 --pct-majornav 10 --pct-syskeys 5 --pct-appswitch 5 > monkey-output.txt 2>&1 || true) && adb logcat -d > logcat.txt && (grep -qE "CRASH|FATAL EXCEPTION|ANR in com.vasolog" logcat.txt monkey-output.txt && echo "::warning::Monkey found potential issues" || echo "Monkey OK")
+          script: adb wait-for-device && (adb uninstall com.vasolog.vasolog || true) && adb install -r build/app/outputs/flutter-apk/app-debug.apk && adb logcat -c && (adb shell monkey -p com.vasolog.vasolog -v 2000 --throttle 100 --pct-touch 60 --pct-motion 20 --pct-majornav 10 --pct-syskeys 5 --pct-appswitch 5 > monkey-output.txt 2>&1 || true) && adb logcat -d > logcat.txt && (grep -qE "CRASH|FATAL EXCEPTION|ANR in com.vasolog" logcat.txt monkey-output.txt && echo "::warning::Monkey found potential issues" || echo "Monkey OK")
 
       - name: Upload monkey logs
         uses: actions/upload-artifact@v4
