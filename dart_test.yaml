@@ -1,0 +1,5 @@
+# Теги тестов VasoLog
+# golden - визуальные golden тесты (pixel-perfect), только на Windows-хосте
+#          где сгенерированы эталоны. Исключаются из Linux CI.
+tags:
+  golden:

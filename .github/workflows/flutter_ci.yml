@@ -54,7 +54,8 @@ jobs:
         run: flutter analyze --no-fatal-infos
 
       - name: Run tests with coverage
-        run: flutter test --coverage --reporter=github
+        # Исключаем golden tests - они pixel-perfect и отличаются между Windows/Linux
+        run: flutter test --coverage --reporter=github --exclude-tags golden
 
       - name: Upload coverage
         uses: actions/upload-artifact@v4
