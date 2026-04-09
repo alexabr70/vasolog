@@ -10,7 +10,7 @@ class StorageService {
   static const String _boxName = 'attacks_encrypted';
   static const String _legacyBoxName = 'attacks';
   static const String _keyAlias = 'vasolog_hive_key';
-  late Box<Map> _box;
+  late Box<Map<dynamic, dynamic>> _box;
 
   // Кэш отсортированных приступов (сбрасывается при изменении)
   List<AttackEvent>? _cachedAttacks;
@@ -23,7 +23,7 @@ class StorageService {
     final cipher = HiveAesCipher(encryptionKey);
 
     // Открываем зашифрованный box
-    _box = await Hive.openBox<Map>(_boxName, encryptionCipher: cipher);
+    _box = await Hive.openBox<Map<dynamic, dynamic>>(_boxName, encryptionCipher: cipher);
 
     // Мигрируем из старого незашифрованного box если есть данные
     await _migrateFromLegacy(cipher);
@@ -50,7 +50,7 @@ class StorageService {
   Future<void> _migrateFromLegacy(HiveAesCipher cipher) async {
     if (!await Hive.boxExists(_legacyBoxName)) return;
 
-    final legacyBox = await Hive.openBox<Map>(_legacyBoxName);
+    final legacyBox = await Hive.openBox<Map<dynamic, dynamic>>(_legacyBoxName);
     if (legacyBox.isEmpty) {
       await legacyBox.close();
       return;

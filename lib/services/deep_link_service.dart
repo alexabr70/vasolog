@@ -51,7 +51,7 @@ class DeepLinkService {
     // Обработка ссылок когда приложение уже запущено
     _linkSub = _appLinks.uriLinkStream.listen(
       _handleUri,
-      onError: (e) => debugPrint('Deep link stream error: $e'),
+      onError: (Object e) => debugPrint('Deep link stream error: $e'),
     );
   }
 

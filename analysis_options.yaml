@@ -40,4 +40,3 @@ linter:
     require_trailing_commas: true
     # Отключены до постепенной миграции
     lines_longer_than_80_chars: false
-    prefer_final_parameters: false
