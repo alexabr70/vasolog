@@ -69,13 +69,20 @@ class WeatherService {
     };
   }
 
-  /// Получить текущую погоду по координатам
-  /// Если кэш свежий (< 5 мин) - вернуть его без HTTP запроса
+  /// Получить текущую погоду по координатам.
+  /// Если кэш свежий (< 5 мин) - вернуть его без HTTP запроса.
+  /// [forceRefresh] = true пропускает кеш и всегда делает fresh запрос
+  /// (для ручного обновления по кнопке юзером).
   Future<WeatherData?> getCurrentWeather(
-      double latitude, double longitude) async {
+    double latitude,
+    double longitude, {
+    bool forceRefresh = false,
+  }) async {
     // Свежий кэш - не делаем лишний запрос (одинаковые данные на всех экранах)
-    final cached = await _loadFromCache();
-    if (cached != null && cached.minutesAgo < 5) return cached;
+    if (!forceRefresh) {
+      final cached = await _loadFromCache();
+      if (cached != null && cached.minutesAgo < 5) return cached;
+    }
 
     try {
       final url = Uri.parse(

@@ -15,7 +15,10 @@ import 'package:vasolog/l10n/app_strings.dart';
 class LocaleProvider extends ChangeNotifier {
   LocaleProvider(this._languageCode);
 
-  static const _prefsKey = 'language_code';
+  /// SharedPreferences key для сохранённого языка (публичный чтобы main.dart
+  /// мог перечитать его при lazy init после первого кадра)
+  static const prefsKey = 'language_code';
+  static const _prefsKey = prefsKey;
 
   String? _languageCode;
 

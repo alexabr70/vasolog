@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Чистый белый фон для минимизации "синей заставки" - -->
+<!-- Flutter _AppLoadingScreen с прогресс-баром берёт на себя визуал загрузки -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item>
-        <bitmap android:gravity="fill" android:src="@drawable/background"/>
-    </item>
-    <item>
-        <bitmap android:gravity="center" android:src="@drawable/splash"/>
-    </item>
+    <item android:drawable="@android:color/white" />
 </layer-list>

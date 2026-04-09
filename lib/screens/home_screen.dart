@@ -22,6 +22,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   WeatherData? _weather;
+  bool _weatherLoading = false;
 
   @override
   void initState() {
@@ -29,13 +30,21 @@ class _HomeScreenState extends State<HomeScreen> {
     _loadWeather();
   }
 
-  Future<void> _loadWeather() async {
-    final pos = await LocationService().getCurrentPosition();
-    if (pos != null) {
-      final data = await WeatherService().getCurrentWeather(pos.latitude, pos.longitude);
-      if (mounted) setState(() => _weather = data);
-    } else {
-      if (mounted) setState(() {});
+  Future<void> _loadWeather({bool forceRefresh = false}) async {
+    if (_weatherLoading) return;
+    if (mounted) setState(() => _weatherLoading = true);
+    try {
+      final pos = await LocationService().getCurrentPosition();
+      if (pos != null) {
+        final data = await WeatherService().getCurrentWeather(
+          pos.latitude,
+          pos.longitude,
+          forceRefresh: forceRefresh,
+        );
+        if (mounted) setState(() => _weather = data);
+      }
+    } finally {
+      if (mounted) setState(() => _weatherLoading = false);
     }
   }
 
@@ -70,7 +79,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 if (_weather != null)
                   _AnimatedEntry(
                     delay: 0,
-                    child: _WeatherAlert(weather: _weather!),
+                    child: _WeatherAlert(
+                      weather: _weather!,
+                      isLoading: _weatherLoading,
+                      onRefresh: () => _loadWeather(forceRefresh: true),
+                    ),
                   ),
                 if (_weather != null) const SizedBox(height: 12),
 
@@ -234,21 +247,22 @@ class _AnimatedEntryState extends State<_AnimatedEntry>
   @override
   void initState() {
     super.initState();
+    // Быстрая анимация (150ms) без задержки чтобы контент появлялся сразу
+    // после removal splash - пользователь не ждёт лишних 500-700ms на fade+delay
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 150),
     );
     _opacity = Tween<double>(begin: 0, end: 1).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeOut),
     );
     _slide = Tween<Offset>(
-      begin: const Offset(0, 0.15),
+      begin: const Offset(0, 0.05),
       end: Offset.zero,
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic));
 
-    Future.delayed(Duration(milliseconds: widget.delay), () {
-      if (mounted) _controller.forward();
-    });
+    // Игнорируем widget.delay - запускаем анимацию немедленно
+    _controller.forward();
   }
 
   @override
@@ -371,10 +385,18 @@ class _WeekTrendChart extends StatelessWidget {
   }
 }
 
-/// Карточка погоды с предупреждением о холоде
+/// Карточка погоды с предупреждением о холоде.
+/// Кнопка refresh в top-right позволяет принудительно обновить данные
+/// (minuyas кеш) - при загрузке иконка крутится.
 class _WeatherAlert extends StatelessWidget {
-  const _WeatherAlert({required this.weather});
+  const _WeatherAlert({
+    required this.weather,
+    required this.onRefresh,
+    required this.isLoading,
+  });
   final WeatherData weather;
+  final VoidCallback onRefresh;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -390,61 +412,96 @@ class _WeatherAlert extends StatelessWidget {
         formatHumidity(weather.humidity),
       ),
       child: Card(
-      color: isVeryCold
-          ? (isDark ? Colors.red[900]?.withValues(alpha: 0.3) : Colors.red[50])
-          : isCold
-              ? (isDark ? Colors.orange[900]?.withValues(alpha: 0.3) : Colors.orange[50])
-              : (isDark ? Colors.blue[900]?.withValues(alpha: 0.3) : Colors.blue[50]),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Row(
+        color: isVeryCold
+            ? (isDark ? Colors.red[900]?.withValues(alpha: 0.3) : Colors.red[50])
+            : isCold
+                ? (isDark ? Colors.orange[900]?.withValues(alpha: 0.3) : Colors.orange[50])
+                : (isDark ? Colors.blue[900]?.withValues(alpha: 0.3) : Colors.blue[50]),
+        child: Stack(
           children: [
-            Icon(
-              isVeryCold ? Icons.ac_unit : isCold ? Icons.cloud : Icons.wb_sunny_rounded,
-              color: isVeryCold ? Colors.red : isCold ? Colors.orange : Colors.blue,
-              size: 28,
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+            Padding(
+              // Правый padding увеличен чтобы текст не залезал под кнопку refresh
+              padding: const EdgeInsets.fromLTRB(12, 12, 40, 12),
+              child: Row(
                 children: [
-                  Row(
-                    children: [
-                      Text(
-                        '${formatTemperature(temp)}°C',
-                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        '${S.current.windMs(formatWindSpeed(weather.windSpeed))} · ${S.current.humidity(formatHumidity(weather.humidity))}',
-                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
-                      ),
-                    ],
+                  Icon(
+                    isVeryCold
+                        ? Icons.ac_unit
+                        : isCold
+                            ? Icons.cloud
+                            : Icons.wb_sunny_rounded,
+                    color: isVeryCold
+                        ? Colors.red
+                        : isCold
+                            ? Colors.orange
+                            : Colors.blue,
+                    size: 28,
                   ),
-                  if (isCold)
-                    Text(
-                      isVeryCold
-                          ? S.current.frostWarning
-                          : S.current.coldWarning,
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w500,
-                        color: isVeryCold ? Colors.red[700] : Colors.orange[800],
-                      ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              '${formatTemperature(temp)}°C',
+                              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(width: 8),
+                            Flexible(
+                              child: Text(
+                                '${S.current.windMs(formatWindSpeed(weather.windSpeed))} · ${S.current.humidity(formatHumidity(weather.humidity))}',
+                                style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                        if (isCold)
+                          Text(
+                            isVeryCold ? S.current.frostWarning : S.current.coldWarning,
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w500,
+                              color: isVeryCold ? Colors.red[700] : Colors.orange[800],
+                            ),
+                          ),
+                      ],
                     ),
+                  ),
                 ],
               ),
             ),
-            if (weather.isCached)
-              Tooltip(
-                message: S.current.minutesAgo(weather.minutesAgo),
-                child: Icon(Icons.cached, size: 16, color: Colors.grey[400]),
+            // Кнопка refresh в top-right - поднята выше, рабочая
+            Positioned(
+              top: 4,
+              right: 4,
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(20),
+                  onTap: isLoading ? null : onRefresh,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: isLoading
+                        ? const SizedBox(
+                            width: 18,
+                            height: 18,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : Icon(
+                            Icons.refresh_rounded,
+                            size: 20,
+                            color: Colors.grey[600],
+                          ),
+                  ),
+                ),
               ),
+            ),
           ],
         ),
       ),
-    ),
     );
   }
 }
