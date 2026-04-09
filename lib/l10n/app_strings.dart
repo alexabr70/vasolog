@@ -231,4 +231,164 @@ class S {
   String get dailyAt1230 => _t({'en': 'Daily at 12:30', 'ru': 'Ежедневно в 12:30', 'de': 'Täglich um 12:30', 'fr': 'Chaque jour à 12h30', 'es': 'Diariamente a las 12:30', 'pt': 'Diariamente às 12:30', 'it': 'Ogni giorno alle 12:30', 'sv': 'Dagligen kl. 12:30', 'fi': 'Päivittäin klo 12:30', 'nb': 'Daglig kl. 12:30', 'da': 'Dagligt kl. 12:30', 'nl': 'Dagelijks om 12:30', 'pl': 'Codziennie o 12:30', 'cs': 'Denně ve 12:30', 'hu': 'Naponta 12:30-kor', 'uk': 'Щоденно о 12:30', 'ja': '毎日12:30', 'ko': '매일 12:30'});
   String get fullPrivacyPolicy => _t({'en': 'Full Privacy Policy', 'ru': 'Полный текст Privacy Policy', 'de': 'Vollständige Datenschutzrichtlinie', 'fr': 'Politique de confidentialité complète', 'es': 'Política de privacidad completa', 'pt': 'Política de privacidade completa', 'it': 'Informativa privacy completa', 'sv': 'Fullständig integritetspolicy', 'fi': 'Täydellinen tietosuojakäytäntö', 'nb': 'Fullstendige personvernregler', 'da': 'Fuldstændig privatlivspolitik', 'nl': 'Volledig privacybeleid', 'pl': 'Pełna polityka prywatności', 'cs': 'Úplné zásady ochrany osobních údajů', 'hu': 'Teljes adatvédelmi irányelvek', 'uk': 'Повна політика конфіденційності', 'ja': '完全なプライバシーポリシー', 'ko': '전체 개인정보 처리방침'});
   String get contactEmail => 'vasolog.app@gmail.com';
+
+  // === Настройки ===
+  String get settings => _t({'en': 'Settings', 'ru': 'Настройки', 'de': 'Einstellungen', 'fr': 'Paramètres', 'es': 'Ajustes', 'pt': 'Configurações', 'it': 'Impostazioni', 'sv': 'Inställningar', 'fi': 'Asetukset', 'nb': 'Innstillinger', 'da': 'Indstillinger', 'nl': 'Instellingen', 'pl': 'Ustawienia', 'cs': 'Nastavení', 'hu': 'Beállítások', 'uk': 'Налаштування', 'ja': '設定', 'ko': '설정'});
+  String get language => _t({'en': 'Language', 'ru': 'Язык', 'de': 'Sprache', 'fr': 'Langue', 'es': 'Idioma', 'pt': 'Idioma', 'it': 'Lingua', 'sv': 'Språk', 'fi': 'Kieli', 'nb': 'Språk', 'da': 'Sprog', 'nl': 'Taal', 'pl': 'Język', 'cs': 'Jazyk', 'hu': 'Nyelv', 'uk': 'Мова', 'ja': '言語', 'ko': '언어'});
+  String get systemDefault => _t({'en': 'System default', 'ru': 'Системный', 'de': 'Systemstandard', 'fr': 'Système', 'es': 'Sistema', 'pt': 'Sistema', 'it': 'Sistema', 'sv': 'System', 'fi': 'Järjestelmä', 'nb': 'System', 'da': 'System', 'nl': 'Systeem', 'pl': 'Systemowy', 'cs': 'Systémový', 'hu': 'Rendszer', 'uk': 'Системна', 'ja': 'システム', 'ko': '시스템'});
+  // === About screen: длинные тексты ===
+  String get medicalDisclaimerBody => _t({
+    'en': 'VasoLog is NOT a medical device. The app is not intended for '
+        'diagnosis, treatment, or prevention of any disease.\n\n'
+        'The data in this app is for informational purposes only and does '
+        'not replace consultation with a doctor.\n\n'
+        'If symptoms appear, consult a rheumatologist.',
+    'ru': 'VasoLog НЕ является медицинским устройством. '
+        'Приложение не предназначено для диагностики, лечения '
+        'или профилактики каких-либо заболеваний.\n\n'
+        'Данные приложения носят исключительно информационный '
+        'характер и не заменяют консультацию врача.\n\n'
+        'При появлении симптомов обратитесь к ревматологу.',
+    'de': 'VasoLog ist KEIN Medizinprodukt. Die App ist nicht zur '
+        'Diagnose, Behandlung oder Vorbeugung von Krankheiten bestimmt.\n\n'
+        'Die Daten dienen nur zu Informationszwecken und ersetzen keine '
+        'ärztliche Beratung.\n\n'
+        'Bei Symptomen konsultieren Sie einen Rheumatologen.',
+    'fr': "VasoLog n'est PAS un dispositif médical. L'application n'est pas "
+        'destinée au diagnostic, au traitement ou à la prévention de '
+        "maladies.\n\nLes données sont à titre informatif uniquement et ne "
+        "remplacent pas une consultation médicale.\n\n"
+        "En cas de symptômes, consultez un rhumatologue.",
+    'es': 'VasoLog NO es un dispositivo médico. La aplicación no está '
+        'destinada al diagnóstico, tratamiento ni prevención de '
+        'enfermedades.\n\nLos datos son solo informativos y no sustituyen '
+        'la consulta con un médico.\n\n'
+        'Si aparecen síntomas, consulte a un reumatólogo.',
+    'pt': 'VasoLog NÃO é um dispositivo médico. O aplicativo não se destina '
+        'a diagnóstico, tratamento ou prevenção de doenças.\n\n'
+        'Os dados são apenas informativos e não substituem a consulta '
+        'com um médico.\n\nSe surgirem sintomas, consulte um reumatologista.',
+    'it': 'VasoLog NON è un dispositivo medico. L\'app non è destinata '
+        'alla diagnosi, al trattamento o alla prevenzione di malattie.\n\n'
+        'I dati sono solo a scopo informativo e non sostituiscono il '
+        'consulto medico.\n\nIn caso di sintomi, consulta un reumatologo.',
+    'uk': 'VasoLog НЕ є медичним пристроєм. Додаток не призначений для '
+        'діагностики, лікування чи профілактики захворювань.\n\n'
+        'Дані мають лише інформаційний характер і не замінюють '
+        'консультацію лікаря.\n\nЗа появи симптомів зверніться до ревматолога.',
+    'ja': 'VasoLogは医療機器ではありません。このアプリは疾病の診断、治療、'
+        '予防を目的としていません。\n\nアプリのデータは情報提供のみを目的と'
+        'しており、医師への相談に代わるものではありません。\n\n'
+        '症状が現れた場合はリウマチ専門医に相談してください。',
+    'ko': 'VasoLog는 의료 기기가 아닙니다. 이 앱은 질병의 진단, 치료 또는 '
+        '예방을 목적으로 하지 않습니다.\n\n앱의 데이터는 정보 제공 목적으로만 '
+        '사용되며 의사와의 상담을 대체하지 않습니다.\n\n'
+        '증상이 나타나면 류마티스 전문의와 상담하세요.',
+  });
+
+  String get privacyPolicyBody => _t({
+    'en': 'What data is collected:\n'
+        '- Attack records (stored locally on your device)\n'
+        '- Location (only to determine weather, not shared with third parties)\n'
+        '- Photos (stored locally on your device)\n\n'
+        'Where data is sent:\n'
+        '- Open-Meteo API: only coordinates are sent for weather\n'
+        '- No personal or medical data is sent to any server\n\n'
+        'Data storage:\n'
+        '- All data is stored exclusively on your device\n'
+        '- You can delete all data by uninstalling the app\n'
+        '- PDF reports are generated locally',
+    'ru': 'Какие данные собираются:\n'
+        '- Записи о приступах (хранятся локально на устройстве)\n'
+        '- Геолокация (только для определения погоды, не передаётся третьим лицам)\n'
+        '- Фотографии (хранятся локально на устройстве)\n\n'
+        'Куда передаются данные:\n'
+        '- Open-Meteo API: передаются только координаты для получения погоды\n'
+        '- Никакие персональные или медицинские данные не передаются на серверы\n\n'
+        'Хранение данных:\n'
+        '- Все данные хранятся исключительно на вашем устройстве\n'
+        '- Вы можете удалить все данные удалив приложение\n'
+        '- PDF-отчёты создаются локально',
+    'uk': 'Які дані збираються:\n'
+        '- Записи про напади (зберігаються локально на пристрої)\n'
+        '- Геолокація (лише для визначення погоди, не передається третім особам)\n'
+        '- Фотографії (зберігаються локально на пристрої)\n\n'
+        'Куди передаються дані:\n'
+        '- Open-Meteo API: передаються лише координати для погоди\n'
+        '- Жодні персональні чи медичні дані не передаються на сервери\n\n'
+        'Зберігання даних:\n'
+        '- Усі дані зберігаються виключно на вашому пристрої\n'
+        '- Ви можете видалити всі дані, видаливши додаток\n'
+        '- PDF-звіти створюються локально',
+  });
+
+  String get yourRightsBody => _t({
+    'en': '- You can export your data via PDF reports\n'
+        '- You can delete all data by uninstalling the app\n'
+        '- You can revoke permissions in device settings\n'
+        '- The app works fully offline (except weather)',
+    'ru': '- Вы можете экспортировать свои данные через PDF-отчёты\n'
+        '- Вы можете удалить все данные, удалив приложение\n'
+        '- Вы можете отозвать разрешения в настройках устройства\n'
+        '- Приложение работает полностью офлайн (кроме погоды)',
+    'uk': '- Ви можете експортувати дані через PDF-звіти\n'
+        '- Ви можете видалити всі дані, видаливши додаток\n'
+        '- Ви можете відкликати дозволи в налаштуваннях пристрою\n'
+        '- Додаток працює повністю офлайн (крім погоди)',
+  });
+
+  // === PDF отчёт (локализованные строки) ===
+  String get pdfTitle => _t({'en': "VasoLog - Raynaud's Phenomenon Report", 'ru': 'VasoLog - Отчёт по синдрому Рейно', 'de': 'VasoLog - Raynaud-Syndrom-Bericht', 'fr': 'VasoLog - Rapport sur le syndrome de Raynaud', 'es': 'VasoLog - Informe sobre el síndrome de Raynaud', 'pt': 'VasoLog - Relatório sobre a síndrome de Raynaud', 'it': 'VasoLog - Rapporto sulla sindrome di Raynaud', 'uk': 'VasoLog - Звіт за синдромом Рейно', 'ja': 'VasoLog - レイノー現象レポート', 'ko': 'VasoLog - 레이노 현상 보고서'});
+  String get pdfPeriod => _t({'en': 'Period', 'ru': 'Период', 'de': 'Zeitraum', 'fr': 'Période', 'es': 'Período', 'pt': 'Período', 'it': 'Periodo', 'uk': 'Період', 'ja': '期間', 'ko': '기간'});
+  String get pdfGenerated => _t({'en': 'Generated', 'ru': 'Создано', 'de': 'Erstellt', 'fr': 'Généré', 'es': 'Generado', 'pt': 'Gerado', 'it': 'Generato', 'uk': 'Створено', 'ja': '作成日時', 'ko': '생성됨'});
+  String get pdfSummary => _t({'en': 'Summary', 'ru': 'Сводка', 'de': 'Zusammenfassung', 'fr': 'Résumé', 'es': 'Resumen', 'pt': 'Resumo', 'it': 'Riepilogo', 'uk': 'Зведення', 'ja': '概要', 'ko': '요약'});
+  String get pdfMetric => _t({'en': 'Metric', 'ru': 'Показатель', 'de': 'Metrik', 'fr': 'Indicateur', 'es': 'Métrica', 'pt': 'Métrica', 'it': 'Metrica', 'uk': 'Показник', 'ja': '指標', 'ko': '지표'});
+  String get pdfValue => _t({'en': 'Value', 'ru': 'Значение', 'de': 'Wert', 'fr': 'Valeur', 'es': 'Valor', 'pt': 'Valor', 'it': 'Valore', 'uk': 'Значення', 'ja': '値', 'ko': '값'});
+  String get pdfTotalAttacks => _t({'en': 'Total Attacks', 'ru': 'Всего приступов', 'de': 'Gesamtzahl der Anfälle', 'fr': 'Total des crises', 'es': 'Total de crisis', 'pt': 'Total de crises', 'it': 'Totale crisi', 'uk': 'Усього нападів', 'ja': '発作合計', 'ko': '총 발작'});
+  String get pdfAvgSeverity => _t({'en': 'Average Severity (RCS)', 'ru': 'Средняя тяжесть (RCS)', 'de': 'Durchschnittlicher Schweregrad (RCS)', 'fr': 'Sévérité moyenne (RCS)', 'es': 'Gravedad media (RCS)', 'pt': 'Gravidade média (RCS)', 'it': 'Gravità media (RCS)', 'uk': 'Середня тяжкість (RCS)', 'ja': '平均重症度 (RCS)', 'ko': '평균 심각도 (RCS)'});
+  String get pdfMostCommonTrigger => _t({'en': 'Most Common Trigger', 'ru': 'Самый частый триггер', 'de': 'Häufigster Auslöser', 'fr': 'Déclencheur principal', 'es': 'Desencadenante principal', 'pt': 'Gatilho principal', 'it': 'Fattore principale', 'uk': 'Найчастіший тригер', 'ja': '最も多い誘因', 'ko': '가장 흔한 유발 요인'});
+  String get pdfAvgTemp => _t({'en': 'Avg. Temperature During Attacks', 'ru': 'Средн. температура при приступах', 'de': 'Durchschnittstemperatur bei Anfällen', 'fr': 'Temp. moyenne durant les crises', 'es': 'Temp. media durante las crisis', 'pt': 'Temp. média durante as crises', 'it': 'Temp. media durante le crisi', 'uk': 'Сер. температура при нападах', 'ja': '発作時の平均気温', 'ko': '발작 중 평균 기온'});
+  String get pdfTriggerAnalysis => _t({'en': 'Trigger Analysis', 'ru': 'Анализ триггеров', 'de': 'Auslöser-Analyse', 'fr': 'Analyse des déclencheurs', 'es': 'Análisis de desencadenantes', 'pt': 'Análise de gatilhos', 'it': 'Analisi dei fattori', 'uk': 'Аналіз тригерів', 'ja': '誘因分析', 'ko': '유발 요인 분석'});
+  String get pdfColTrigger => _t({'en': 'Trigger', 'ru': 'Триггер', 'de': 'Auslöser', 'fr': 'Déclencheur', 'es': 'Desencadenante', 'pt': 'Gatilho', 'it': 'Fattore', 'uk': 'Тригер', 'ja': '誘因', 'ko': '유발 요인'});
+  String get pdfColCount => _t({'en': 'Count', 'ru': 'Количество', 'de': 'Anzahl', 'fr': 'Nombre', 'es': 'Cantidad', 'pt': 'Quantidade', 'it': 'Conteggio', 'uk': 'Кількість', 'ja': '回数', 'ko': '횟수'});
+  String get pdfColPct => _t({'en': '% of Attacks', 'ru': '% приступов', 'de': '% der Anfälle', 'fr': '% des crises', 'es': '% de crisis', 'pt': '% de crises', 'it': '% di crisi', 'uk': '% нападів', 'ja': '発作の%', 'ko': '발작 %'});
+  String get pdfAttackLog => _t({'en': 'Attack Log', 'ru': 'Журнал приступов', 'de': 'Anfallsprotokoll', 'fr': 'Journal des crises', 'es': 'Registro de crisis', 'pt': 'Registro de crises', 'it': 'Registro crisi', 'uk': 'Журнал нападів', 'ja': '発作ログ', 'ko': '발작 기록'});
+  String get pdfColDateTime => _t({'en': 'Date/Time', 'ru': 'Дата/Время', 'de': 'Datum/Zeit', 'fr': 'Date/Heure', 'es': 'Fecha/Hora', 'pt': 'Data/Hora', 'it': 'Data/Ora', 'uk': 'Дата/Час', 'ja': '日時', 'ko': '날짜/시간'});
+  String get pdfColRcs => 'RCS';
+  String get pdfColPhase => _t({'en': 'Color Phase', 'ru': 'Фаза цвета', 'de': 'Farbphase', 'fr': 'Phase de couleur', 'es': 'Fase de color', 'pt': 'Fase de cor', 'it': 'Fase colore', 'uk': 'Фаза кольору', 'ja': '色相', 'ko': '색상 단계'});
+  String get pdfColTemp => _t({'en': 'Temp °C', 'ru': 'Темп. °C', 'de': 'Temp. °C', 'fr': 'Temp. °C', 'es': 'Temp. °C', 'pt': 'Temp. °C', 'it': 'Temp. °C', 'uk': 'Темп. °C', 'ja': '気温 °C', 'ko': '온도 °C'});
+  String get pdfColTriggers => _t({'en': 'Triggers', 'ru': 'Триггеры', 'de': 'Auslöser', 'fr': 'Déclencheurs', 'es': 'Desencadenantes', 'pt': 'Gatilhos', 'it': 'Fattori', 'uk': 'Тригери', 'ja': '誘因', 'ko': '유발 요인'});
+  String get pdfFooter => _t({
+    'en': 'This report was generated by VasoLog app and is intended for informational purposes. Please consult your healthcare provider for medical advice.',
+    'ru': 'Этот отчёт сгенерирован приложением VasoLog и предназначен только для информационных целей. Пожалуйста, обратитесь к врачу за медицинской консультацией.',
+    'de': 'Dieser Bericht wurde von der VasoLog-App erstellt und dient nur zu Informationszwecken. Bitte konsultieren Sie einen Arzt für eine medizinische Beratung.',
+    'fr': 'Ce rapport a été généré par l\'application VasoLog à titre informatif uniquement. Consultez votre médecin pour tout avis médical.',
+    'es': 'Este informe fue generado por la aplicación VasoLog y es solo con fines informativos. Consulte a su médico para obtener consejo médico.',
+    'uk': 'Цей звіт створено додатком VasoLog лише в інформаційних цілях. Будь ласка, зверніться до лікаря за медичною консультацією.',
+  });
+
+  String get tapHint => _t({'en': 'Tap on finger', 'ru': 'Нажми на палец', 'de': 'Finger antippen', 'fr': 'Touchez un doigt', 'es': 'Toca un dedo', 'pt': 'Toque no dedo', 'it': 'Tocca il dito', 'sv': 'Tryck på finger', 'fi': 'Napauta sormea', 'nb': 'Trykk på finger', 'da': 'Tryk på finger', 'nl': 'Tik op vinger', 'pl': 'Dotknij palca', 'cs': 'Klepněte na prst', 'hu': 'Érintsd meg az ujjat', 'uk': 'Натисни на палець', 'ja': '指をタップ', 'ko': '손가락 탭'});
+  String get selectLanguage => _t({'en': 'Select language', 'ru': 'Выбор языка', 'de': 'Sprache wählen', 'fr': 'Choisir la langue', 'es': 'Elegir idioma', 'pt': 'Escolher idioma', 'it': 'Seleziona lingua', 'sv': 'Välj språk', 'fi': 'Valitse kieli', 'nb': 'Velg språk', 'da': 'Vælg sprog', 'nl': 'Taal kiezen', 'pl': 'Wybierz język', 'cs': 'Vybrat jazyk', 'hu': 'Nyelv kiválasztása', 'uk': 'Обрати мову', 'ja': '言語を選択', 'ko': '언어 선택'});
+
+  /// Нативные названия поддерживаемых языков (на самом языке)
+  static const Map<String, String> supportedLanguages = {
+    'en': 'English',
+    'ru': 'Русский',
+    'de': 'Deutsch',
+    'fr': 'Français',
+    'es': 'Español',
+    'pt': 'Português',
+    'it': 'Italiano',
+    'sv': 'Svenska',
+    'fi': 'Suomi',
+    'nb': 'Norsk',
+    'da': 'Dansk',
+    'nl': 'Nederlands',
+    'pl': 'Polski',
+    'cs': 'Čeština',
+    'hu': 'Magyar',
+    'uk': 'Українська',
+    'ja': '日本語',
+    'ko': '한국어',
+  };
 }

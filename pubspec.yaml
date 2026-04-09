@@ -48,6 +48,8 @@ dependencies:
   # Deep linking
   app_links: ^6.3.3
   google_fonts: ^8.0.2
+  # Инфо о пакете (version + buildNumber из pubspec для экрана Инфо)
+  package_info_plus: ^8.1.2
   flutter_localizations:
     sdk: flutter
 

@@ -1,11 +1,16 @@
-import 'dart:typed_data';
-
+import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
+import 'package:vasolog/l10n/app_strings.dart';
 import 'package:vasolog/models/attack_event.dart';
 
-/// Генерация PDF-отчёта для врача
+/// Генерация PDF-отчёта для врача.
+/// Использует Noto Sans из Google Fonts (через printing.PdfGoogleFonts)
+/// чтобы поддерживать кириллицу, греческий, латинский и т.п.
+/// Для CJK (японский/корейский) printing package использует
+/// отдельные варианты Noto (Noto Sans JP/KR).
 class PdfReportService {
   /// Создать PDF отчёт за период
   Future<Uint8List> generateReport({
@@ -16,6 +21,18 @@ class PdfReportService {
     final pdf = pw.Document();
     final dateFormat = DateFormat('dd.MM.yyyy');
     final dateTimeFormat = DateFormat('dd.MM.yyyy HH:mm');
+
+    // Загружаем Noto Sans - покрывает латиницу, кириллицу, греческий и т.д.
+    // CJK (японский/корейский) пока не поддерживается - там будут квадраты.
+    // При неудаче (нет интернета) фоллбэк на стандартный Helvetica.
+    pw.Font? regular;
+    pw.Font? bold;
+    try {
+      regular = await PdfGoogleFonts.notoSansRegular();
+      bold = await PdfGoogleFonts.notoSansBold();
+    } catch (e) {
+      debugPrint('PDF font load failed, using default: $e');
+    }
 
     // Статистика
     final avgSeverity = attacks.isEmpty
@@ -33,16 +50,22 @@ class PdfReportService {
     final sortedTriggers = triggerCount.entries.toList()
       ..sort((a, b) => b.value.compareTo(a.value));
 
+    final theme = pw.ThemeData.withFont(
+      base: regular,
+      bold: bold,
+    );
+
     pdf.addPage(
       pw.MultiPage(
         pageFormat: PdfPageFormat.a4,
         margin: const pw.EdgeInsets.all(40),
+        theme: theme,
         build: (context) => [
           // Заголовок
           pw.Header(
             level: 0,
             child: pw.Text(
-              "VasoLog - Raynaud's Phenomenon Report",
+              S.current.pdfTitle,
               style: pw.TextStyle(
                 fontSize: 22,
                 fontWeight: pw.FontWeight.bold,
@@ -51,30 +74,30 @@ class PdfReportService {
           ),
           pw.SizedBox(height: 8),
           pw.Text(
-            'Period: ${dateFormat.format(startDate)} - ${dateFormat.format(endDate)}',
+            '${S.current.pdfPeriod}: ${dateFormat.format(startDate)} - ${dateFormat.format(endDate)}',
             style: const pw.TextStyle(fontSize: 14),
           ),
           pw.Text(
-            'Generated: ${dateTimeFormat.format(DateTime.now())}',
+            '${S.current.pdfGenerated}: ${dateTimeFormat.format(DateTime.now())}',
             style: const pw.TextStyle(fontSize: 12, color: PdfColors.grey700),
           ),
           pw.SizedBox(height: 20),
 
           // Сводка
-          pw.Header(text: 'Summary'),
+          pw.Header(text: S.current.pdfSummary),
           pw.TableHelper.fromTextArray(
             headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold),
             cellAlignment: pw.Alignment.centerLeft,
             data: [
-              ['Metric', 'Value'],
-              ['Total Attacks', '${attacks.length}'],
-              ['Average Severity (RCS)', avgSeverity.toStringAsFixed(1)],
+              [S.current.pdfMetric, S.current.pdfValue],
+              [S.current.pdfTotalAttacks, '${attacks.length}'],
+              [S.current.pdfAvgSeverity, avgSeverity.toStringAsFixed(1)],
               [
-                'Most Common Trigger',
+                S.current.pdfMostCommonTrigger,
                 if (sortedTriggers.isNotEmpty) sortedTriggers.first.key else 'N/A'
               ],
               [
-                'Avg. Temperature During Attacks',
+                S.current.pdfAvgTemp,
                 _avgTemp(attacks),
               ],
             ],
@@ -83,11 +106,11 @@ class PdfReportService {
 
           // Таблица триггеров
           if (sortedTriggers.isNotEmpty) ...[
-            pw.Header(text: 'Trigger Analysis'),
+            pw.Header(text: S.current.pdfTriggerAnalysis),
             pw.TableHelper.fromTextArray(
               headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold),
               data: [
-                ['Trigger', 'Count', '% of Attacks'],
+                [S.current.pdfColTrigger, S.current.pdfColCount, S.current.pdfColPct],
                 ...sortedTriggers.map((e) => [
                       e.key,
                       '${e.value}',
@@ -99,7 +122,7 @@ class PdfReportService {
           ],
 
           // Детальный лог приступов
-          pw.Header(text: 'Attack Log'),
+          pw.Header(text: S.current.pdfAttackLog),
           pw.TableHelper.fromTextArray(
             headerStyle: pw.TextStyle(
               fontWeight: pw.FontWeight.bold,
@@ -114,7 +137,13 @@ class PdfReportService {
               4: const pw.FlexColumnWidth(2),
             },
             data: [
-              ['Date/Time', 'RCS', 'Color Phase', 'Temp °C', 'Triggers'],
+              [
+                S.current.pdfColDateTime,
+                S.current.pdfColRcs,
+                S.current.pdfColPhase,
+                S.current.pdfColTemp,
+                S.current.pdfColTriggers,
+              ],
               ...attacks.map((a) => [
                     dateTimeFormat.format(a.timestamp),
                     '${a.severity}/10',
@@ -129,9 +158,7 @@ class PdfReportService {
           pw.Divider(),
           pw.SizedBox(height: 10),
           pw.Text(
-            'This report was generated by VasoLog app and is intended '
-            'for informational purposes. Please consult your healthcare '
-            'provider for medical advice.',
+            S.current.pdfFooter,
             style: const pw.TextStyle(
               fontSize: 9,
               color: PdfColors.grey600,

@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -681,7 +683,24 @@ class _HandDiagram extends StatelessWidget {
   }
 }
 
-/// Визуальная рука с тыкабельными пальцами (CustomPainter)
+/// Геометрия отдельного пальца (нормализованные координаты 0..1)
+/// База - точка крепления к ладони, кончик - вершина пальца.
+/// Палец сужается от base к tip (анатомически правильно).
+class _Finger {
+  const _Finger({
+    required this.base,
+    required this.tip,
+    required this.baseWidth,
+    required this.tipWidth,
+  });
+  final Offset base;
+  final Offset tip;
+  final double baseWidth;
+  final double tipWidth;
+}
+
+/// Визуальная рука с тыкабельными пальцами.
+/// Использует анатомически правильную форму: ладонь + capsule-пальцы.
 class _HandVisual extends StatelessWidget {
 
   const _HandVisual({
@@ -697,106 +716,94 @@ class _HandVisual extends StatelessWidget {
   final ValueChanged<String> onFingerTap;
   final bool isLeft;
 
+  /// Геометрия 5 пальцев для ПРАВОЙ руки (palm-up, thumb слева, fingers вверх).
+  /// Индекс: 0=большой, 1=указат., 2=средний, 3=безымян., 4=мизинец.
+  /// Левая рука получается зеркалированием по X.
+  static const List<_Finger> _rightFingerGeometry = [
+    // Большой - короткий, толстый, отходит под углом вниз-влево от thenar
+    _Finger(base: Offset(0.24, 0.72), tip: Offset(0.06, 0.54), baseWidth: 0.17, tipWidth: 0.11),
+    // Указательный - чуть короче среднего, слегка отклоняется
+    _Finger(base: Offset(0.34, 0.48), tip: Offset(0.32, 0.10), baseWidth: 0.13, tipWidth: 0.095),
+    // Средний (самый длинный)
+    _Finger(base: Offset(0.49, 0.46), tip: Offset(0.50, 0.03), baseWidth: 0.135, tipWidth: 0.10),
+    // Безымянный
+    _Finger(base: Offset(0.63, 0.47), tip: Offset(0.66, 0.07), baseWidth: 0.125, tipWidth: 0.09),
+    // Мизинец - самый короткий, отходит немного вбок
+    _Finger(base: Offset(0.76, 0.51), tip: Offset(0.84, 0.20), baseWidth: 0.10, tipWidth: 0.075),
+  ];
+
+  /// Вернуть геометрию с учётом стороны (левая = зеркально по X)
+  List<_Finger> _geometry() {
+    if (!isLeft) return _rightFingerGeometry;
+    return _rightFingerGeometry
+        .map(
+          (f) => _Finger(
+            base: Offset(1 - f.base.dx, f.base.dy),
+            tip: Offset(1 - f.tip.dx, f.tip.dy),
+            baseWidth: f.baseWidth,
+            tipWidth: f.tipWidth,
+          ),
+        )
+        .toList();
+  }
+
   @override
   Widget build(BuildContext context) {
-    // Позиции пальцев на холсте (нормализованные 0-1)
-    // Расположение как на реальной руке, вид сверху ладонью вниз
-    final positions = isLeft
-        ? [
-            const Offset(0.12, 0.72), // Большой - внизу сбоку
-            const Offset(0.22, 0.18), // Указательный
-            const Offset(0.42, 0.08), // Средний - самый длинный
-            const Offset(0.62, 0.16), // Безымянный
-            const Offset(0.80, 0.30), // Мизинец
-          ]
-        : [
-            const Offset(0.88, 0.72), // Большой - зеркально
-            const Offset(0.78, 0.18),
-            const Offset(0.58, 0.08),
-            const Offset(0.38, 0.16),
-            const Offset(0.20, 0.30),
-          ];
-
-    final shortLabels = ['Больш.', 'Указат.', 'Средн.', 'Безым.', 'Мизин.'];
-
+    final geom = _geometry();
     final hasSelection = fingers.any(selectedFingers.contains);
+    final selected = List.generate(5, (i) => selectedFingers.contains(fingers[i]));
+
     return Column(
       children: [
         Text(label, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.grey[700])),
         const SizedBox(height: 4),
         SizedBox(
-          height: 200,
+          height: 240,
           child: LayoutBuilder(
             builder: (context, constraints) {
               final w = constraints.maxWidth;
-              const h = 200.0;
+              const h = 240.0;
               return Stack(
                 children: [
-                  // Контур ладони
+                  // Анатомическая заливка руки (ладонь + 5 пальцев) с подсветкой выбранных
                   CustomPaint(
                     size: Size(w, h),
-                    painter: _HandOutlinePainter(
+                    painter: _HandPainter(
+                      geometry: geom,
+                      selected: selected,
                       isLeft: isLeft,
-                      color: hasSelection
-                          ? AppColors.primary.withValues(alpha: 0.08)
-                          : Colors.grey.withValues(alpha: 0.1),
                     ),
                   ),
                   // Подсказка по центру ладони (если ничего не выбрано)
                   if (!hasSelection)
                     Positioned(
-                      left: w * 0.15,
-                      right: w * 0.15,
-                      top: h * 0.45,
+                      left: 0,
+                      right: 0,
+                      top: h * 0.75,
                       child: Text(
-                        'Нажмите',
+                        S.current.tapHint,
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 11, color: Colors.grey[400]),
+                        style: TextStyle(fontSize: 10, color: Colors.grey[500]),
                       ),
                     ),
-                  // Тыкабельные пальцы
+                  // Невидимые тап-таргеты над кончиками пальцев (44x44 - минимум по a11y)
                   ...List.generate(5, (i) {
-                    final isSelected = selectedFingers.contains(fingers[i]);
-                    final pos = positions[i];
-                    final x = pos.dx * w - 27;
-                    final y = pos.dy * h - 27;
+                    final tip = geom[i].tip;
+                    final x = tip.dx * w - 22;
+                    final y = tip.dy * h - 22;
                     return Positioned(
                       left: x,
                       top: y,
+                      width: 44,
+                      height: 44,
                       child: Semantics(
                         button: true,
                         label: S.current.a11yFingerButton(fingers[i]),
-                        selected: isSelected,
+                        selected: selected[i],
                         child: GestureDetector(
+                          behavior: HitTestBehavior.opaque,
                           onTap: () => onFingerTap(fingers[i]),
-                          child: AnimatedContainer(
-                            duration: const Duration(milliseconds: 250),
-                            width: 54,
-                            height: 54,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: isSelected
-                                  ? AppColors.phaseBlue.withValues(alpha: 0.25)
-                                  : Colors.white,
-                              border: Border.all(
-                                color: isSelected ? AppColors.phaseBlue : Colors.grey[400]!,
-                                width: isSelected ? 2.5 : 1.5,
-                              ),
-                              boxShadow: isSelected
-                                  ? [BoxShadow(color: AppColors.phaseBlue.withValues(alpha: 0.3), blurRadius: 8)]
-                                  : [BoxShadow(color: Colors.black.withValues(alpha: 0.06), blurRadius: 3, offset: const Offset(0, 1))],
-                            ),
-                            child: Center(
-                              child: Text(
-                                shortLabels[i],
-                                style: TextStyle(
-                                  fontSize: 9,
-                                  fontWeight: FontWeight.w700,
-                                  color: isSelected ? AppColors.phaseBlue : Colors.grey[600],
-                                ),
-                              ),
-                            ),
-                          ),
+                          child: const SizedBox.expand(),
                         ),
                       ),
                     );
@@ -811,61 +818,286 @@ class _HandVisual extends StatelessWidget {
   }
 }
 
-/// Контур руки (CustomPainter)
-class _HandOutlinePainter extends CustomPainter {
+/// Анатомический painter руки: ладонь с thenar eminence + 5 сужающихся
+/// пальцев. Palm-up ориентация (ладонь к зрителю, пальцы вверх).
+class _HandPainter extends CustomPainter {
 
-  _HandOutlinePainter({required this.isLeft, required this.color});
+  _HandPainter({
+    required this.geometry,
+    required this.selected,
+    required this.isLeft,
+  });
+  final List<_Finger> geometry;
+  final List<bool> selected;
   final bool isLeft;
-  final Color color;
+
+  static const _baseFill = Color(0xFFF5E4D0); // тёплый телесный
+  static const _baseFillDark = Color(0xFFE8CCAE); // тень на ладони
+  static const _baseStroke = Color(0xFF9E7B5A);
+  static const _creaseColor = Color(0x55A0755A); // складки на ладони
+  static const _selectedFill = Color(0xFF7EC4F5);
+  static const _selectedStroke = Color(0xFF1565C0);
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = color
-      ..style = PaintingStyle.fill;
-
     final w = size.width;
     final h = size.height;
 
-    // Рисуем упрощённый силуэт руки
-    final path = Path();
+    // Padding по краям чтобы обводка не обрезалась
+    final strokeW = (w * 0.012).clamp(1.2, 2.2);
+
+    // ----- 1. ЛАДОНЬ (с thenar eminence на стороне большого пальца) -----
+    // Строим для правой руки, зеркалим если isLeft
+    final palmPath = _buildPalmPath(w, h);
     if (isLeft) {
-      // Ладонь
-      path.moveTo(w * 0.20, h * 0.95);
-      path.quadraticBezierTo(w * 0.05, h * 0.75, w * 0.10, h * 0.60);
-      // Большой палец
-      path.quadraticBezierTo(w * 0.05, h * 0.55, w * 0.08, h * 0.50);
-      // К указательному
-      path.quadraticBezierTo(w * 0.12, h * 0.40, w * 0.15, h * 0.28);
-      path.quadraticBezierTo(w * 0.18, h * 0.15, w * 0.22, h * 0.10);
-      // Средний
-      path.quadraticBezierTo(w * 0.30, h * 0.02, w * 0.42, h * 0.02);
-      // Безымянный
-      path.quadraticBezierTo(w * 0.52, h * 0.04, w * 0.62, h * 0.08);
-      // Мизинец
-      path.quadraticBezierTo(w * 0.75, h * 0.15, w * 0.85, h * 0.22);
-      // Край ладони
-      path.quadraticBezierTo(w * 0.95, h * 0.40, w * 0.90, h * 0.65);
-      path.quadraticBezierTo(w * 0.85, h * 0.85, w * 0.70, h * 0.95);
-      path.close();
+      final m = Matrix4.identity()
+        ..translateByDouble(w, 0, 0, 1)
+        ..scaleByDouble(-1, 1, 1, 1);
+      final mirrored = palmPath.transform(m.storage);
+      _paintPalm(canvas, mirrored, strokeW);
     } else {
-      // Зеркально
-      path.moveTo(w * 0.80, h * 0.95);
-      path.quadraticBezierTo(w * 0.95, h * 0.75, w * 0.90, h * 0.60);
-      path.quadraticBezierTo(w * 0.95, h * 0.55, w * 0.92, h * 0.50);
-      path.quadraticBezierTo(w * 0.88, h * 0.40, w * 0.85, h * 0.28);
-      path.quadraticBezierTo(w * 0.82, h * 0.15, w * 0.78, h * 0.10);
-      path.quadraticBezierTo(w * 0.70, h * 0.02, w * 0.58, h * 0.02);
-      path.quadraticBezierTo(w * 0.48, h * 0.04, w * 0.38, h * 0.08);
-      path.quadraticBezierTo(w * 0.25, h * 0.15, w * 0.15, h * 0.22);
-      path.quadraticBezierTo(w * 0.05, h * 0.40, w * 0.10, h * 0.65);
-      path.quadraticBezierTo(w * 0.15, h * 0.85, w * 0.30, h * 0.95);
-      path.close();
+      _paintPalm(canvas, palmPath, strokeW);
     }
 
-    canvas.drawPath(path, paint);
+    // ----- 2. ПАЛЬЦЫ -----
+    // Каждый палец - tapered path с закруглённым кончиком.
+    // Рисуем от большого к мизинцу, но большой первым чтобы ладонь его "перекрыла".
+    // Порядок: сначала большой палец (под ладонью), потом ладонь уже нарисована,
+    // потом остальные 4 пальца поверх. Поскольку ладонь уже отрисована выше,
+    // большой палец рисуем теперь - он будет выглядеть "выходящим" из ладони.
+    for (var i = 0; i < geometry.length; i++) {
+      final f = geometry[i];
+      final isSel = selected[i];
+      final base = Offset(f.base.dx * w, f.base.dy * h);
+      final tip = Offset(f.tip.dx * w, f.tip.dy * h);
+      final baseW = f.baseWidth * w;
+      final tipW = f.tipWidth * w;
+
+      final path = _buildFingerPath(base, tip, baseW, tipW);
+
+      final fill = Paint()
+        ..color = isSel ? _selectedFill : _baseFill
+        ..style = PaintingStyle.fill;
+      final stroke = Paint()
+        ..color = isSel ? _selectedStroke : _baseStroke
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = strokeW
+        ..strokeJoin = StrokeJoin.round;
+
+      canvas
+        ..drawPath(path, fill)
+        ..drawPath(path, stroke);
+
+      // Линии суставов (костяшки) - две тонкие поперечные линии вдоль пальца
+      _drawKnuckles(canvas, base, tip, baseW, tipW, strokeW);
+
+      // Ноготь на кончике (маленький полукруг/овал)
+      _drawNail(canvas, base, tip, tipW, isSel);
+    }
+  }
+
+  // --- Построение пути ладони (правая рука, palm-up) ---
+  Path _buildPalmPath(double w, double h) {
+    // Ориентиры (для правой руки в нормализованных координатах):
+    // Большой палец ВЛЕВО, мизинец ВПРАВО, запястье внизу.
+    // Ладонь формирует неровный "щит" с бугром thenar слева и лёгким
+    // hypothenar справа.
+    return Path()
+      // Начинаем у основания указательного (верх-лево ладони)
+      ..moveTo(w * 0.28, h * 0.48)
+      // Дуга вверху под основаниями пальцев (плавная - даёт форму выпуклости)
+      ..cubicTo(
+        w * 0.40, h * 0.44, // control 1
+        w * 0.60, h * 0.44, // control 2
+        w * 0.82, h * 0.51, // конец (основание мизинца)
+      )
+      // Правая сторона ладони (hypothenar) вниз до запястья
+      ..cubicTo(
+        w * 0.92, h * 0.65,
+        w * 0.86, h * 0.90,
+        w * 0.72, h * 0.97,
+      )
+      // Основание (запястье) - лёгкая кривая
+      ..cubicTo(
+        w * 0.60, h * 1.02,
+        w * 0.40, h * 1.02,
+        w * 0.28, h * 0.97,
+      )
+      // Левая сторона с thenar eminence (выпуклость мышцы большого пальца)
+      ..cubicTo(
+        w * 0.15, h * 0.90,
+        w * 0.10, h * 0.78,
+        w * 0.16, h * 0.68,
+      )
+      // Верх thenar, переходит в основание большого пальца
+      ..cubicTo(
+        w * 0.20, h * 0.58,
+        w * 0.22, h * 0.52,
+        w * 0.28, h * 0.48,
+      )
+      ..close();
+  }
+
+  void _paintPalm(Canvas canvas, Path path, double strokeW) {
+    final fill = Paint()
+      ..color = _baseFill
+      ..style = PaintingStyle.fill;
+    final stroke = Paint()
+      ..color = _baseStroke
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = strokeW
+      ..strokeJoin = StrokeJoin.round;
+
+    canvas
+      ..drawPath(path, fill)
+      ..drawPath(path, stroke);
+
+    // Складки на ладони (линии жизни/сердца) - добавляют реалистичность
+    final bounds = path.getBounds();
+    final w = bounds.width;
+    final h = bounds.height;
+    final left = bounds.left;
+    final top = bounds.top;
+
+    final creasePaint = Paint()
+      ..color = _creaseColor
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = strokeW * 0.7
+      ..strokeCap = StrokeCap.round;
+
+    // Линия головы (горизонтальная складка через середину ладони)
+    final crease1 = Path()
+      ..moveTo(left + w * 0.22, top + h * 0.70)
+      ..quadraticBezierTo(
+        left + w * 0.50, top + h * 0.72,
+        left + w * 0.72, top + h * 0.68,
+      );
+    canvas.drawPath(crease1, creasePaint);
+
+    // Линия жизни (дуга вокруг thenar)
+    final crease2 = Path()
+      ..moveTo(left + w * 0.28, top + h * 0.55)
+      ..quadraticBezierTo(
+        left + w * 0.20, top + h * 0.78,
+        left + w * 0.32, top + h * 0.94,
+      );
+    canvas.drawPath(crease2, creasePaint);
+  }
+
+  // --- Путь одного сужающегося пальца ---
+  Path _buildFingerPath(Offset base, Offset tip, double baseW, double tipW) {
+    final dx = tip.dx - base.dx;
+    final dy = tip.dy - base.dy;
+    final len = math.sqrt(dx * dx + dy * dy);
+    if (len < 0.1) return Path();
+
+    // Единичный вектор направления
+    final ux = dx / len;
+    final uy = dy / len;
+    // Перпендикуляр (повёрнут на 90°)
+    final px = -uy;
+    final py = ux;
+
+    final hb = baseW / 2;
+    final ht = tipW / 2;
+
+    // Углы прямоугольника-трапеции
+    final baseL = Offset(base.dx + px * hb, base.dy + py * hb);
+    final baseR = Offset(base.dx - px * hb, base.dy - py * hb);
+    final tipL = Offset(tip.dx + px * ht, tip.dy + py * ht);
+    final tipR = Offset(tip.dx - px * ht, tip.dy - py * ht);
+
+    // Точка продления за кончик для скругления (полукруг)
+    final tipExtend = Offset(tip.dx + ux * ht * 1.1, tip.dy + uy * ht * 1.1);
+
+    // Небольшое уширение в середине (реальный палец не идеальный трапецоид)
+    const midT = 0.55;
+    final midCenter = Offset(
+      base.dx + dx * midT,
+      base.dy + dy * midT,
+    );
+    final midHalf = (hb * 0.85 + ht * 1.15) / 2;
+    final midL = Offset(midCenter.dx + px * midHalf, midCenter.dy + py * midHalf);
+    final midR = Offset(midCenter.dx - px * midHalf, midCenter.dy - py * midHalf);
+
+    return Path()
+      ..moveTo(baseL.dx, baseL.dy)
+      // Левая сторона: от базы через среднюю точку к кончику
+      ..quadraticBezierTo(midL.dx, midL.dy, tipL.dx, tipL.dy)
+      // Скруглённый кончик
+      ..quadraticBezierTo(tipExtend.dx, tipExtend.dy, tipR.dx, tipR.dy)
+      // Правая сторона: от кончика через среднюю точку к базе
+      ..quadraticBezierTo(midR.dx, midR.dy, baseR.dx, baseR.dy)
+      ..close();
+  }
+
+  // --- Костяшки (2 поперечные складки вдоль пальца) ---
+  void _drawKnuckles(
+    Canvas canvas,
+    Offset base,
+    Offset tip,
+    double baseW,
+    double tipW,
+    double strokeW,
+  ) {
+    final dx = tip.dx - base.dx;
+    final dy = tip.dy - base.dy;
+    final len = math.sqrt(dx * dx + dy * dy);
+    if (len < 0.1) return;
+    final ux = dx / len;
+    final uy = dy / len;
+    final px = -uy;
+    final py = ux;
+
+    final creasePaint = Paint()
+      ..color = _creaseColor
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = strokeW * 0.6
+      ..strokeCap = StrokeCap.round;
+
+    // Две поперечные складки на 35% и 70% длины пальца
+    for (final t in [0.35, 0.70]) {
+      final center = Offset(base.dx + dx * t, base.dy + dy * t);
+      final halfW = (baseW * (1 - t) + tipW * t) / 2 * 0.75;
+      final p1 = Offset(center.dx + px * halfW, center.dy + py * halfW);
+      final p2 = Offset(center.dx - px * halfW, center.dy - py * halfW);
+      canvas.drawLine(p1, p2, creasePaint);
+    }
+  }
+
+  // --- Ноготь на кончике (маленький овал) ---
+  void _drawNail(
+    Canvas canvas,
+    Offset base,
+    Offset tip,
+    double tipW,
+    bool isSelected,
+  ) {
+    final dx = tip.dx - base.dx;
+    final dy = tip.dy - base.dy;
+    final len = math.sqrt(dx * dx + dy * dy);
+    if (len < 0.1) return;
+    final ux = dx / len;
+    final uy = dy / len;
+
+    // Ноготь немного отодвинут от кончика к основанию
+    final nailCenter = Offset(
+      tip.dx - ux * tipW * 0.55,
+      tip.dy - uy * tipW * 0.55,
+    );
+    final nailPaint = Paint()
+      ..color = isSelected
+          ? Colors.white.withValues(alpha: 0.85)
+          : _baseFillDark.withValues(alpha: 0.6)
+      ..style = PaintingStyle.fill;
+    canvas.drawCircle(nailCenter, tipW * 0.35, nailPaint);
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+  bool shouldRepaint(covariant _HandPainter oldDelegate) {
+    for (var i = 0; i < selected.length; i++) {
+      if (selected[i] != oldDelegate.selected[i]) return true;
+    }
+    return false;
+  }
 }

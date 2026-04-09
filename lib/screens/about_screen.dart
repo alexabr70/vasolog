@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vasolog/l10n/app_strings.dart';
+import 'package:vasolog/providers/locale_provider.dart';
+import 'package:vasolog/screens/settings_screen.dart';
 import 'package:vasolog/services/notification_service.dart';
 import 'package:vasolog/utils/constants.dart';
 
@@ -14,11 +18,36 @@ class AboutScreen extends StatefulWidget {
 
 class _AboutScreenState extends State<AboutScreen> {
   bool _notificationsEnabled = false;
+  String _appVersion = '';
 
   @override
   void initState() {
     super.initState();
     _loadNotificationState();
+    _loadVersion();
+  }
+
+  /// Сформировать подзаголовок Settings card в формате "Язык · Русский"
+  /// чтобы пользователь сразу видел текущий выбранный язык.
+  String _buildLanguageSubtitle(BuildContext context) {
+    final provider = context.watch<LocaleProvider>();
+    final code = provider.languageCode;
+    final effectiveName = S.supportedLanguages[provider.effectiveCode] ?? provider.effectiveCode;
+    if (code == null) {
+      return '${S.current.language} · ${S.current.systemDefault} ($effectiveName)';
+    }
+    return '${S.current.language} · $effectiveName';
+  }
+
+  Future<void> _loadVersion() async {
+    try {
+      final info = await PackageInfo.fromPlatform();
+      if (mounted) {
+        setState(() => _appVersion = '${info.version}+${info.buildNumber}');
+      }
+    } catch (e) {
+      debugPrint('PackageInfo error: $e');
+    }
   }
 
   Future<void> _loadNotificationState() async {
@@ -86,23 +115,38 @@ class _AboutScreenState extends State<AboutScreen> {
                   ),
                   const SizedBox(height: 12),
                   const Text('VasoLog', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                  Text('${S.current.version} 1.1.0', style: TextStyle(color: Colors.grey[600])),
+                  Text(
+                    _appVersion.isEmpty
+                        ? S.current.version
+                        : '${S.current.version} $_appVersion',
+                    style: TextStyle(color: Colors.grey[600]),
+                  ),
                 ],
               ),
             ),
             const SizedBox(height: 24),
+
+            // Настройки (выбор языка и др.)
+            Card(
+              child: ListTile(
+                leading: const Icon(Icons.settings_rounded, color: AppColors.primary),
+                title: Text(S.current.settings),
+                subtitle: Text(_buildLanguageSubtitle(context)),
+                trailing: const Icon(Icons.chevron_right_rounded),
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute<void>(builder: (_) => const SettingsScreen()),
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
 
             // Medical Disclaimer
             _buildSection(
               S.current.medicalDisclaimer,
               Icons.medical_information_rounded,
               Colors.red,
-              'VasoLog НЕ является медицинским устройством. '
-              'Приложение не предназначено для диагностики, лечения '
-              'или профилактики каких-либо заболеваний.\n\n'
-              'Данные приложения носят исключительно информационный '
-              'характер и не заменяют консультацию врача.\n\n'
-              'При появлении симптомов обратитесь к ревматологу.',
+              S.current.medicalDisclaimerBody,
             ),
             const SizedBox(height: 16),
 
@@ -111,17 +155,7 @@ class _AboutScreenState extends State<AboutScreen> {
               S.current.privacyPolicy,
               Icons.privacy_tip_rounded,
               AppColors.primary,
-              'Какие данные собираются:\n'
-              '- Записи о приступах (хранятся локально на устройстве)\n'
-              '- Геолокация (только для определения погоды, не передаётся третьим лицам)\n'
-              '- Фотографии (хранятся локально на устройстве)\n\n'
-              'Куда передаются данные:\n'
-              '- OpenWeatherMap API: передаются только координаты для получения погоды\n'
-              '- Никакие персональные или медицинские данные не передаются на серверы\n\n'
-              'Хранение данных:\n'
-              '- Все данные хранятся исключительно на вашем устройстве\n'
-              '- Вы можете удалить все данные удалив приложение\n'
-              '- PDF-отчёты создаются локально',
+              S.current.privacyPolicyBody,
             ),
             const SizedBox(height: 8),
             Center(
@@ -141,10 +175,7 @@ class _AboutScreenState extends State<AboutScreen> {
               S.current.yourRights,
               Icons.gavel_rounded,
               Colors.teal,
-              '- Вы можете экспортировать свои данные через PDF-отчёты\n'
-              '- Вы можете удалить все данные, удалив приложение\n'
-              '- Вы можете отозвать разрешения в настройках устройства\n'
-              '- Приложение работает полностью офлайн (кроме погоды)',
+              S.current.yourRightsBody,
             ),
             const SizedBox(height: 16),
 

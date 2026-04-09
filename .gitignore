@@ -56,3 +56,4 @@ app.*.map.json
 /fastbot-output/
 monkey-output.txt
 logcat.txt
+docs/aso/secrets/
