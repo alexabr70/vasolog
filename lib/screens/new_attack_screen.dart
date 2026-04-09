@@ -719,8 +719,9 @@ class _HandVisual extends StatelessWidget {
             const Offset(0.20, 0.30),
           ];
 
-    final shortLabels = ['Б', 'У', 'С', 'Б', 'М'];
+    final shortLabels = ['БП', 'УК', 'СР', 'БЗ', 'МЗ'];
 
+    final hasSelection = fingers.any((f) => selectedFingers.contains(f));
     return Column(
       children: [
         Text(label, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.grey[700])),
@@ -738,9 +739,23 @@ class _HandVisual extends StatelessWidget {
                     size: Size(w, h),
                     painter: _HandOutlinePainter(
                       isLeft: isLeft,
-                      color: Colors.grey.withValues(alpha: 0.15),
+                      color: hasSelection
+                          ? AppColors.primary.withValues(alpha: 0.08)
+                          : Colors.grey.withValues(alpha: 0.1),
                     ),
                   ),
+                  // Подсказка по центру ладони (если ничего не выбрано)
+                  if (!hasSelection)
+                    Positioned(
+                      left: w * 0.15,
+                      right: w * 0.15,
+                      top: h * 0.45,
+                      child: Text(
+                        'Нажмите',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 11, color: Colors.grey[400]),
+                      ),
+                    ),
                   // Тыкабельные пальцы
                   ...List.generate(5, (i) {
                     final isSelected = selectedFingers.contains(fingers[i]);
@@ -763,23 +778,23 @@ class _HandVisual extends StatelessWidget {
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               color: isSelected
-                                  ? AppColors.phaseBlue.withValues(alpha: 0.3)
-                                  : Colors.grey.withValues(alpha: 0.08),
+                                  ? AppColors.phaseBlue.withValues(alpha: 0.25)
+                                  : Colors.white,
                               border: Border.all(
-                                color: isSelected ? AppColors.phaseBlue : Colors.grey.withValues(alpha: 0.4),
-                                width: isSelected ? 2.5 : 1,
+                                color: isSelected ? AppColors.phaseBlue : Colors.grey[400]!,
+                                width: isSelected ? 2.5 : 1.5,
                               ),
                               boxShadow: isSelected
                                   ? [BoxShadow(color: AppColors.phaseBlue.withValues(alpha: 0.3), blurRadius: 8)]
-                                  : null,
+                                  : [BoxShadow(color: Colors.black.withValues(alpha: 0.06), blurRadius: 3, offset: const Offset(0, 1))],
                             ),
                             child: Center(
                               child: Text(
                                 shortLabels[i],
                                 style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: isSelected ? AppColors.phaseBlue : Colors.grey[500],
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w700,
+                                  color: isSelected ? AppColors.phaseBlue : Colors.grey[600],
                                 ),
                               ),
                             ),

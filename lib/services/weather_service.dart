@@ -45,24 +45,38 @@ class WeatherData {
   );
 }
 
-/// Сервис погоды через OpenWeatherMap API с кэшированием
+/// Сервис погоды через Open-Meteo API (бесплатный, без ключа)
 class WeatherService {
-  static const String _apiKey = String.fromEnvironment('WEATHER_API_KEY');
-  static const String _baseUrl = 'https://api.openweathermap.org/data/2.5';
+  static const String _baseUrl = 'https://api.open-meteo.com/v1';
   static const String _cacheKey = 'cached_weather';
   static const int _cacheMaxMinutes = 30;
 
+  /// WMO коды погоды → описание
+  static String _wmoDescription(int code) {
+    return switch (code) {
+      0 => 'Ясно',
+      1 || 2 || 3 => 'Облачно',
+      45 || 48 => 'Туман',
+      51 || 53 || 55 => 'Морось',
+      61 || 63 || 65 => 'Дождь',
+      71 || 73 || 75 => 'Снег',
+      77 => 'Снежная крупа',
+      80 || 81 || 82 => 'Ливень',
+      85 || 86 => 'Снегопад',
+      95 => 'Гроза',
+      96 || 99 => 'Гроза с градом',
+      _ => 'Неизвестно',
+    };
+  }
+
   /// Получить текущую погоду по координатам
-  /// Если API недоступен - вернёт кэш с пометкой isCached=true
   Future<WeatherData?> getCurrentWeather(
       double latitude, double longitude) async {
-    // Без ключа API запрос бессмысленен - сразу идём в кэш
-    if (_apiKey.isEmpty) return _loadFromCache();
-
     try {
       final url = Uri.parse(
-        '$_baseUrl/weather?lat=$latitude&lon=$longitude'
-        '&appid=$_apiKey&units=metric&lang=ru',
+        '$_baseUrl/forecast?latitude=$latitude&longitude=$longitude'
+        '&current=temperature_2m,relative_humidity_2m,surface_pressure,wind_speed_10m,weather_code'
+        '&timezone=auto',
       );
 
       final response = await http.get(url).timeout(
@@ -70,20 +84,20 @@ class WeatherService {
       );
 
       if (response.statusCode == 200) {
-        try {
-          final data = json.decode(response.body);
-          final weather = WeatherData(
-            temperature: (data['main']['temp'] as num).toDouble(),
-            humidity: (data['main']['humidity'] as num).toDouble(),
-            pressure: (data['main']['pressure'] as num).toDouble(),
-            windSpeed: (data['wind']['speed'] as num).toDouble(),
-            description: data['weather'][0]['description'] as String,
-          );
-          await _saveToCache(weather);
-          return weather;
-        } catch (_) {
-          // Неожиданный формат JSON - идём в кэш
-        }
+        final data = json.decode(response.body);
+        final current = data['current'];
+        final weather = WeatherData(
+          temperature: (current['temperature_2m'] as num).toDouble(),
+          humidity: (current['relative_humidity_2m'] as num).toDouble(),
+          pressure: (current['surface_pressure'] as num).toDouble(),
+          // Open-Meteo даёт km/h, конвертируем в m/s
+          windSpeed: (current['wind_speed_10m'] as num).toDouble() / 3.6,
+          description: _wmoDescription(
+            (current['weather_code'] as num).toInt(),
+          ),
+        );
+        await _saveToCache(weather);
+        return weather;
       }
     } catch (_) {
       // Нет сети / таймаут - пробуем кэш

@@ -55,11 +55,9 @@ class _ReportScreenState extends State<ReportScreen> {
       endDate: _endDate,
     );
 
-    // Показать превью и дать поделиться/распечатать
-    await Printing.layoutPdf(
-      onLayout: (_) => pdfBytes,
-      name: 'VasoLog_Report_${DateFormat('yyyy-MM-dd').format(DateTime.now())}',
-    );
+    // Поделиться PDF через системный share sheet
+    final fileName = 'VasoLog_Report_${DateFormat('yyyy-MM-dd').format(DateTime.now())}.pdf';
+    await Printing.sharePdf(bytes: pdfBytes, filename: fileName);
   }
 
   @override
