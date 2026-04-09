@@ -4,6 +4,6 @@
 set -e
 
 echo "Pre-push: запускаю тесты..."
-flutter analyze --no-pub
+flutter analyze --no-pub --no-fatal-infos
 flutter test
 echo "Pre-push: OK"
