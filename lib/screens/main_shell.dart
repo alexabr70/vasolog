@@ -90,13 +90,17 @@ class _MainShellState extends State<MainShell> with TickerProviderStateMixin {
     Navigator.push(
       context,
       PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => const NewAttackScreen(),
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            const NewAttackScreen(),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return SlideTransition(
-            position: Tween<Offset>(
-              begin: const Offset(0, 1),
-              end: Offset.zero,
-            ).animate(CurvedAnimation(parent: animation, curve: Curves.easeOutCubic)),
+            position: Tween<Offset>(begin: const Offset(0, 1), end: Offset.zero)
+                .animate(
+                  CurvedAnimation(
+                    parent: animation,
+                    curve: Curves.easeOutCubic,
+                  ),
+                ),
             child: child,
           );
         },
@@ -198,7 +202,6 @@ class _MainShellState extends State<MainShell> with TickerProviderStateMixin {
 }
 
 class _NavItem extends StatelessWidget {
-
   const _NavItem({
     required this.icon,
     required this.label,

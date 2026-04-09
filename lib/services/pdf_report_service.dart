@@ -38,7 +38,7 @@ class PdfReportService {
     final avgSeverity = attacks.isEmpty
         ? 0.0
         : attacks.map((a) => a.severity).reduce((a, b) => a + b) /
-            attacks.length;
+              attacks.length;
 
     // Подсчёт триггеров
     final triggerCount = <String, int>{};
@@ -50,10 +50,7 @@ class PdfReportService {
     final sortedTriggers = triggerCount.entries.toList()
       ..sort((a, b) => b.value.compareTo(a.value));
 
-    final theme = pw.ThemeData.withFont(
-      base: regular,
-      bold: bold,
-    );
+    final theme = pw.ThemeData.withFont(base: regular, bold: bold);
 
     pdf.addPage(
       pw.MultiPage(
@@ -66,10 +63,7 @@ class PdfReportService {
             level: 0,
             child: pw.Text(
               S.current.pdfTitle,
-              style: pw.TextStyle(
-                fontSize: 22,
-                fontWeight: pw.FontWeight.bold,
-              ),
+              style: pw.TextStyle(fontSize: 22, fontWeight: pw.FontWeight.bold),
             ),
           ),
           pw.SizedBox(height: 8),
@@ -94,12 +88,12 @@ class PdfReportService {
               [S.current.pdfAvgSeverity, avgSeverity.toStringAsFixed(1)],
               [
                 S.current.pdfMostCommonTrigger,
-                if (sortedTriggers.isNotEmpty) sortedTriggers.first.key else S.current.notAvailable
+                if (sortedTriggers.isNotEmpty)
+                  sortedTriggers.first.key
+                else
+                  S.current.notAvailable,
               ],
-              [
-                S.current.pdfAvgTemp,
-                _avgTemp(attacks),
-              ],
+              [S.current.pdfAvgTemp, _avgTemp(attacks)],
             ],
           ),
           pw.SizedBox(height: 20),
@@ -110,12 +104,18 @@ class PdfReportService {
             pw.TableHelper.fromTextArray(
               headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold),
               data: [
-                [S.current.pdfColTrigger, S.current.pdfColCount, S.current.pdfColPct],
-                ...sortedTriggers.map((e) => [
-                      e.key,
-                      '${e.value}',
-                      '${(e.value / attacks.length * 100).toStringAsFixed(0)}%',
-                    ]),
+                [
+                  S.current.pdfColTrigger,
+                  S.current.pdfColCount,
+                  S.current.pdfColPct,
+                ],
+                ...sortedTriggers.map(
+                  (e) => [
+                    e.key,
+                    '${e.value}',
+                    '${(e.value / attacks.length * 100).toStringAsFixed(0)}%',
+                  ],
+                ),
               ],
             ),
             pw.SizedBox(height: 20),
@@ -144,13 +144,15 @@ class PdfReportService {
                 S.current.pdfColTemp,
                 S.current.pdfColTriggers,
               ],
-              ...attacks.map((a) => [
-                    dateTimeFormat.format(a.timestamp),
-                    '${a.severity}/10',
-                    S.current.phaseFromKey(a.colorPhase),
-                    a.temperature?.toStringAsFixed(1) ?? '-',
-                    a.triggers.join(', '),
-                  ]),
+              ...attacks.map(
+                (a) => [
+                  dateTimeFormat.format(a.timestamp),
+                  '${a.severity}/10',
+                  S.current.phaseFromKey(a.colorPhase),
+                  a.temperature?.toStringAsFixed(1) ?? '-',
+                  a.triggers.join(', '),
+                ],
+              ),
             ],
           ),
 
@@ -159,10 +161,7 @@ class PdfReportService {
           pw.SizedBox(height: 10),
           pw.Text(
             S.current.pdfFooter,
-            style: const pw.TextStyle(
-              fontSize: 9,
-              color: PdfColors.grey600,
-            ),
+            style: const pw.TextStyle(fontSize: 9, color: PdfColors.grey600),
           ),
         ],
       ),
@@ -172,8 +171,9 @@ class PdfReportService {
   }
 
   String _avgTemp(List<AttackEvent> attacks) {
-    final temps =
-        attacks.where((a) => a.temperature != null).map((a) => a.temperature!);
+    final temps = attacks
+        .where((a) => a.temperature != null)
+        .map((a) => a.temperature!);
     if (temps.isEmpty) return S.current.notAvailable;
     final avg = temps.reduce((a, b) => a + b) / temps.length;
     return '${avg.toStringAsFixed(1)}°C';

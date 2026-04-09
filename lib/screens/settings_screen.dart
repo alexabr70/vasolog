@@ -31,7 +31,10 @@ class SettingsScreen extends StatelessWidget {
         children: [
           Card(
             child: ListTile(
-              leading: const Icon(Icons.language_rounded, color: AppColors.primary),
+              leading: const Icon(
+                Icons.language_rounded,
+                color: AppColors.primary,
+              ),
               title: Text(S.current.language),
               subtitle: Text(_currentLanguageLabel(context)),
               trailing: const Icon(Icons.chevron_right_rounded),
@@ -63,10 +66,16 @@ class SettingsScreen extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 4,
+                ),
                 child: Text(
                   S.current.selectLanguage,
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               const Divider(height: 1),
@@ -82,7 +91,8 @@ class SettingsScreen extends StatelessWidget {
                       // ignore: deprecated_member_use
                       groupValue: provider.languageCode,
                       // ignore: deprecated_member_use
-                      onChanged: (v) => Navigator.pop(sheetContext, _SentinelNull.value),
+                      onChanged: (v) =>
+                          Navigator.pop(sheetContext, _SentinelNull.value),
                     ),
                     const Divider(height: 1),
                     ...entries.map(

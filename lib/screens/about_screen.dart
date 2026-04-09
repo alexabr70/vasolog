@@ -32,7 +32,8 @@ class _AboutScreenState extends State<AboutScreen> {
   String _buildLanguageSubtitle(BuildContext context) {
     final provider = context.watch<LocaleProvider>();
     final code = provider.languageCode;
-    final effectiveName = S.supportedLanguages[provider.effectiveCode] ?? provider.effectiveCode;
+    final effectiveName =
+        S.supportedLanguages[provider.effectiveCode] ?? provider.effectiveCode;
     if (code == null) {
       return '${S.current.language} · ${S.current.systemDefault} ($effectiveName)';
     }
@@ -101,7 +102,10 @@ class _AboutScreenState extends State<AboutScreen> {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       gradient: const LinearGradient(
-                        colors: [AppColors.gradientStart, AppColors.gradientEnd],
+                        colors: [
+                          AppColors.gradientStart,
+                          AppColors.gradientEnd,
+                        ],
                       ),
                       boxShadow: [
                         BoxShadow(
@@ -111,10 +115,17 @@ class _AboutScreenState extends State<AboutScreen> {
                         ),
                       ],
                     ),
-                    child: const Icon(Icons.ac_unit_rounded, size: 40, color: Colors.white),
+                    child: const Icon(
+                      Icons.ac_unit_rounded,
+                      size: 40,
+                      color: Colors.white,
+                    ),
                   ),
                   const SizedBox(height: 12),
-                  const Text('VasoLog', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  const Text(
+                    'VasoLog',
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
                   Text(
                     _appVersion.isEmpty
                         ? S.current.version
@@ -129,13 +140,18 @@ class _AboutScreenState extends State<AboutScreen> {
             // Настройки (выбор языка и др.)
             Card(
               child: ListTile(
-                leading: const Icon(Icons.settings_rounded, color: AppColors.primary),
+                leading: const Icon(
+                  Icons.settings_rounded,
+                  color: AppColors.primary,
+                ),
                 title: Text(S.current.settings),
                 subtitle: Text(_buildLanguageSubtitle(context)),
                 trailing: const Icon(Icons.chevron_right_rounded),
                 onTap: () => Navigator.push(
                   context,
-                  MaterialPageRoute<void>(builder: (_) => const SettingsScreen()),
+                  MaterialPageRoute<void>(
+                    builder: (_) => const SettingsScreen(),
+                  ),
                 ),
               ),
             ),
@@ -161,7 +177,9 @@ class _AboutScreenState extends State<AboutScreen> {
             Center(
               child: TextButton.icon(
                 onPressed: () => launchUrl(
-                  Uri.parse('https://vasolog-app.github.io/privacy_policy.html'),
+                  Uri.parse(
+                    'https://vasolog-app.github.io/privacy_policy.html',
+                  ),
                   mode: LaunchMode.externalApplication,
                 ),
                 icon: const Icon(Icons.open_in_new, size: 16),
@@ -182,24 +200,45 @@ class _AboutScreenState extends State<AboutScreen> {
             // Уведомления
             Card(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
                 child: Row(
                   children: [
-                    const Icon(Icons.notifications_rounded, size: 20, color: AppColors.secondary),
+                    const Icon(
+                      Icons.notifications_rounded,
+                      size: 20,
+                      color: AppColors.secondary,
+                    ),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(S.current.reminders, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                          Text(S.current.dailyAt1230, style: const TextStyle(fontSize: 12, color: Colors.grey)),
+                          Text(
+                            S.current.reminders,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            S.current.dailyAt1230,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey,
+                            ),
+                          ),
                         ],
                       ),
                     ),
                     Switch.adaptive(
                       value: _notificationsEnabled,
                       onChanged: _toggleNotifications,
-                      activeTrackColor: AppColors.secondary.withValues(alpha: 0.5),
+                      activeTrackColor: AppColors.secondary.withValues(
+                        alpha: 0.5,
+                      ),
                       activeThumbColor: AppColors.secondary,
                     ),
                   ],
@@ -217,16 +256,31 @@ class _AboutScreenState extends State<AboutScreen> {
                   children: [
                     Row(
                       children: [
-                        const Icon(Icons.email_rounded, size: 20, color: AppColors.primary),
+                        const Icon(
+                          Icons.email_rounded,
+                          size: 20,
+                          color: AppColors.primary,
+                        ),
                         const SizedBox(width: 8),
-                        Text(S.current.feedback, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                        Text(
+                          S.current.feedback,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 8),
                     InkWell(
                       onTap: () => launchUrl(
-                        Uri(scheme: 'mailto', path: 'vasolog.app@gmail.com',
-                            queryParameters: {'subject': 'VasoLog - Обратная связь'}),
+                        Uri(
+                          scheme: 'mailto',
+                          path: 'vasolog.app@gmail.com',
+                          queryParameters: {
+                            'subject': 'VasoLog - Обратная связь',
+                          },
+                        ),
                       ),
                       borderRadius: BorderRadius.circular(4),
                       child: const Padding(
@@ -263,7 +317,13 @@ class _AboutScreenState extends State<AboutScreen> {
                 Icon(icon, size: 20, color: color),
                 const SizedBox(width: 8),
                 Expanded(
-                  child: Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  child: Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ],
             ),

@@ -56,7 +56,8 @@ class _ReportScreenState extends State<ReportScreen> {
     );
 
     // Поделиться PDF через системный share sheet
-    final fileName = 'VasoLog_Report_${DateFormat('yyyy-MM-dd').format(DateTime.now())}.pdf';
+    final fileName =
+        'VasoLog_Report_${DateFormat('yyyy-MM-dd').format(DateTime.now())}.pdf';
     await Printing.sharePdf(bytes: pdfBytes, filename: fileName);
   }
 
@@ -67,7 +68,6 @@ class _ReportScreenState extends State<ReportScreen> {
     final attacksInRange = provider.getAttacksByRange(_startDate, _endDate);
 
     return Scaffold(
-
       appBar: AppBar(
         title: Text(S.current.reportTitle),
         flexibleSpace: Container(
@@ -182,7 +182,10 @@ class _ReportScreenState extends State<ReportScreen> {
                 icon: const Icon(Icons.picture_as_pdf, size: 24),
                 label: Text(
                   S.current.createAndSharePdf,
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,

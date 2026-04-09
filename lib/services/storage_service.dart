@@ -57,7 +57,9 @@ class StorageService {
     }
 
     // Копируем все записи в зашифрованный box
-    debugPrint('[StorageService] Мигрирую ${legacyBox.length} записей в зашифрованное хранилище');
+    debugPrint(
+      '[StorageService] Мигрирую ${legacyBox.length} записей в зашифрованное хранилище',
+    );
     for (final key in legacyBox.keys) {
       final value = legacyBox.get(key);
       if (value != null && !_box.containsKey(key)) {
@@ -79,9 +81,7 @@ class StorageService {
   /// Получить все приступы (отсортированные по дате, новые первые)
   List<AttackEvent> getAllAttacks() {
     if (_cachedAttacks != null) return _cachedAttacks!;
-    final attacks = _box.values
-        .map(AttackEvent.fromMap)
-        .toList();
+    final attacks = _box.values.map(AttackEvent.fromMap).toList();
     attacks.sort((a, b) => b.timestamp.compareTo(a.timestamp));
     _cachedAttacks = attacks;
     return attacks;

@@ -118,7 +118,6 @@ Future<void> _initDeferredServices(void Function(String) logStep) async {
 }
 
 class VasoLogApp extends StatelessWidget {
-
   const VasoLogApp({
     required this.storage,
     required this.attackProvider,
@@ -142,35 +141,35 @@ class VasoLogApp extends StatelessWidget {
           // что сбрасывает кеши локализации и обновляет S.current во всех экранах
           key: ValueKey('app-${locale.effectiveCode}'),
           locale: Locale(locale.effectiveCode),
-        title: 'VasoLog',
-        debugShowCheckedModeBanner: false,
-        theme: _lightTheme(),
-        darkTheme: _darkTheme(),
-        localizationsDelegates: const [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: const [
-          Locale('en'),
-          Locale('ru'),
-          Locale('de'),
-          Locale('fr'),
-          Locale('es'),
-          Locale('pt'),
-          Locale('it'),
-          Locale('sv'),
-          Locale('fi'),
-          Locale('nb'),
-          Locale('da'),
-          Locale('nl'),
-          Locale('pl'),
-          Locale('cs'),
-          Locale('hu'),
-          Locale('uk'),
-          Locale('ja'),
-          Locale('ko'),
-        ],
+          title: 'VasoLog',
+          debugShowCheckedModeBanner: false,
+          theme: _lightTheme(),
+          darkTheme: _darkTheme(),
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const [
+            Locale('en'),
+            Locale('ru'),
+            Locale('de'),
+            Locale('fr'),
+            Locale('es'),
+            Locale('pt'),
+            Locale('it'),
+            Locale('sv'),
+            Locale('fi'),
+            Locale('nb'),
+            Locale('da'),
+            Locale('nl'),
+            Locale('pl'),
+            Locale('cs'),
+            Locale('hu'),
+            Locale('uk'),
+            Locale('ja'),
+            Locale('ko'),
+          ],
           home: const _AppRoot(),
         ),
       ),
@@ -203,20 +202,13 @@ class VasoLogApp extends StatelessWidget {
           side: BorderSide(color: Colors.grey.shade200),
         ),
       ),
-      appBarTheme: const AppBarTheme(
-        centerTitle: true,
-        elevation: 0,
-      ),
+      appBarTheme: const AppBarTheme(centerTitle: true, elevation: 0),
       chipTheme: ChipThemeData(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
         elevation: 4,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       ),
     );
   }
@@ -242,20 +234,13 @@ class VasoLogApp extends StatelessWidget {
           side: BorderSide(color: Colors.grey.shade800),
         ),
       ),
-      appBarTheme: const AppBarTheme(
-        centerTitle: true,
-        elevation: 0,
-      ),
+      appBarTheme: const AppBarTheme(centerTitle: true, elevation: 0),
       chipTheme: ChipThemeData(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
         elevation: 4,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       ),
     );
   }
@@ -285,7 +270,9 @@ class _AppRootState extends State<_AppRoot> {
     try {
       final prefs = await SharedPreferences.getInstance();
       if (mounted) {
-        setState(() => _onboardingDone = prefs.getBool('onboarding_done') ?? false);
+        setState(
+          () => _onboardingDone = prefs.getBool('onboarding_done') ?? false,
+        );
       }
     } catch (_) {
       if (mounted) setState(() => _onboardingDone = true);
@@ -300,9 +287,7 @@ class _AppRootState extends State<_AppRoot> {
         if (!provider.isReady || _onboardingDone == null) {
           return const _AppLoadingScreen();
         }
-        return _onboardingDone!
-            ? const MainShell()
-            : const OnboardingScreen();
+        return _onboardingDone! ? const MainShell() : const OnboardingScreen();
       },
     );
   }

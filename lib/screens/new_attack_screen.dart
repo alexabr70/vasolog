@@ -22,7 +22,8 @@ class NewAttackScreen extends StatefulWidget {
   State<NewAttackScreen> createState() => _NewAttackScreenState();
 }
 
-class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProviderStateMixin {
+class _NewAttackScreenState extends State<NewAttackScreen>
+    with SingleTickerProviderStateMixin {
   int _severity = 5;
   int _durationMinutes = 0;
   String _colorPhase = 'white';
@@ -182,7 +183,9 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(isEdit ? S.current.attackUpdated : S.current.attackSaved),
+            content: Text(
+              isEdit ? S.current.attackUpdated : S.current.attackSaved,
+            ),
             backgroundColor: Colors.green,
           ),
         );
@@ -218,9 +221,12 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       appBar: AppBar(
-        title: Text(widget.editAttack != null ? S.current.editAttack : S.current.recordAttack),
+        title: Text(
+          widget.editAttack != null
+              ? S.current.editAttack
+              : S.current.recordAttack,
+        ),
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -249,7 +255,9 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
                   onPressed: _applyLastAttack,
                   icon: const Icon(Icons.replay_rounded, size: 18),
                   label: Text(S.current.likeLastTime),
-                  style: TextButton.styleFrom(foregroundColor: AppColors.secondary),
+                  style: TextButton.styleFrom(
+                    foregroundColor: AppColors.secondary,
+                  ),
                 ),
               ),
 
@@ -259,18 +267,34 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
               icon: Icons.speed_rounded,
               children: [
                 // Тяжесть
-                Text(S.current.severityRcs, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+                Text(
+                  S.current.severityRcs,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
                 const SizedBox(height: 4),
                 Row(
                   children: [
                     AnimatedContainer(
                       duration: const Duration(milliseconds: 300),
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 4,
+                      ),
                       decoration: BoxDecoration(
                         color: severityColor(_severity).withValues(alpha: 0.15),
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: Text('$_severity', style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold, color: severityColor(_severity))),
+                      child: Text(
+                        '$_severity',
+                        style: TextStyle(
+                          fontSize: 48,
+                          fontWeight: FontWeight.bold,
+                          color: severityColor(_severity),
+                        ),
+                      ),
                     ),
                     const Text('/10', style: TextStyle(fontSize: 24)),
                     const SizedBox(width: 12),
@@ -282,11 +306,17 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
                           data: SliderThemeData(
                             activeTrackColor: severityColor(_severity),
                             thumbColor: severityColor(_severity),
-                            inactiveTrackColor: severityColor(_severity).withValues(alpha: 0.2),
-                            overlayColor: severityColor(_severity).withValues(alpha: 0.1),
+                            inactiveTrackColor: severityColor(
+                              _severity,
+                            ).withValues(alpha: 0.2),
+                            overlayColor: severityColor(
+                              _severity,
+                            ).withValues(alpha: 0.1),
                           ),
                           child: Slider(
-                            value: _severity.toDouble(), max: 10, divisions: 10,
+                            value: _severity.toDouble(),
+                            max: 10,
+                            divisions: 10,
                             label: '$_severity',
                             onChanged: (v) {
                               final newVal = v.round();
@@ -304,7 +334,13 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
                 const SizedBox(height: 12),
 
                 // Цвет пальцев
-                Text(S.current.fingerColor, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+                Text(
+                  S.current.fingerColor,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
                 const SizedBox(height: 8),
                 Row(
                   children: colorPhases.entries.map((e) {
@@ -320,16 +356,33 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
                 const SizedBox(height: 12),
 
                 // Длительность
-                Text(S.current.duration, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+                Text(
+                  S.current.duration,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
                 const SizedBox(height: 4),
                 Row(
                   children: [
-                    Text('$_durationMinutes', style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                    Text(' ${S.current.min}', style: const TextStyle(fontSize: 16)),
+                    Text(
+                      '$_durationMinutes',
+                      style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      ' ${S.current.min}',
+                      style: const TextStyle(fontSize: 16),
+                    ),
                     const SizedBox(width: 16),
                     Expanded(
                       child: Slider(
-                        value: _durationMinutes.toDouble(), max: 120, divisions: 24,
+                        value: _durationMinutes.toDouble(),
+                        max: 120,
+                        divisions: 24,
                         label: '$_durationMinutes мин',
                         onChanged: (v) {
                           final newVal = v.round();
@@ -351,7 +404,11 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
               title: S.current.sectionTriggers,
               icon: Icons.flash_on_rounded,
               trailing: _suggestedTriggers.isNotEmpty
-                  ? Icon(Icons.auto_awesome, size: 16, color: AppColors.secondary.withValues(alpha: 0.7))
+                  ? Icon(
+                      Icons.auto_awesome,
+                      size: 16,
+                      color: AppColors.secondary.withValues(alpha: 0.7),
+                    )
                   : null,
               children: [
                 Wrap(
@@ -396,7 +453,11 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
                     ElevatedButton.icon(
                       onPressed: _takePhoto,
                       icon: const Icon(Icons.camera_alt, size: 18),
-                      label: Text(_photoPath == null ? S.current.takePhoto : S.current.retakePhoto),
+                      label: Text(
+                        _photoPath == null
+                            ? S.current.takePhoto
+                            : S.current.retakePhoto,
+                      ),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.secondary,
                         foregroundColor: Colors.white,
@@ -404,8 +465,15 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
                     ),
                     if (_photoPath != null) ...[
                       const SizedBox(width: 8),
-                      const Icon(Icons.check_circle, color: Colors.green, size: 20),
-                      Text(' ${S.current.photo}', style: const TextStyle(fontSize: 13)),
+                      const Icon(
+                        Icons.check_circle,
+                        color: Colors.green,
+                        size: 20,
+                      ),
+                      Text(
+                        ' ${S.current.photo}',
+                        style: const TextStyle(fontSize: 13),
+                      ),
                     ],
                   ],
                 ),
@@ -417,7 +485,9 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
                   decoration: InputDecoration(
                     labelText: S.current.notesOptional,
                     hintText: S.current.notesHint,
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                 ),
               ],
@@ -433,11 +503,19 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
                 ),
                 child: _isLoading
                     ? const CircularProgressIndicator(color: Colors.white)
-                    : Text(S.current.save, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    : Text(
+                        S.current.save,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
               ),
             ),
             const SizedBox(height: 32),
@@ -454,7 +532,9 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
       final w = _weatherData!;
       final isDark = Theme.of(context).brightness == Brightness.dark;
       return Card(
-        color: isDark ? Colors.blue[900]?.withValues(alpha: 0.3) : Colors.blue[50],
+        color: isDark
+            ? Colors.blue[900]?.withValues(alpha: 0.3)
+            : Colors.blue[50],
         child: Padding(
           padding: const EdgeInsets.all(12),
           child: Row(
@@ -463,7 +543,10 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
               const SizedBox(width: 8),
               Text(
                 '${formatTemperature(w.temperature)}°C',
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(width: 12),
               Expanded(
@@ -524,17 +607,35 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(vertical: 12),
         decoration: BoxDecoration(
-          gradient: LinearGradient(colors: colors, begin: Alignment.topLeft, end: Alignment.bottomRight),
+          gradient: LinearGradient(
+            colors: colors,
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
           borderRadius: BorderRadius.circular(12),
           border: isSelected ? Border.all(color: Colors.white, width: 3) : null,
           boxShadow: isSelected
-              ? [BoxShadow(color: colors[0].withValues(alpha: 0.5), blurRadius: 8, offset: const Offset(0, 2))]
+              ? [
+                  BoxShadow(
+                    color: colors[0].withValues(alpha: 0.5),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ]
               : null,
         ),
         child: Column(
           children: [
-            Text(shortLabel, style: TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: 13)),
-            if (isSelected) Icon(Icons.check_circle, color: textColor, size: 18),
+            Text(
+              shortLabel,
+              style: TextStyle(
+                color: textColor,
+                fontWeight: FontWeight.bold,
+                fontSize: 13,
+              ),
+            ),
+            if (isSelected)
+              Icon(Icons.check_circle, color: textColor, size: 18),
           ],
         ),
       ),
@@ -558,18 +659,27 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
         label: Text(trigger),
         selected: isSelected,
         selectedColor: AppColors.secondary.withValues(alpha: 0.3),
-        backgroundColor: isSuggested ? AppColors.secondary.withValues(alpha: 0.1) : null,
+        backgroundColor: isSuggested
+            ? AppColors.secondary.withValues(alpha: 0.1)
+            : null,
         side: isSuggested && !isSelected
             ? BorderSide(color: AppColors.secondary.withValues(alpha: 0.5))
             : null,
         avatar: isSuggested && !isSelected
-            ? Icon(Icons.auto_awesome, size: 14, color: AppColors.secondary.withValues(alpha: 0.7))
+            ? Icon(
+                Icons.auto_awesome,
+                size: 14,
+                color: AppColors.secondary.withValues(alpha: 0.7),
+              )
             : null,
         onSelected: (selected) {
           HapticFeedback.selectionClick();
           setState(() {
-            if (selected) { _selectedTriggers.add(trigger); }
-            else { _selectedTriggers.remove(trigger); }
+            if (selected) {
+              _selectedTriggers.add(trigger);
+            } else {
+              _selectedTriggers.remove(trigger);
+            }
           });
         },
       );
@@ -583,7 +693,11 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
     final highlightColor = Colors.grey[100]!;
     // Плавный блик слева направо
     final t = (progress * 3 - 1).clamp(0.0, 1.0);
-    final color = Color.lerp(baseColor, highlightColor, t < 0.5 ? t * 2 : 2 - t * 2)!;
+    final color = Color.lerp(
+      baseColor,
+      highlightColor,
+      t < 0.5 ? t * 2 : 2 - t * 2,
+    )!;
     return Container(
       width: width,
       height: height,
@@ -604,11 +718,11 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
 
 /// Секция-карточка с заголовком и иконкой
 class _SectionCard extends StatelessWidget {
-
   const _SectionCard({
     required this.title,
     required this.icon,
-    required this.children, this.trailing,
+    required this.children,
+    this.trailing,
   });
   final String title;
   final IconData icon;
@@ -627,11 +741,14 @@ class _SectionCard extends StatelessWidget {
               children: [
                 Icon(icon, size: 20, color: AppColors.primary),
                 const SizedBox(width: 8),
-                Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                if (trailing != null) ...[
-                  const SizedBox(width: 8),
-                  trailing!,
-                ],
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                if (trailing != null) ...[const SizedBox(width: 8), trailing!],
               ],
             ),
             const SizedBox(height: 12),
@@ -645,8 +762,10 @@ class _SectionCard extends StatelessWidget {
 
 /// Интерактивная визуальная схема рук для выбора пальцев
 class _HandDiagram extends StatelessWidget {
-
-  const _HandDiagram({required this.selectedFingers, required this.onFingerTap});
+  const _HandDiagram({
+    required this.selectedFingers,
+    required this.onFingerTap,
+  });
   final Set<String> selectedFingers;
   final ValueChanged<String> onFingerTap;
 
@@ -663,7 +782,13 @@ class _HandDiagram extends StatelessWidget {
         // Левая рука - без зеркалирования (thumb слева, наружу)
         _HandVisual(
           label: S.current.leftHand,
-          fingers: const ['Большой Л', 'Указат. Л', 'Средний Л', 'Безымян. Л', 'Мизинец Л'],
+          fingers: const [
+            'Большой Л',
+            'Указат. Л',
+            'Средний Л',
+            'Безымян. Л',
+            'Мизинец Л',
+          ],
           selectedFingers: selectedFingers,
           onFingerTap: onFingerTap,
           mirrored: false,
@@ -672,7 +797,13 @@ class _HandDiagram extends StatelessWidget {
         // Правая рука - зеркалирование (thumb справа, наружу)
         _HandVisual(
           label: S.current.rightHand,
-          fingers: const ['Большой П', 'Указат. П', 'Средний П', 'Безымян. П', 'Мизинец П'],
+          fingers: const [
+            'Большой П',
+            'Указат. П',
+            'Средний П',
+            'Безымян. П',
+            'Мизинец П',
+          ],
           selectedFingers: selectedFingers,
           onFingerTap: onFingerTap,
           mirrored: true,
@@ -686,7 +817,6 @@ class _HandDiagram extends StatelessWidget {
 /// с невидимыми тап-таргетами над каждым пальцем. Для левой руки
 /// используется горизонтальное зеркалирование через Transform.
 class _HandVisual extends StatelessWidget {
-
   const _HandVisual({
     required this.label,
     required this.fingers,
@@ -715,7 +845,10 @@ class _HandVisual extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final selected = List.generate(5, (i) => selectedFingers.contains(fingers[i]));
+    final selected = List.generate(
+      5,
+      (i) => selectedFingers.contains(fingers[i]),
+    );
     final hasSelection = selected.any((s) => s);
 
     // Для левой руки зеркалим позиции пальцев по X
@@ -806,14 +939,18 @@ class _HandVisual extends StatelessWidget {
                             child: Container(
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: AppColors.phaseBlue.withValues(alpha: 0.4),
+                                color: AppColors.phaseBlue.withValues(
+                                  alpha: 0.4,
+                                ),
                                 border: Border.all(
                                   color: AppColors.phaseBlue,
                                   width: 3,
                                 ),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: AppColors.phaseBlue.withValues(alpha: 0.5),
+                                    color: AppColors.phaseBlue.withValues(
+                                      alpha: 0.5,
+                                    ),
                                     blurRadius: 8,
                                   ),
                                 ],

@@ -148,16 +148,26 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.accent,
                 foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
               ),
-              child: Text(S.current.enableReminders,
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              child: Text(
+                S.current.enableReminders,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ),
           const SizedBox(height: 8),
           TextButton(
             onPressed: _finishOnboarding,
-            child: Text(S.current.notNow, style: TextStyle(fontSize: 16, color: Colors.grey[600])),
+            child: Text(
+              S.current.notNow,
+              style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+            ),
           ),
         ],
       );
@@ -175,10 +185,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primary,
                 foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
               ),
-              child: Text(S.current.allowLocation,
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              child: Text(
+                S.current.allowLocation,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ),
           const SizedBox(height: 8),
@@ -187,7 +204,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               duration: const Duration(milliseconds: 300),
               curve: Curves.easeInOut,
             ),
-            child: Text(S.current.skip, style: TextStyle(fontSize: 16, color: Colors.grey[600])),
+            child: Text(
+              S.current.skip,
+              style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+            ),
           ),
         ],
       );
@@ -205,9 +225,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primary,
           foregroundColor: Colors.white,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
         ),
-        child: Text(S.current.next, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        child: Text(
+          S.current.next,
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
       ),
     );
   }
@@ -220,7 +245,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 }
 
 class _OnboardingPage extends StatelessWidget {
-
   const _OnboardingPage({
     required this.icon,
     required this.title,
@@ -269,7 +293,11 @@ class _OnboardingPage extends StatelessWidget {
           const SizedBox(height: 16),
           Text(
             description,
-            style: TextStyle(fontSize: 16, color: Colors.grey[600], height: 1.5),
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.grey[600],
+              height: 1.5,
+            ),
             textAlign: TextAlign.center,
           ),
         ],

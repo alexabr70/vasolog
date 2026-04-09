@@ -52,7 +52,10 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('VasoLog', style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1)),
+        title: const Text(
+          'VasoLog',
+          style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1),
+        ),
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -118,16 +121,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   delay: 120,
                   child: Text(
                     S.current.recentAttacks,
-                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 8),
 
                 if (recentAttacks.isEmpty)
-                  _AnimatedEntry(
-                    delay: 200,
-                    child: _EmptyState(),
-                  )
+                  _AnimatedEntry(delay: 200, child: _EmptyState())
                 else
                   ...recentAttacks.take(5).indexed.map((item) {
                     final (i, attack) = item;
@@ -151,9 +154,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           );
                         },
                         onEdit: () {
-                          Navigator.push(context, MaterialPageRoute(
-                            builder: (_) => NewAttackScreen(editAttack: attack),
-                          ));
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) =>
+                                  NewAttackScreen(editAttack: attack),
+                            ),
+                          );
                         },
                       ),
                     );
@@ -166,7 +173,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     delay: 600,
                     child: Text(
                       S.current.frequentTriggers,
-                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -182,22 +192,36 @@ class _HomeScreenState extends State<HomeScreen> {
                               padding: const EdgeInsets.symmetric(vertical: 6),
                               child: Row(
                                 children: [
-                                  SizedBox(width: 110, child: Text(e.key, style: const TextStyle(fontSize: 14))),
+                                  SizedBox(
+                                    width: 110,
+                                    child: Text(
+                                      e.key,
+                                      style: const TextStyle(fontSize: 14),
+                                    ),
+                                  ),
                                   const SizedBox(width: 8),
                                   Expanded(
                                     child: TweenAnimationBuilder<double>(
-                                      tween: Tween(begin: 0, end: e.value / maxCount),
-                                      duration: const Duration(milliseconds: 800),
-                                      curve: Curves.easeOutCubic,
-                                      builder: (context, value, child) => ClipRRect(
-                                        borderRadius: BorderRadius.circular(4),
-                                        child: LinearProgressIndicator(
-                                          value: value,
-                                          backgroundColor: Colors.grey[200],
-                                          color: AppColors.primary,
-                                          minHeight: 8,
-                                        ),
+                                      tween: Tween(
+                                        begin: 0,
+                                        end: e.value / maxCount,
                                       ),
+                                      duration: const Duration(
+                                        milliseconds: 800,
+                                      ),
+                                      curve: Curves.easeOutCubic,
+                                      builder: (context, value, child) =>
+                                          ClipRRect(
+                                            borderRadius: BorderRadius.circular(
+                                              4,
+                                            ),
+                                            child: LinearProgressIndicator(
+                                              value: value,
+                                              backgroundColor: Colors.grey[200],
+                                              color: AppColors.primary,
+                                              minHeight: 8,
+                                            ),
+                                          ),
                                     ),
                                   ),
                                   const SizedBox(width: 8),
@@ -206,7 +230,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                     child: Text(
                                       '${e.value}',
                                       textAlign: TextAlign.end,
-                                      style: const TextStyle(fontWeight: FontWeight.bold),
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -229,7 +255,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
 /// Анимация появления элементов снизу с задержкой
 class _AnimatedEntry extends StatefulWidget {
-
   const _AnimatedEntry({required this.child, required this.delay});
   final Widget child;
   final int delay;
@@ -253,9 +278,10 @@ class _AnimatedEntryState extends State<_AnimatedEntry>
       vsync: this,
       duration: const Duration(milliseconds: 150),
     );
-    _opacity = Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeOut),
-    );
+    _opacity = Tween<double>(
+      begin: 0,
+      end: 1,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
     _slide = Tween<Offset>(
       begin: const Offset(0, 0.05),
       end: Offset.zero,
@@ -275,10 +301,7 @@ class _AnimatedEntryState extends State<_AnimatedEntry>
   Widget build(BuildContext context) {
     return FadeTransition(
       opacity: _opacity,
-      child: SlideTransition(
-        position: _slide,
-        child: widget.child,
-      ),
+      child: SlideTransition(position: _slide, child: widget.child),
     );
   }
 }
@@ -302,7 +325,9 @@ class _WeekTrendChart extends StatelessWidget {
 
       double avg = 0;
       if (dayAttacks.isNotEmpty) {
-        avg = dayAttacks.map((a) => a.severity).reduce((a, b) => a + b) / dayAttacks.length;
+        avg =
+            dayAttacks.map((a) => a.severity).reduce((a, b) => a + b) /
+            dayAttacks.length;
       }
       spots.add(FlSpot((6 - i).toDouble(), avg));
       days.add(DateFormat('E', 'ru').format(day).substring(0, 2));
@@ -317,7 +342,10 @@ class _WeekTrendChart extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(S.current.weekTrend, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+            Text(
+              S.current.weekTrend,
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+            ),
             const SizedBox(height: 12),
             SizedBox(
               height: 100,
@@ -337,7 +365,13 @@ class _WeekTrendChart extends StatelessWidget {
                         getTitlesWidget: (value, meta) {
                           final idx = value.toInt();
                           if (idx >= 0 && idx < days.length) {
-                            return Text(days[idx], style: TextStyle(fontSize: 10, color: Colors.grey[500]));
+                            return Text(
+                              days[idx],
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: Colors.grey[500],
+                              ),
+                            );
                           }
                           return const Text('');
                         },
@@ -353,10 +387,11 @@ class _WeekTrendChart extends StatelessWidget {
                       color: AppColors.primary,
                       barWidth: 2.5,
                       dotData: FlDotData(
-                        getDotPainter: (spot, percent, bar, index) => FlDotCirclePainter(
-                          radius: spot.y > 0 ? 3 : 0,
-                          color: severityColor(spot.y.round()),
-                        ),
+                        getDotPainter: (spot, percent, bar, index) =>
+                            FlDotCirclePainter(
+                              radius: spot.y > 0 ? 3 : 0,
+                              color: severityColor(spot.y.round()),
+                            ),
                       ),
                       belowBarData: BarAreaData(
                         show: true,
@@ -370,7 +405,11 @@ class _WeekTrendChart extends StatelessWidget {
                         if (spot.y == 0) return null;
                         return LineTooltipItem(
                           'RCS: ${spot.y.toStringAsFixed(1)}',
-                          TextStyle(color: severityColor(spot.y.round()), fontWeight: FontWeight.bold, fontSize: 12),
+                          TextStyle(
+                            color: severityColor(spot.y.round()),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
                         );
                       }).toList(),
                     ),
@@ -413,10 +452,16 @@ class _WeatherAlert extends StatelessWidget {
       ),
       child: Card(
         color: isVeryCold
-            ? (isDark ? Colors.red[900]?.withValues(alpha: 0.3) : Colors.red[50])
+            ? (isDark
+                  ? Colors.red[900]?.withValues(alpha: 0.3)
+                  : Colors.red[50])
             : isCold
-                ? (isDark ? Colors.orange[900]?.withValues(alpha: 0.3) : Colors.orange[50])
-                : (isDark ? Colors.blue[900]?.withValues(alpha: 0.3) : Colors.blue[50]),
+            ? (isDark
+                  ? Colors.orange[900]?.withValues(alpha: 0.3)
+                  : Colors.orange[50])
+            : (isDark
+                  ? Colors.blue[900]?.withValues(alpha: 0.3)
+                  : Colors.blue[50]),
         child: Stack(
           children: [
             Padding(
@@ -428,13 +473,13 @@ class _WeatherAlert extends StatelessWidget {
                     isVeryCold
                         ? Icons.ac_unit
                         : isCold
-                            ? Icons.cloud
-                            : Icons.wb_sunny_rounded,
+                        ? Icons.cloud
+                        : Icons.wb_sunny_rounded,
                     color: isVeryCold
                         ? Colors.red
                         : isCold
-                            ? Colors.orange
-                            : Colors.blue,
+                        ? Colors.orange
+                        : Colors.blue,
                     size: 28,
                   ),
                   const SizedBox(width: 12),
@@ -446,13 +491,19 @@ class _WeatherAlert extends StatelessWidget {
                           children: [
                             Text(
                               '${formatTemperature(temp)}°C',
-                              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                             const SizedBox(width: 8),
                             Flexible(
                               child: Text(
                                 '${S.current.windMs(formatWindSpeed(weather.windSpeed))} · ${S.current.humidity(formatHumidity(weather.humidity))}',
-                                style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey[600],
+                                ),
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -460,11 +511,15 @@ class _WeatherAlert extends StatelessWidget {
                         ),
                         if (isCold)
                           Text(
-                            isVeryCold ? S.current.frostWarning : S.current.coldWarning,
+                            isVeryCold
+                                ? S.current.frostWarning
+                                : S.current.coldWarning,
                             style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w500,
-                              color: isVeryCold ? Colors.red[700] : Colors.orange[800],
+                              color: isVeryCold
+                                  ? Colors.red[700]
+                                  : Colors.orange[800],
                             ),
                           ),
                       ],
@@ -538,13 +593,20 @@ class _EmptyState extends StatelessWidget {
               const SizedBox(height: 20),
               Text(
                 S.current.noRecordsYet,
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               const SizedBox(height: 8),
               Text(
                 S.current.tapPlusToRecord,
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 14, color: Colors.grey[500], height: 1.5),
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey[500],
+                  height: 1.5,
+                ),
               ),
             ],
           ),
@@ -555,7 +617,6 @@ class _EmptyState extends StatelessWidget {
 }
 
 class _StatCard extends StatelessWidget {
-
   const _StatCard({
     required this.totalAttacks,
     required this.weeklyAttacks,
@@ -588,8 +649,16 @@ class _StatCard extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _StatItem(label: S.current.statsTotal, value: '$totalAttacks', icon: Icons.summarize_rounded),
-            _StatItem(label: S.current.statsWeek, value: '$weeklyAttacks', icon: Icons.calendar_today_rounded),
+            _StatItem(
+              label: S.current.statsTotal,
+              value: '$totalAttacks',
+              icon: Icons.summarize_rounded,
+            ),
+            _StatItem(
+              label: S.current.statsWeek,
+              value: '$weeklyAttacks',
+              icon: Icons.calendar_today_rounded,
+            ),
             _StatItem(
               label: S.current.statsAvgRcs,
               value: avgSeverity.toStringAsFixed(1),
@@ -604,8 +673,12 @@ class _StatCard extends StatelessWidget {
 }
 
 class _StatItem extends StatelessWidget {
-
-  const _StatItem({required this.label, required this.value, required this.icon, this.valueColor});
+  const _StatItem({
+    required this.label,
+    required this.value,
+    required this.icon,
+    this.valueColor,
+  });
   final String label;
   final String value;
   final IconData icon;
@@ -630,7 +703,10 @@ class _StatItem extends StatelessWidget {
             ),
           ),
         ),
-        Text(label, style: const TextStyle(fontSize: 12, color: Colors.white60)),
+        Text(
+          label,
+          style: const TextStyle(fontSize: 12, color: Colors.white60),
+        ),
       ],
     );
   }
@@ -643,14 +719,20 @@ class _StreakCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isMilestone = days >= 7 && days % 7 == 0;
-    final emoji = days == 0 ? '💪' : days < 3 ? '🌱' : days < 7 ? '✨' : '🔥';
+    final emoji = days == 0
+        ? '💪'
+        : days < 3
+        ? '🌱'
+        : days < 7
+        ? '✨'
+        : '🔥';
     final message = days == 0
         ? S.current.streakKeepGoing
         : days < 3
-            ? S.current.streakGoodStart
-            : days < 7
-                ? S.current.streakGreatStreak
-                : S.current.streakAmazing;
+        ? S.current.streakGoodStart
+        : days < 7
+        ? S.current.streakGreatStreak
+        : S.current.streakAmazing;
 
     return Card(
       child: Padding(
@@ -674,7 +756,9 @@ class _StreakCard extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 28,
                             fontWeight: FontWeight.bold,
-                            color: days >= 7 ? AppColors.severityLow : AppColors.primary,
+                            color: days >= 7
+                                ? AppColors.severityLow
+                                : AppColors.primary,
                           ),
                         ),
                       ),
@@ -692,18 +776,24 @@ class _StreakCard extends StatelessWidget {
               ),
             ),
             if (isMilestone)
-              Icon(Icons.emoji_events_rounded, color: Colors.amber[600], size: 28),
+              Icon(
+                Icons.emoji_events_rounded,
+                color: Colors.amber[600],
+                size: 28,
+              ),
           ],
         ),
       ),
     );
   }
-
 }
 
 class _AttackTile extends StatelessWidget {
-
-  const _AttackTile({required this.attack, required this.onDelete, this.onEdit});
+  const _AttackTile({
+    required this.attack,
+    required this.onDelete,
+    this.onEdit,
+  });
   final AttackEvent attack;
   final VoidCallback onDelete;
   final VoidCallback? onEdit;
@@ -714,41 +804,56 @@ class _AttackTile extends StatelessWidget {
     return Semantics(
       label: S.current.a11ySeverityValue(attack.severity),
       child: Card(
-      margin: const EdgeInsets.symmetric(vertical: 4),
-      child: ListTile(
-        leading: CircleAvatar(
-          backgroundColor: severityColor(attack.severity),
-          foregroundColor: Colors.white,
-          child: Text('${attack.severity}'),
+        margin: const EdgeInsets.symmetric(vertical: 4),
+        child: ListTile(
+          leading: CircleAvatar(
+            backgroundColor: severityColor(attack.severity),
+            foregroundColor: Colors.white,
+            child: Text('${attack.severity}'),
+          ),
+          title: Text(
+            dateFormat.format(attack.timestamp),
+            style: const TextStyle(fontWeight: FontWeight.w500),
+          ),
+          subtitle: Text(
+            '${attack.colorPhaseLabel} • ${attack.triggers.join(", ")}',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          trailing: attack.temperature != null
+              ? Text(
+                  '${attack.temperature!.toStringAsFixed(0)}°C',
+                  style: const TextStyle(fontSize: 14, color: Colors.grey),
+                )
+              : null,
+          onTap: onEdit,
+          onLongPress: () {
+            HapticFeedback.heavyImpact();
+            showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                title: Text(S.current.deleteAttackQuestion),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text(S.current.cancel),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      onDelete();
+                    },
+                    child: Text(
+                      S.current.delete,
+                      style: const TextStyle(color: Colors.red),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
         ),
-        title: Text(dateFormat.format(attack.timestamp), style: const TextStyle(fontWeight: FontWeight.w500)),
-        subtitle: Text(
-          '${attack.colorPhaseLabel} • ${attack.triggers.join(", ")}',
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-        trailing: attack.temperature != null
-            ? Text('${attack.temperature!.toStringAsFixed(0)}°C', style: const TextStyle(fontSize: 14, color: Colors.grey))
-            : null,
-        onTap: onEdit,
-        onLongPress: () {
-          HapticFeedback.heavyImpact();
-          showDialog(
-            context: context,
-            builder: (_) => AlertDialog(
-              title: Text(S.current.deleteAttackQuestion),
-              actions: [
-                TextButton(onPressed: () => Navigator.pop(context), child: Text(S.current.cancel)),
-                TextButton(
-                  onPressed: () { Navigator.pop(context); onDelete(); },
-                  child: Text(S.current.delete, style: const TextStyle(color: Colors.red)),
-                ),
-              ],
-            ),
-          );
-        },
       ),
-    ),
     );
   }
 }

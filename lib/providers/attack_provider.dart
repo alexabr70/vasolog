@@ -9,7 +9,6 @@ import 'package:vasolog/services/widget_service.dart';
 /// StorageService, затем [init] вызывается асинхронно после первого кадра.
 /// Все геттеры безопасно возвращают defaults пока !_isReady.
 class AttackProvider extends ChangeNotifier {
-
   AttackProvider(this._storage);
   final StorageService _storage;
   List<AttackEvent> _attacks = [];

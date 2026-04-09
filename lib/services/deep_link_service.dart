@@ -4,9 +4,9 @@ import 'package:flutter/foundation.dart';
 
 /// Действия по deep link / notification payload
 enum DeepLinkAction {
-  newAttack,    // Открыть экран записи приступа
-  history,      // Открыть историю
-  home,         // Открыть главную
+  newAttack, // Открыть экран записи приступа
+  history, // Открыть историю
+  home, // Открыть главную
 }
 
 /// Сервис deep linking (app_links + notification payloads)

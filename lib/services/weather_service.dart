@@ -4,7 +4,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 /// Данные о погоде
 class WeatherData {
-
   WeatherData({
     required this.temperature,
     required this.humidity,
@@ -91,9 +90,7 @@ class WeatherService {
         '&timezone=auto',
       );
 
-      final response = await http.get(url).timeout(
-        const Duration(seconds: 5),
-      );
+      final response = await http.get(url).timeout(const Duration(seconds: 5));
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);

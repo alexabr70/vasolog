@@ -13,7 +13,6 @@ class HistoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       appBar: AppBar(
         title: Text(S.current.tabHistory),
         flexibleSpace: Container(
@@ -78,8 +77,13 @@ class HistoryScreen extends StatelessWidget {
                                 showTitles: true,
                                 getTitlesWidget: (value, meta) {
                                   final days = [
-                                    'Пн', 'Вт', 'Ср', 'Чт',
-                                    'Пт', 'Сб', 'Вс'
+                                    'Пн',
+                                    'Вт',
+                                    'Ср',
+                                    'Чт',
+                                    'Пт',
+                                    'Сб',
+                                    'Вс',
                                   ];
                                   final index = value.toInt();
                                   if (index >= 0 && index < days.length) {
@@ -92,25 +96,26 @@ class HistoryScreen extends StatelessWidget {
                                 },
                               ),
                             ),
-                            topTitles: const AxisTitles(
-                              
-                            ),
-                            rightTitles: const AxisTitles(
-                              
-                            ),
+                            topTitles: const AxisTitles(),
+                            rightTitles: const AxisTitles(),
                           ),
                           borderData: FlBorderData(show: false),
                           barGroups: weekData,
                           gridData: const FlGridData(show: false),
                           barTouchData: BarTouchData(
                             touchTooltipData: BarTouchTooltipData(
-                              getTooltipItem: (group, groupIndex, rod, rodIndex) {
-                                if (rod.toY == 0) return null;
-                                return BarTooltipItem(
-                                  'RCS: ${rod.toY.toStringAsFixed(1)}',
-                                  TextStyle(color: severityColor(rod.toY.round()), fontWeight: FontWeight.bold, fontSize: 12),
-                                );
-                              },
+                              getTooltipItem:
+                                  (group, groupIndex, rod, rodIndex) {
+                                    if (rod.toY == 0) return null;
+                                    return BarTooltipItem(
+                                      'RCS: ${rod.toY.toStringAsFixed(1)}',
+                                      TextStyle(
+                                        color: severityColor(rod.toY.round()),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 12,
+                                      ),
+                                    );
+                                  },
                             ),
                           ),
                         ),
@@ -183,13 +188,18 @@ class HistoryScreen extends StatelessWidget {
                               if (attack.triggers.isNotEmpty)
                                 Text('Триггеры: ${attack.triggers.join(", ")}'),
                               if (attack.affectedFingers.isNotEmpty)
-                                Text('Пальцы: ${attack.affectedFingers.join(", ")}'),
+                                Text(
+                                  'Пальцы: ${attack.affectedFingers.join(", ")}',
+                                ),
                               if (attack.durationMinutes > 0)
-                                Text('Длительность: ${attack.durationMinutes} мин'),
+                                Text(
+                                  'Длительность: ${attack.durationMinutes} мин',
+                                ),
                               if (attack.temperature != null)
                                 Text(
-                                    'Погода: ${attack.temperature!.toStringAsFixed(1)}°C, '
-                                    'влажн. ${attack.humidity?.toStringAsFixed(0)}%'),
+                                  'Погода: ${attack.temperature!.toStringAsFixed(1)}°C, '
+                                  'влажн. ${attack.humidity?.toStringAsFixed(0)}%',
+                                ),
                               if (attack.notes != null)
                                 Text('Заметки: ${attack.notes}'),
                             ],
@@ -220,7 +230,8 @@ class HistoryScreen extends StatelessWidget {
 
       double avgSeverity = 0;
       if (dayAttacks.isNotEmpty) {
-        avgSeverity = dayAttacks
+        avgSeverity =
+            dayAttacks
                 .map((a) => a.severity)
                 .reduce((a, b) => a + b)
                 .toDouble() /
@@ -248,7 +259,6 @@ class HistoryScreen extends StatelessWidget {
 }
 
 class _StatRow extends StatelessWidget {
-
   const _StatRow(this.label, this.value);
   final String label;
   final String value;
@@ -261,10 +271,7 @@ class _StatRow extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(label),
-          Text(
-            value,
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
+          Text(value, style: const TextStyle(fontWeight: FontWeight.bold)),
         ],
       ),
     );

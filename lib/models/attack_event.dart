@@ -2,7 +2,6 @@ import 'package:hive/hive.dart';
 
 /// Модель приступа феномена Рейно
 class AttackEvent extends HiveObject {
-
   AttackEvent({
     required this.id,
     required this.timestamp,

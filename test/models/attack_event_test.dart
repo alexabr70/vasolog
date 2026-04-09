@@ -36,22 +36,117 @@ void main() {
     });
 
     test('severityLabel возвращает правильные метки', () {
-      expect(AttackEvent(id: '1', timestamp: DateTime.now(), severity: 0).severityLabel, 'Лёгкий');
-      expect(AttackEvent(id: '2', timestamp: DateTime.now(), severity: 2).severityLabel, 'Лёгкий');
-      expect(AttackEvent(id: '3', timestamp: DateTime.now(), severity: 3).severityLabel, 'Умеренный');
-      expect(AttackEvent(id: '4', timestamp: DateTime.now(), severity: 5).severityLabel, 'Умеренный');
-      expect(AttackEvent(id: '5', timestamp: DateTime.now(), severity: 6).severityLabel, 'Сильный');
-      expect(AttackEvent(id: '6', timestamp: DateTime.now(), severity: 7).severityLabel, 'Сильный');
-      expect(AttackEvent(id: '7', timestamp: DateTime.now(), severity: 8).severityLabel, 'Тяжёлый');
-      expect(AttackEvent(id: '8', timestamp: DateTime.now(), severity: 10).severityLabel, 'Тяжёлый');
+      expect(
+        AttackEvent(
+          id: '1',
+          timestamp: DateTime.now(),
+          severity: 0,
+        ).severityLabel,
+        'Лёгкий',
+      );
+      expect(
+        AttackEvent(
+          id: '2',
+          timestamp: DateTime.now(),
+          severity: 2,
+        ).severityLabel,
+        'Лёгкий',
+      );
+      expect(
+        AttackEvent(
+          id: '3',
+          timestamp: DateTime.now(),
+          severity: 3,
+        ).severityLabel,
+        'Умеренный',
+      );
+      expect(
+        AttackEvent(
+          id: '4',
+          timestamp: DateTime.now(),
+          severity: 5,
+        ).severityLabel,
+        'Умеренный',
+      );
+      expect(
+        AttackEvent(
+          id: '5',
+          timestamp: DateTime.now(),
+          severity: 6,
+        ).severityLabel,
+        'Сильный',
+      );
+      expect(
+        AttackEvent(
+          id: '6',
+          timestamp: DateTime.now(),
+          severity: 7,
+        ).severityLabel,
+        'Сильный',
+      );
+      expect(
+        AttackEvent(
+          id: '7',
+          timestamp: DateTime.now(),
+          severity: 8,
+        ).severityLabel,
+        'Тяжёлый',
+      );
+      expect(
+        AttackEvent(
+          id: '8',
+          timestamp: DateTime.now(),
+          severity: 10,
+        ).severityLabel,
+        'Тяжёлый',
+      );
     });
 
     test('colorPhaseLabel возвращает русские названия', () {
-      expect(AttackEvent(id: '1', timestamp: DateTime.now(), severity: 1).colorPhaseLabel, 'Белый (ишемия)');
-      expect(AttackEvent(id: '2', timestamp: DateTime.now(), severity: 1, colorPhase: 'blue').colorPhaseLabel, 'Синий (цианоз)');
-      expect(AttackEvent(id: '3', timestamp: DateTime.now(), severity: 1, colorPhase: 'red').colorPhaseLabel, 'Красный (реперфузия)');
-      expect(AttackEvent(id: '4', timestamp: DateTime.now(), severity: 1, colorPhase: 'mixed').colorPhaseLabel, 'Смешанный');
-      expect(AttackEvent(id: '5', timestamp: DateTime.now(), severity: 1, colorPhase: 'unknown').colorPhaseLabel, 'unknown');
+      expect(
+        AttackEvent(
+          id: '1',
+          timestamp: DateTime.now(),
+          severity: 1,
+        ).colorPhaseLabel,
+        'Белый (ишемия)',
+      );
+      expect(
+        AttackEvent(
+          id: '2',
+          timestamp: DateTime.now(),
+          severity: 1,
+          colorPhase: 'blue',
+        ).colorPhaseLabel,
+        'Синий (цианоз)',
+      );
+      expect(
+        AttackEvent(
+          id: '3',
+          timestamp: DateTime.now(),
+          severity: 1,
+          colorPhase: 'red',
+        ).colorPhaseLabel,
+        'Красный (реперфузия)',
+      );
+      expect(
+        AttackEvent(
+          id: '4',
+          timestamp: DateTime.now(),
+          severity: 1,
+          colorPhase: 'mixed',
+        ).colorPhaseLabel,
+        'Смешанный',
+      );
+      expect(
+        AttackEvent(
+          id: '5',
+          timestamp: DateTime.now(),
+          severity: 1,
+          colorPhase: 'unknown',
+        ).colorPhaseLabel,
+        'unknown',
+      );
     });
 
     test('toMap/fromMap roundtrip сохраняет все поля', () {
