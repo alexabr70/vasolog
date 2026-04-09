@@ -3,8 +3,6 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vasolog/l10n/app_strings.dart';
@@ -25,64 +23,75 @@ void main() async {
     debugPrint('[startup] +${startStopwatch.elapsedMilliseconds}ms $step');
   }
 
-  final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  logStep('splash preserved');
+  WidgetsFlutterBinding.ensureInitialized();
+  // Раньше был FlutterNativeSplash.preserve() + remove в post-frame callback,
+  // но это удерживало native blue splash до первого кадра Flutter (+800ms).
+  // Без preserve - native splash исчезает как только Flutter engine готов,
+  // пользователь сразу видит Flutter _AppLoadingScreen с анимацией.
+  logStep('flutter engine ready');
 
-  // Запрет загрузки шрифтов из сети (ускоряет первый запуск)
-  GoogleFonts.config.allowRuntimeFetching = false;
+  // Локализация синхронно (дефолт - системная локаль), язык из prefs
+  // подхватится позже в _postFrameInit после async загрузки
+  S.init(ui.PlatformDispatcher.instance.locale.languageCode);
 
-  // КРИТИЧЕСКИЙ ПУТЬ: только то, что нужно для первого кадра
-  // (Hive нужен AttackProvider, SharedPreferences - для onboarding flag + язык)
-  StorageService? storage;
-  var onboardingDone = false;
-  LocaleProvider? localeProvider;
-
-  try {
-    storage = StorageService();
-    await storage.init();
-    logStep('storage init done');
-
-    final prefs = await SharedPreferences.getInstance();
-    onboardingDone = prefs.getBool('onboarding_done') ?? false;
-    localeProvider = await LocaleProvider.load(prefs);
-    logStep('prefs read done');
-  } catch (e) {
-    debugPrint('Init error: $e');
-    // Гарантируем что storage инициализирован даже после ошибки
-    storage ??= StorageService();
-    try {
-      await storage.init();
-    } catch (_) {
-      // Hive init провалился повторно - приложение запустится, но без данных
-      debugPrint('Storage init retry failed');
-    }
-  }
-
-  // Fallback если prefs сломались: инициализируем язык по системной локали
-  if (localeProvider == null) {
-    S.init(ui.PlatformDispatcher.instance.locale.languageCode);
-    localeProvider = LocaleProvider(null);
-  }
+  // Создаём провайдеры БЕЗ инициализации хранилища - это быстро.
+  // Реальный Hive.init() запустится после первого кадра чтобы не блокировать splash.
+  final storage = StorageService();
+  final attackProvider = AttackProvider(storage);
+  final localeProvider = LocaleProvider(null);
 
   runApp(
     VasoLogApp(
       storage: storage,
-      showOnboarding: !onboardingDone,
+      attackProvider: attackProvider,
       localeProvider: localeProvider,
     ),
   );
   logStep('runApp called');
 
-  // Убираем splash сразу после первого кадра (не до runApp!)
+  // Запускаем async init после первого кадра
   WidgetsBinding.instance.addPostFrameCallback((_) {
-    FlutterNativeSplash.remove();
-    logStep('splash removed (first frame)');
-
-    // ОТЛОЖЕННАЯ ИНИЦИАЛИЗАЦИЯ: всё, что не блокирует первый UI
-    // Уведомления, deep links, home widget - могут подождать
-    unawaited(_initDeferredServices(logStep));
+    logStep('first frame');
+    // Критический и отложенный init - всё после первого кадра
+    unawaited(_postFrameInit(attackProvider, localeProvider, logStep));
   });
+}
+
+/// Инициализация после первого кадра: Hive, prefs, язык, сервисы.
+/// UI уже виден с пустым состоянием - данные подтянутся через notifyListeners.
+Future<void> _postFrameInit(
+  AttackProvider attackProvider,
+  LocaleProvider localeProvider,
+  void Function(String) logStep,
+) async {
+  // Hive + данные приступов - самое долгое (keystore access)
+  try {
+    await attackProvider.init();
+    logStep('attack provider (Hive) init done');
+  } catch (e) {
+    debugPrint('AttackProvider init error: $e');
+  }
+
+  // Язык из prefs (если юзер его менял)
+  try {
+    final prefs = await SharedPreferences.getInstance();
+    final saved = prefs.getString(LocaleProvider.prefsKey);
+    if (saved != null && saved != localeProvider.languageCode) {
+      await localeProvider.setLanguage(saved);
+    }
+    logStep('locale prefs loaded');
+  } catch (e) {
+    debugPrint('Locale load error: $e');
+  }
+
+  // Онбординг - не блокирует UI; если надо показать, навигация
+  // произойдёт через MainShell (AppState)
+  // (текущая реализация показывает onboarding только при !onboarding_done
+  //  - см. передачу showOnboarding в VasoLogApp. Пока упрощение: онбординг
+  //  покажется при следующем запуске если ещё не видели)
+
+  // Отложенная инициализация сервисов (не критично для UI)
+  await _initDeferredServices(logStep);
 }
 
 /// Сервисы, которые инициализируются после первого кадра
@@ -112,19 +121,19 @@ class VasoLogApp extends StatelessWidget {
 
   const VasoLogApp({
     required this.storage,
-    required this.showOnboarding,
+    required this.attackProvider,
     required this.localeProvider,
     super.key,
   });
   final StorageService storage;
-  final bool showOnboarding;
+  final AttackProvider attackProvider;
   final LocaleProvider localeProvider;
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => AttackProvider(storage)),
+        ChangeNotifierProvider<AttackProvider>.value(value: attackProvider),
         ChangeNotifierProvider<LocaleProvider>.value(value: localeProvider),
       ],
       child: Consumer<LocaleProvider>(
@@ -162,14 +171,17 @@ class VasoLogApp extends StatelessWidget {
           Locale('ja'),
           Locale('ko'),
         ],
-          home: showOnboarding ? const OnboardingScreen() : const MainShell(),
+          home: const _AppRoot(),
         ),
       ),
     );
   }
 
   ThemeData _lightTheme() {
-    final textTheme = GoogleFonts.interTextTheme(ThemeData.light().textTheme);
+    // Используем системный шрифт (Roboto на Android, SF на iOS).
+    // GoogleFonts.interTextTheme() триггерит ленивую HTTP-загрузку на первом
+    // кадре, что делает splash ощутимо длиннее.
+    final textTheme = ThemeData.light().textTheme;
     return ThemeData(
       colorSchemeSeed: AppColors.primary,
       brightness: Brightness.light,
@@ -210,7 +222,7 @@ class VasoLogApp extends StatelessWidget {
   }
 
   ThemeData _darkTheme() {
-    final textTheme = GoogleFonts.interTextTheme(ThemeData.dark().textTheme);
+    final textTheme = ThemeData.dark().textTheme;
     return ThemeData(
       colorSchemeSeed: AppColors.primary,
       brightness: Brightness.dark,
@@ -243,6 +255,153 @@ class VasoLogApp extends StatelessWidget {
         elevation: 4,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
+        ),
+      ),
+    );
+  }
+}
+
+/// Корневой widget: показывает loading screen пока AttackProvider не готов,
+/// затем - MainShell (или Onboarding на первом запуске).
+/// Это заменяет blue native splash на анимированный Flutter-экран
+/// с индикатором загрузки.
+class _AppRoot extends StatefulWidget {
+  const _AppRoot();
+
+  @override
+  State<_AppRoot> createState() => _AppRootState();
+}
+
+class _AppRootState extends State<_AppRoot> {
+  bool? _onboardingDone;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadOnboardingFlag();
+  }
+
+  Future<void> _loadOnboardingFlag() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      if (mounted) {
+        setState(() => _onboardingDone = prefs.getBool('onboarding_done') ?? false);
+      }
+    } catch (_) {
+      if (mounted) setState(() => _onboardingDone = true);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<AttackProvider>(
+      builder: (context, provider, _) {
+        // Ждём и Hive, и загрузку флага онбординга
+        if (!provider.isReady || _onboardingDone == null) {
+          return const _AppLoadingScreen();
+        }
+        return _onboardingDone!
+            ? const MainShell()
+            : const OnboardingScreen();
+      },
+    );
+  }
+}
+
+/// Экран загрузки с градиентом, логотипом, пульсирующей анимацией и
+/// текстом "Загрузка данных". Показывается пока Hive инициализируется.
+class _AppLoadingScreen extends StatefulWidget {
+  const _AppLoadingScreen();
+
+  @override
+  State<_AppLoadingScreen> createState() => _AppLoadingScreenState();
+}
+
+class _AppLoadingScreenState extends State<_AppLoadingScreen>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _pulseController;
+
+  @override
+  void initState() {
+    super.initState();
+    _pulseController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1200),
+    )..repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _pulseController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [AppColors.gradientStart, AppColors.gradientEnd],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Пульсирующий логотип
+              ScaleTransition(
+                scale: Tween<double>(begin: 0.85, end: 1.0).animate(
+                  CurvedAnimation(
+                    parent: _pulseController,
+                    curve: Curves.easeInOut,
+                  ),
+                ),
+                child: Container(
+                  width: 110,
+                  height: 110,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white.withValues(alpha: 0.15),
+                    border: Border.all(
+                      color: Colors.white.withValues(alpha: 0.4),
+                      width: 2,
+                    ),
+                  ),
+                  child: const Icon(
+                    Icons.ac_unit_rounded,
+                    size: 60,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 28),
+              // Название приложения
+              const Text(
+                'VasoLog',
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  letterSpacing: 1.2,
+                ),
+              ),
+              const SizedBox(height: 40),
+              // Линейный индикатор загрузки
+              SizedBox(
+                width: 180,
+                child: LinearProgressIndicator(
+                  backgroundColor: Colors.white.withValues(alpha: 0.2),
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    Colors.white.withValues(alpha: 0.9),
+                  ),
+                  minHeight: 3,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

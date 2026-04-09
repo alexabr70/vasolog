@@ -141,6 +141,20 @@ class S {
   String get phaseRed => _t({'en': 'Red', 'ru': 'Красный', 'de': 'Rot', 'fr': 'Rouge', 'es': 'Rojo', 'pt': 'Vermelho', 'it': 'Rosso', 'sv': 'Röd', 'fi': 'Punainen', 'nb': 'Rød', 'da': 'Rød', 'nl': 'Rood', 'pl': 'Czerwony', 'cs': 'Červená', 'hu': 'Piros', 'uk': 'Червоний', 'ja': '赤', 'ko': '빨간색'});
   String get phaseMixed => _t({'en': 'Mixed', 'ru': 'Смешан.', 'de': 'Gemischt', 'fr': 'Mixte', 'es': 'Mixto', 'pt': 'Misto', 'it': 'Misto', 'sv': 'Blandat', 'fi': 'Seka', 'nb': 'Blandet', 'da': 'Blandet', 'nl': 'Gemengd', 'pl': 'Mieszany', 'cs': 'Smíšená', 'hu': 'Vegyes', 'uk': 'Змішан.', 'ja': '混合', 'ko': '혼합'});
 
+  /// Локализованное название фазы по ключу хранения ('white'/'blue'/'red'/'mixed')
+  String phaseFromKey(String key) {
+    switch (key) {
+      case 'white': return phaseWhite;
+      case 'blue':  return phaseBlue;
+      case 'red':   return phaseRed;
+      case 'mixed': return phaseMixed;
+      default:      return key;
+    }
+  }
+
+  /// "Нет данных" / "N/A" в отчётах и UI
+  String get notAvailable => _t({'en': 'N/A', 'ru': 'Нет данных', 'de': 'Keine Daten', 'fr': 'Non dispo.', 'es': 'Sin datos', 'pt': 'Sem dados', 'it': 'Nessun dato', 'sv': 'Inga data', 'fi': 'Ei tietoja', 'nb': 'Ingen data', 'da': 'Ingen data', 'nl': 'Geen gegevens', 'pl': 'Brak danych', 'cs': 'Žádná data', 'hu': 'Nincs adat', 'uk': 'Немає даних', 'ja': 'データなし', 'ko': '데이터 없음'});
+
   // === Триггеры ===
   String get triggerCold => _t({'en': 'Cold', 'ru': 'Холод', 'de': 'Kälte', 'fr': 'Froid', 'es': 'Frío', 'pt': 'Frio', 'it': 'Freddo', 'sv': 'Kyla', 'fi': 'Kylmyys', 'nb': 'Kulde', 'da': 'Kulde', 'nl': 'Koude', 'pl': 'Zimno', 'cs': 'Chlad', 'hu': 'Hideg', 'uk': 'Холод', 'ja': '寒さ', 'ko': '추위'});
   String get triggerStress => _t({'en': 'Stress', 'ru': 'Стресс', 'de': 'Stress', 'fr': 'Stress', 'es': 'Estrés', 'pt': 'Estresse', 'it': 'Stress', 'sv': 'Stress', 'fi': 'Stressi', 'nb': 'Stress', 'da': 'Stress', 'nl': 'Stress', 'pl': 'Stres', 'cs': 'Stres', 'hu': 'Stressz', 'uk': 'Стрес', 'ja': 'ストレス', 'ko': '스트레스'});

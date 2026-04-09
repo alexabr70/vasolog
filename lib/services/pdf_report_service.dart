@@ -94,7 +94,7 @@ class PdfReportService {
               [S.current.pdfAvgSeverity, avgSeverity.toStringAsFixed(1)],
               [
                 S.current.pdfMostCommonTrigger,
-                if (sortedTriggers.isNotEmpty) sortedTriggers.first.key else 'N/A'
+                if (sortedTriggers.isNotEmpty) sortedTriggers.first.key else S.current.notAvailable
               ],
               [
                 S.current.pdfAvgTemp,
@@ -147,7 +147,7 @@ class PdfReportService {
               ...attacks.map((a) => [
                     dateTimeFormat.format(a.timestamp),
                     '${a.severity}/10',
-                    a.colorPhase,
+                    S.current.phaseFromKey(a.colorPhase),
                     a.temperature?.toStringAsFixed(1) ?? '-',
                     a.triggers.join(', '),
                   ]),
@@ -174,7 +174,7 @@ class PdfReportService {
   String _avgTemp(List<AttackEvent> attacks) {
     final temps =
         attacks.where((a) => a.temperature != null).map((a) => a.temperature!);
-    if (temps.isEmpty) return 'N/A';
+    if (temps.isEmpty) return S.current.notAvailable;
     final avg = temps.reduce((a, b) => a + b) / temps.length;
     return '${avg.toStringAsFixed(1)}°C';
   }
