@@ -101,6 +101,17 @@ class HistoryScreen extends StatelessWidget {
                           borderData: FlBorderData(show: false),
                           barGroups: weekData,
                           gridData: const FlGridData(show: false),
+                          barTouchData: BarTouchData(
+                            touchTooltipData: BarTouchTooltipData(
+                              getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                                if (rod.toY == 0) return null;
+                                return BarTooltipItem(
+                                  'RCS: ${rod.toY.toStringAsFixed(1)}',
+                                  TextStyle(color: severityColor(rod.toY.round()), fontWeight: FontWeight.bold, fontSize: 12),
+                                );
+                              },
+                            ),
+                          ),
                         ),
                       ),
                     ),

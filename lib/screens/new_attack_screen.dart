@@ -645,7 +645,7 @@ class _SectionCard extends StatelessWidget {
   }
 }
 
-/// Интерактивная схема рук для выбора пальцев
+/// Интерактивная визуальная схема рук для выбора пальцев
 class _HandDiagram extends StatelessWidget {
   final Set<String> selectedFingers;
   final ValueChanged<String> onFingerTap;
@@ -657,91 +657,192 @@ class _HandDiagram extends StatelessWidget {
     return Row(
       children: [
         // Левая рука
-        Expanded(
-          child: Column(
-            children: [
-              Text('Левая', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.grey[700])),
-              const SizedBox(height: 8),
-              _buildHandGrid([
-                'Большой Л', 'Указат. Л', 'Средний Л', 'Безымян. Л', 'Мизинец Л',
-              ]),
-            ],
-          ),
-        ),
-        Container(width: 1, height: 100, color: Colors.grey[300]),
+        Expanded(child: _HandVisual(
+          label: 'Левая',
+          fingers: const ['Большой Л', 'Указат. Л', 'Средний Л', 'Безымян. Л', 'Мизинец Л'],
+          selectedFingers: selectedFingers,
+          onFingerTap: onFingerTap,
+          isLeft: true,
+        )),
+        const SizedBox(width: 8),
         // Правая рука
-        Expanded(
-          child: Column(
-            children: [
-              Text('Правая', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.grey[700])),
-              const SizedBox(height: 8),
-              _buildHandGrid([
-                'Большой П', 'Указат. П', 'Средний П', 'Безымян. П', 'Мизинец П',
-              ]),
-            ],
+        Expanded(child: _HandVisual(
+          label: 'Правая',
+          fingers: const ['Большой П', 'Указат. П', 'Средний П', 'Безымян. П', 'Мизинец П'],
+          selectedFingers: selectedFingers,
+          onFingerTap: onFingerTap,
+          isLeft: false,
+        )),
+      ],
+    );
+  }
+}
+
+/// Визуальная рука с тыкабельными пальцами (CustomPainter)
+class _HandVisual extends StatelessWidget {
+  final String label;
+  final List<String> fingers;
+  final Set<String> selectedFingers;
+  final ValueChanged<String> onFingerTap;
+  final bool isLeft;
+
+  const _HandVisual({
+    required this.label,
+    required this.fingers,
+    required this.selectedFingers,
+    required this.onFingerTap,
+    required this.isLeft,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    // Позиции пальцев на холсте (нормализованные 0-1)
+    // Расположение как на реальной руке, вид сверху ладонью вниз
+    final positions = isLeft
+        ? [
+            const Offset(0.12, 0.72), // Большой - внизу сбоку
+            const Offset(0.22, 0.18), // Указательный
+            const Offset(0.42, 0.08), // Средний - самый длинный
+            const Offset(0.62, 0.16), // Безымянный
+            const Offset(0.80, 0.30), // Мизинец
+          ]
+        : [
+            const Offset(0.88, 0.72), // Большой - зеркально
+            const Offset(0.78, 0.18),
+            const Offset(0.58, 0.08),
+            const Offset(0.38, 0.16),
+            const Offset(0.20, 0.30),
+          ];
+
+    final shortLabels = ['Б', 'У', 'С', 'Б', 'М'];
+
+    return Column(
+      children: [
+        Text(label, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.grey[700])),
+        const SizedBox(height: 4),
+        SizedBox(
+          height: 180,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final w = constraints.maxWidth;
+              final h = 180.0;
+              return Stack(
+                children: [
+                  // Контур ладони
+                  CustomPaint(
+                    size: Size(w, h),
+                    painter: _HandOutlinePainter(
+                      isLeft: isLeft,
+                      color: Colors.grey.withValues(alpha: 0.15),
+                    ),
+                  ),
+                  // Тыкабельные пальцы
+                  ...List.generate(5, (i) {
+                    final isSelected = selectedFingers.contains(fingers[i]);
+                    final pos = positions[i];
+                    final x = pos.dx * w - 22;
+                    final y = pos.dy * h - 22;
+                    return Positioned(
+                      left: x,
+                      top: y,
+                      child: GestureDetector(
+                        onTap: () => onFingerTap(fingers[i]),
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 250),
+                          width: 44,
+                          height: 44,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: isSelected
+                                ? AppColors.phaseBlue.withValues(alpha: 0.3)
+                                : Colors.grey.withValues(alpha: 0.08),
+                            border: Border.all(
+                              color: isSelected ? AppColors.phaseBlue : Colors.grey.withValues(alpha: 0.4),
+                              width: isSelected ? 2.5 : 1,
+                            ),
+                            boxShadow: isSelected
+                                ? [BoxShadow(color: AppColors.phaseBlue.withValues(alpha: 0.3), blurRadius: 8)]
+                                : null,
+                          ),
+                          child: Center(
+                            child: Text(
+                              shortLabels[i],
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: isSelected ? AppColors.phaseBlue : Colors.grey[500],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  }),
+                ],
+              );
+            },
           ),
         ),
       ],
     );
   }
+}
 
-  Widget _buildHandGrid(List<String> fingers) {
-    // Расположение пальцев в виде дуги (как настоящая рука)
-    final shortNames = {
-      'Большой Л': '1', 'Указат. Л': '2', 'Средний Л': '3',
-      'Безымян. Л': '4', 'Мизинец Л': '5',
-      'Большой П': '1', 'Указат. П': '2', 'Средний П': '3',
-      'Безымян. П': '4', 'Мизинец П': '5',
-    };
-    final fullNames = {
-      'Большой Л': 'Большой', 'Указат. Л': 'Указат.', 'Средний Л': 'Средний',
-      'Безымян. Л': 'Безым.', 'Мизинец Л': 'Мизинец',
-      'Большой П': 'Большой', 'Указат. П': 'Указат.', 'Средний П': 'Средний',
-      'Безымян. П': 'Безым.', 'Мизинец П': 'Мизинец',
-    };
+/// Контур руки (CustomPainter)
+class _HandOutlinePainter extends CustomPainter {
+  final bool isLeft;
+  final Color color;
 
-    return Wrap(
-      spacing: 6,
-      runSpacing: 6,
-      alignment: WrapAlignment.center,
-      children: fingers.map((finger) {
-        final isSelected = selectedFingers.contains(finger);
-        return GestureDetector(
-          onTap: () => onFingerTap(finger),
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            width: 52,
-            height: 52,
-            decoration: BoxDecoration(
-              color: isSelected
-                  ? AppColors.phaseBlue.withValues(alpha: 0.25)
-                  : Colors.grey.withValues(alpha: 0.08),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: isSelected ? AppColors.phaseBlue : Colors.grey.withValues(alpha: 0.3),
-                width: isSelected ? 2 : 1,
-              ),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  shortNames[finger] ?? '',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: isSelected ? AppColors.phaseBlue : Colors.grey[600],
-                  ),
-                ),
-                Text(
-                  fullNames[finger] ?? '',
-                  style: TextStyle(fontSize: 8, color: isSelected ? AppColors.phaseBlue : Colors.grey[500]),
-                ),
-              ],
-            ),
-          ),
-        );
-      }).toList(),
-    );
+  _HandOutlinePainter({required this.isLeft, required this.color});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = color
+      ..style = PaintingStyle.fill;
+
+    final w = size.width;
+    final h = size.height;
+
+    // Рисуем упрощённый силуэт руки
+    final path = Path();
+    if (isLeft) {
+      // Ладонь
+      path.moveTo(w * 0.20, h * 0.95);
+      path.quadraticBezierTo(w * 0.05, h * 0.75, w * 0.10, h * 0.60);
+      // Большой палец
+      path.quadraticBezierTo(w * 0.05, h * 0.55, w * 0.08, h * 0.50);
+      // К указательному
+      path.quadraticBezierTo(w * 0.12, h * 0.40, w * 0.15, h * 0.28);
+      path.quadraticBezierTo(w * 0.18, h * 0.15, w * 0.22, h * 0.10);
+      // Средний
+      path.quadraticBezierTo(w * 0.30, h * 0.02, w * 0.42, h * 0.02);
+      // Безымянный
+      path.quadraticBezierTo(w * 0.52, h * 0.04, w * 0.62, h * 0.08);
+      // Мизинец
+      path.quadraticBezierTo(w * 0.75, h * 0.15, w * 0.85, h * 0.22);
+      // Край ладони
+      path.quadraticBezierTo(w * 0.95, h * 0.40, w * 0.90, h * 0.65);
+      path.quadraticBezierTo(w * 0.85, h * 0.85, w * 0.70, h * 0.95);
+      path.close();
+    } else {
+      // Зеркально
+      path.moveTo(w * 0.80, h * 0.95);
+      path.quadraticBezierTo(w * 0.95, h * 0.75, w * 0.90, h * 0.60);
+      path.quadraticBezierTo(w * 0.95, h * 0.55, w * 0.92, h * 0.50);
+      path.quadraticBezierTo(w * 0.88, h * 0.40, w * 0.85, h * 0.28);
+      path.quadraticBezierTo(w * 0.82, h * 0.15, w * 0.78, h * 0.10);
+      path.quadraticBezierTo(w * 0.70, h * 0.02, w * 0.58, h * 0.02);
+      path.quadraticBezierTo(w * 0.48, h * 0.04, w * 0.38, h * 0.08);
+      path.quadraticBezierTo(w * 0.25, h * 0.15, w * 0.15, h * 0.22);
+      path.quadraticBezierTo(w * 0.05, h * 0.40, w * 0.10, h * 0.65);
+      path.quadraticBezierTo(w * 0.15, h * 0.85, w * 0.30, h * 0.95);
+      path.close();
+    }
+
+    canvas.drawPath(path, paint);
   }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

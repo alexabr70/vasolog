@@ -47,6 +47,9 @@ dependencies:
   home_widget: ^0.7.0
   # Deep linking
   app_links: ^6.3.3
+  google_fonts: ^8.0.2
+  flutter_localizations:
+    sdk: flutter
 
 dev_dependencies:
   flutter_test:

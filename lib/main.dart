@@ -1,5 +1,8 @@
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'services/storage_service.dart';
@@ -10,6 +13,7 @@ import 'providers/attack_provider.dart';
 import 'screens/main_shell.dart';
 import 'screens/onboarding_screen.dart';
 import 'utils/constants.dart';
+import 'l10n/app_strings.dart';
 
 void main() async {
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -41,6 +45,10 @@ void main() async {
   await DeepLinkService().init();
   await WidgetService.init();
 
+  // Инициализация локализации
+  final locale = ui.PlatformDispatcher.instance.locale.languageCode;
+  S.init(locale);
+
   // Убираем splash в любом случае
   FlutterNativeSplash.remove();
 
@@ -63,16 +71,27 @@ class VasoLogApp extends StatelessWidget {
         theme: _lightTheme(),
         darkTheme: _darkTheme(),
         themeMode: ThemeMode.system,
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('en'),
+          Locale('ru'),
+        ],
         home: showOnboarding ? const OnboardingScreen() : const MainShell(),
       ),
     );
   }
 
   ThemeData _lightTheme() {
+    final textTheme = GoogleFonts.interTextTheme(ThemeData.light().textTheme);
     return ThemeData(
       colorSchemeSeed: AppColors.primary,
       brightness: Brightness.light,
       useMaterial3: true,
+      textTheme: textTheme,
       scaffoldBackgroundColor: AppColors.background,
       pageTransitionsTheme: const PageTransitionsTheme(
         builders: {
@@ -108,10 +127,12 @@ class VasoLogApp extends StatelessWidget {
   }
 
   ThemeData _darkTheme() {
+    final textTheme = GoogleFonts.interTextTheme(ThemeData.dark().textTheme);
     return ThemeData(
       colorSchemeSeed: AppColors.primary,
       brightness: Brightness.dark,
       useMaterial3: true,
+      textTheme: textTheme,
       pageTransitionsTheme: const PageTransitionsTheme(
         builders: {
           TargetPlatform.android: PredictiveBackPageTransitionsBuilder(),

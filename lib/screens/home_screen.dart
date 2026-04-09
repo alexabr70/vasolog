@@ -349,7 +349,17 @@ class _WeekTrendChart extends StatelessWidget {
                       ),
                     ),
                   ],
-                  lineTouchData: const LineTouchData(enabled: false),
+                  lineTouchData: LineTouchData(
+                    touchTooltipData: LineTouchTooltipData(
+                      getTooltipItems: (spots) => spots.map((spot) {
+                        if (spot.y == 0) return null;
+                        return LineTooltipItem(
+                          'RCS: ${spot.y.toStringAsFixed(1)}',
+                          TextStyle(color: severityColor(spot.y.round()), fontWeight: FontWeight.bold, fontSize: 12),
+                        );
+                      }).toList(),
+                    ),
+                  ),
                 ),
               ),
             ),
