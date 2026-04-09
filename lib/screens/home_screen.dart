@@ -376,11 +376,18 @@ class _WeatherAlert extends StatelessWidget {
   final WeatherData weather;
   const _WeatherAlert({required this.weather});
 
+  /// Форматирование температуры без "-0"
+  static String _formatTemp(double temp) {
+    final rounded = temp.roundToDouble();
+    if (rounded == 0 || rounded == -0) return '0';
+    return temp.toStringAsFixed(0);
+  }
+
   @override
   Widget build(BuildContext context) {
     final temp = weather.temperature;
     final isCold = temp <= 10;
-    final isVeryCold = temp <= 0;
+    final isVeryCold = temp < -5;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Semantics(
@@ -412,7 +419,7 @@ class _WeatherAlert extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        '${temp.toStringAsFixed(0)}°C',
+                        '${_formatTemp(temp)}°C',
                         style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(width: 8),

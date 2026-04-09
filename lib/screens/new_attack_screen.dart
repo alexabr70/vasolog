@@ -719,7 +719,7 @@ class _HandVisual extends StatelessWidget {
             const Offset(0.20, 0.30),
           ];
 
-    final shortLabels = ['БП', 'УК', 'СР', 'БЗ', 'МЗ'];
+    final shortLabels = ['Больш.', 'Указат.', 'Средн.', 'Безым.', 'Мизин.'];
 
     final hasSelection = fingers.any((f) => selectedFingers.contains(f));
     return Column(
@@ -727,11 +727,11 @@ class _HandVisual extends StatelessWidget {
         Text(label, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.grey[700])),
         const SizedBox(height: 4),
         SizedBox(
-          height: 180,
+          height: 200,
           child: LayoutBuilder(
             builder: (context, constraints) {
               final w = constraints.maxWidth;
-              final h = 180.0;
+              final h = 200.0;
               return Stack(
                 children: [
                   // Контур ладони
@@ -760,8 +760,8 @@ class _HandVisual extends StatelessWidget {
                   ...List.generate(5, (i) {
                     final isSelected = selectedFingers.contains(fingers[i]);
                     final pos = positions[i];
-                    final x = pos.dx * w - 22;
-                    final y = pos.dy * h - 22;
+                    final x = pos.dx * w - 27;
+                    final y = pos.dy * h - 27;
                     return Positioned(
                       left: x,
                       top: y,
@@ -773,8 +773,8 @@ class _HandVisual extends StatelessWidget {
                           onTap: () => onFingerTap(fingers[i]),
                           child: AnimatedContainer(
                             duration: const Duration(milliseconds: 250),
-                            width: 44,
-                            height: 44,
+                            width: 54,
+                            height: 54,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               color: isSelected
@@ -792,7 +792,7 @@ class _HandVisual extends StatelessWidget {
                               child: Text(
                                 shortLabels[i],
                                 style: TextStyle(
-                                  fontSize: 13,
+                                  fontSize: 9,
                                   fontWeight: FontWeight.w700,
                                   color: isSelected ? AppColors.phaseBlue : Colors.grey[600],
                                 ),

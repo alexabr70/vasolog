@@ -151,32 +151,39 @@ class _MainShellState extends State<MainShell> with TickerProviderStateMixin {
       child: SizedBox(
         height: 60,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _NavItem(
-              icon: Icons.dashboard_rounded,
-              label: S.current.tabHome,
-              isActive: _currentIndex == 0,
-              onTap: () => _onTabTap(0),
+            Expanded(
+              child: _NavItem(
+                icon: Icons.dashboard_rounded,
+                label: S.current.tabHome,
+                isActive: _currentIndex == 0,
+                onTap: () => _onTabTap(0),
+              ),
             ),
-            _NavItem(
-              icon: Icons.timeline_rounded,
-              label: S.current.tabHistory,
-              isActive: _currentIndex == 1,
-              onTap: () => _onTabTap(1),
+            Expanded(
+              child: _NavItem(
+                icon: Icons.timeline_rounded,
+                label: S.current.tabHistory,
+                isActive: _currentIndex == 1,
+                onTap: () => _onTabTap(1),
+              ),
             ),
-            const SizedBox(width: 48), // Пространство для FAB
-            _NavItem(
-              icon: Icons.picture_as_pdf_rounded,
-              label: S.current.tabReport,
-              isActive: _currentIndex == 2,
-              onTap: () => _onTabTap(2),
+            const SizedBox(width: 80), // Пространство для FAB (96px + отступы)
+            Expanded(
+              child: _NavItem(
+                icon: Icons.picture_as_pdf_rounded,
+                label: S.current.tabReport,
+                isActive: _currentIndex == 2,
+                onTap: () => _onTabTap(2),
+              ),
             ),
-            _NavItem(
-              icon: Icons.info_outline_rounded,
-              label: S.current.tabInfo,
-              isActive: _currentIndex == 3,
-              onTap: () => _onTabTap(3),
+            Expanded(
+              child: _NavItem(
+                icon: Icons.info_outline_rounded,
+                label: S.current.tabInfo,
+                isActive: _currentIndex == 3,
+                onTap: () => _onTabTap(3),
+              ),
             ),
           ],
         ),

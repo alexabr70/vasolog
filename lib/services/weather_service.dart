@@ -70,8 +70,13 @@ class WeatherService {
   }
 
   /// Получить текущую погоду по координатам
+  /// Если кэш свежий (< 5 мин) - вернуть его без HTTP запроса
   Future<WeatherData?> getCurrentWeather(
       double latitude, double longitude) async {
+    // Свежий кэш - не делаем лишний запрос (одинаковые данные на всех экранах)
+    final cached = await _loadFromCache();
+    if (cached != null && cached.minutesAgo < 5) return cached;
+
     try {
       final url = Uri.parse(
         '$_baseUrl/forecast?latitude=$latitude&longitude=$longitude'
