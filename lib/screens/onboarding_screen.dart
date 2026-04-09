@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../services/notification_service.dart';
 import '../services/location_service.dart';
 import '../utils/constants.dart';
+import '../l10n/app_strings.dart';
 import 'main_shell.dart';
 
 /// Онбординг - 3 экрана при первом запуске
@@ -17,41 +18,35 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final PageController _controller = PageController();
   int _currentPage = 0;
 
-  final _pages = const [
+  List<_OnboardingPage> get _pages => [
     _OnboardingPage(
       icon: Icons.ac_unit_rounded,
-      title: 'Отслеживай приступы Рейно',
-      description: 'Записывай каждый приступ: тяжесть, цвет, '
-          'поражённые пальцы, триггеры и длительность.',
+      title: S.current.onb1Title,
+      description: S.current.onb1Desc,
       color: AppColors.primary,
     ),
     _OnboardingPage(
       icon: Icons.cloud_rounded,
-      title: 'Автоматическая погода',
-      description: 'Приложение фиксирует температуру, влажность и ветер '
-          'в момент приступа. Умные подсказки триггеров по погоде.',
-      color: Color(0xFF7E57C2),
+      title: S.current.onb2Title,
+      description: S.current.onb2Desc,
+      color: const Color(0xFF7E57C2),
     ),
     _OnboardingPage(
       icon: Icons.picture_as_pdf_rounded,
-      title: 'Отчёт для врача',
-      description: 'Создавай PDF-отчёты с графиками и статистикой. '
-          'Покажи ревматологу полную картину.',
+      title: S.current.onb3Title,
+      description: S.current.onb3Desc,
       color: AppColors.secondary,
     ),
     _OnboardingPage(
       icon: Icons.location_on_rounded,
-      title: 'Геолокация для погоды',
-      description: 'Разрешите доступ к геолокации - приложение '
-          'автоматически зафиксирует температуру, влажность и ветер '
-          'в момент приступа. Данные не передаются третьим лицам.',
-      color: Color(0xFF5C6BC0),
+      title: S.current.onb4Title,
+      description: S.current.onb4Desc,
+      color: const Color(0xFF5C6BC0),
     ),
     _OnboardingPage(
       icon: Icons.notifications_active_rounded,
-      title: 'Напоминания',
-      description: 'Ежедневное напоминание в 12:30 поможет не забыть '
-          'записать приступ. Можно отключить в любой момент.',
+      title: S.current.onb5Title,
+      description: S.current.onb5Desc,
       color: AppColors.accent,
     ),
   ];
@@ -93,7 +88,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               alignment: Alignment.topRight,
               child: TextButton(
                 onPressed: _finishOnboarding,
-                child: const Text('Пропустить'),
+                child: Text(S.current.skip),
               ),
             ),
             // Страницы
@@ -155,14 +150,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
               ),
-              child: const Text('Включить напоминания',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              child: Text(S.current.enableReminders,
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             ),
           ),
           const SizedBox(height: 8),
           TextButton(
             onPressed: _finishOnboarding,
-            child: Text('Не сейчас', style: TextStyle(fontSize: 16, color: Colors.grey[600])),
+            child: Text(S.current.notNow, style: TextStyle(fontSize: 16, color: Colors.grey[600])),
           ),
         ],
       );
@@ -182,8 +177,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
               ),
-              child: const Text('Разрешить геолокацию',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              child: Text(S.current.allowLocation,
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             ),
           ),
           const SizedBox(height: 8),
@@ -192,7 +187,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               duration: const Duration(milliseconds: 300),
               curve: Curves.easeInOut,
             ),
-            child: Text('Пропустить', style: TextStyle(fontSize: 16, color: Colors.grey[600])),
+            child: Text(S.current.skip, style: TextStyle(fontSize: 16, color: Colors.grey[600])),
           ),
         ],
       );
@@ -212,7 +207,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           foregroundColor: Colors.white,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         ),
-        child: const Text('Далее', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        child: Text(S.current.next, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
       ),
     );
   }

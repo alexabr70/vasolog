@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import '../providers/attack_provider.dart';
 import '../services/pdf_report_service.dart';
 import '../utils/constants.dart';
+import '../l10n/app_strings.dart';
 
 /// Экран генерации PDF-отчёта для врача
 class ReportScreen extends StatefulWidget {
@@ -40,8 +41,8 @@ class _ReportScreenState extends State<ReportScreen> {
 
     if (attacks.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Нет приступов за выбранный период'),
+        SnackBar(
+          content: Text(S.current.noAttacksInPeriod),
           backgroundColor: Colors.orange,
         ),
       );
@@ -70,7 +71,7 @@ class _ReportScreenState extends State<ReportScreen> {
     return Scaffold(
 
       appBar: AppBar(
-        title: const Text('Отчёт для врача'),
+        title: Text(S.current.reportTitle),
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -88,25 +89,23 @@ class _ReportScreenState extends State<ReportScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Описание
-            const Card(
+            Card(
               child: Padding(
-                padding: EdgeInsets.all(16),
+                padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Создать PDF отчёт',
-                      style: TextStyle(
+                      S.current.createPdfReport,
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     Text(
-                      'Создай подробный отчёт о приступах Рейно '
-                      'для лечащего врача. Включает журнал приступов, '
-                      'анализ триггеров и корреляцию с погодой.',
-                      style: TextStyle(color: Colors.grey),
+                      S.current.reportDescription,
+                      style: const TextStyle(color: Colors.grey),
                     ),
                   ],
                 ),
@@ -121,8 +120,8 @@ class _ReportScreenState extends State<ReportScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Период',
+                    Text(
+                      S.current.period,
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -154,7 +153,7 @@ class _ReportScreenState extends State<ReportScreen> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      '${attacksInRange.length} приступов за этот период',
+                      S.current.attacksInPeriod(attacksInRange.length),
                       style: const TextStyle(color: Colors.grey),
                     ),
                   ],
@@ -166,11 +165,11 @@ class _ReportScreenState extends State<ReportScreen> {
             // Быстрые кнопки периодов
             Row(
               children: [
-                _periodChip('7 дней', 7),
+                _periodChip(S.current.periodDays(7), 7),
                 const SizedBox(width: 8),
-                _periodChip('30 дней', 30),
+                _periodChip(S.current.periodDays(30), 30),
                 const SizedBox(width: 8),
-                _periodChip('90 дней', 90),
+                _periodChip(S.current.periodDays(90), 90),
               ],
             ),
 
@@ -183,9 +182,9 @@ class _ReportScreenState extends State<ReportScreen> {
               child: ElevatedButton.icon(
                 onPressed: _generateAndShare,
                 icon: const Icon(Icons.picture_as_pdf, size: 24),
-                label: const Text(
-                  'Создать и отправить PDF',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                label: Text(
+                  S.current.createAndSharePdf,
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,

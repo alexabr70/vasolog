@@ -46,13 +46,18 @@ void main() async {
   await WidgetService.init();
 
   // Инициализация локализации
+  // Запрет загрузки шрифтов из сети (ускоряет первый запуск)
+  GoogleFonts.config.allowRuntimeFetching = false;
+
   final locale = ui.PlatformDispatcher.instance.locale.languageCode;
   S.init(locale);
 
-  // Убираем splash в любом случае
-  FlutterNativeSplash.remove();
-
   runApp(VasoLogApp(storage: storage, showOnboarding: !onboardingDone));
+
+  // Убираем splash после первого кадра (не до runApp!)
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    FlutterNativeSplash.remove();
+  });
 }
 
 class VasoLogApp extends StatelessWidget {

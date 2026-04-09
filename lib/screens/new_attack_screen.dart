@@ -10,6 +10,7 @@ import '../providers/attack_provider.dart';
 import '../services/weather_service.dart';
 import '../services/location_service.dart';
 import '../utils/constants.dart';
+import '../l10n/app_strings.dart';
 
 /// Экран записи / редактирования приступа
 class NewAttackScreen extends StatefulWidget {
@@ -112,8 +113,8 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
       }
     } else if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Включите геолокацию для автозаполнения погоды'),
+        SnackBar(
+          content: Text(S.current.enableGeoLocation),
           duration: Duration(seconds: 3),
         ),
       );
@@ -180,7 +181,7 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(isEdit ? 'Приступ обновлён' : 'Приступ записан'),
+            content: Text(isEdit ? S.current.attackUpdated : S.current.attackSaved),
             backgroundColor: Colors.green,
           ),
         );
@@ -192,7 +193,7 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
         setState(() => _isLoading = false);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Ошибка сохранения: $e'),
+            content: Text('${S.current.saveError}: $e'),
             backgroundColor: Colors.red,
             duration: const Duration(seconds: 5),
           ),
@@ -218,7 +219,7 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
     return Scaffold(
 
       appBar: AppBar(
-        title: Text(widget.editAttack != null ? 'Редактировать' : 'Записать приступ'),
+        title: Text(widget.editAttack != null ? S.current.editAttack : S.current.recordAttack),
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -246,18 +247,18 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
                 child: TextButton.icon(
                   onPressed: _applyLastAttack,
                   icon: const Icon(Icons.replay_rounded, size: 18),
-                  label: const Text('Как прошлый раз'),
+                  label: Text(S.current.likeLastTime),
                   style: TextButton.styleFrom(foregroundColor: AppColors.secondary),
                 ),
               ),
 
             // === СЕКЦИЯ 1: Оценка приступа ===
             _SectionCard(
-              title: 'Оценка приступа',
+              title: S.current.sectionAssessment,
               icon: Icons.speed_rounded,
               children: [
                 // Тяжесть
-                const Text('Тяжесть (RCS)', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+                Text(S.current.severityRcs, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
                 const SizedBox(height: 4),
                 Row(
                   children: [
@@ -273,24 +274,28 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
                     const Text('/10', style: TextStyle(fontSize: 24)),
                     const SizedBox(width: 12),
                     Expanded(
-                      child: SliderTheme(
-                        data: SliderThemeData(
-                          activeTrackColor: severityColor(_severity),
-                          thumbColor: severityColor(_severity),
-                          inactiveTrackColor: severityColor(_severity).withValues(alpha: 0.2),
-                          overlayColor: severityColor(_severity).withValues(alpha: 0.1),
-                        ),
-                        child: Slider(
-                          value: _severity.toDouble(),
-                          min: 0, max: 10, divisions: 10,
-                          label: '$_severity',
-                          onChanged: (v) {
-                            final newVal = v.round();
-                            if (newVal != _severity) {
-                              HapticFeedback.selectionClick();
-                              setState(() => _severity = newVal);
-                            }
-                          },
+                      child: Semantics(
+                        label: S.current.a11ySeveritySlider,
+                        value: S.current.a11ySeverityValue(_severity),
+                        child: SliderTheme(
+                          data: SliderThemeData(
+                            activeTrackColor: severityColor(_severity),
+                            thumbColor: severityColor(_severity),
+                            inactiveTrackColor: severityColor(_severity).withValues(alpha: 0.2),
+                            overlayColor: severityColor(_severity).withValues(alpha: 0.1),
+                          ),
+                          child: Slider(
+                            value: _severity.toDouble(),
+                            min: 0, max: 10, divisions: 10,
+                            label: '$_severity',
+                            onChanged: (v) {
+                              final newVal = v.round();
+                              if (newVal != _severity) {
+                                HapticFeedback.selectionClick();
+                                setState(() => _severity = newVal);
+                              }
+                            },
+                          ),
                         ),
                       ),
                     ),
@@ -299,7 +304,7 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
                 const SizedBox(height: 12),
 
                 // Цвет пальцев
-                const Text('Цвет пальцев', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+                Text(S.current.fingerColor, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
                 const SizedBox(height: 8),
                 Row(
                   children: colorPhases.entries.map((e) {
@@ -315,12 +320,12 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
                 const SizedBox(height: 12),
 
                 // Длительность
-                const Text('Длительность', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+                Text(S.current.duration, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
                 const SizedBox(height: 4),
                 Row(
                   children: [
                     Text('$_durationMinutes', style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                    const Text(' мин', style: TextStyle(fontSize: 16)),
+                    Text(' ${S.current.min}', style: const TextStyle(fontSize: 16)),
                     const SizedBox(width: 16),
                     Expanded(
                       child: Slider(
@@ -344,7 +349,7 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
 
             // === СЕКЦИЯ 2: Триггеры ===
             _SectionCard(
-              title: 'Что вызвало?',
+              title: S.current.sectionTriggers,
               icon: Icons.flash_on_rounded,
               trailing: _suggestedTriggers.isNotEmpty
                   ? Icon(Icons.auto_awesome, size: 16, color: AppColors.secondary.withValues(alpha: 0.7))
@@ -361,7 +366,7 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
 
             // === СЕКЦИЯ 3: Поражённые пальцы ===
             _SectionCard(
-              title: 'Поражённые пальцы',
+              title: S.current.sectionFingers,
               icon: Icons.pan_tool_rounded,
               children: [
                 _HandDiagram(
@@ -383,7 +388,7 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
 
             // === СЕКЦИЯ 4: Доп. информация ===
             _SectionCard(
-              title: 'Дополнительно',
+              title: S.current.sectionExtra,
               icon: Icons.note_add_rounded,
               children: [
                 // Фото
@@ -392,7 +397,7 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
                     ElevatedButton.icon(
                       onPressed: _takePhoto,
                       icon: const Icon(Icons.camera_alt, size: 18),
-                      label: Text(_photoPath == null ? 'Сделать фото' : 'Переснять'),
+                      label: Text(_photoPath == null ? S.current.takePhoto : S.current.retakePhoto),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.secondary,
                         foregroundColor: Colors.white,
@@ -401,7 +406,7 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
                     if (_photoPath != null) ...[
                       const SizedBox(width: 8),
                       const Icon(Icons.check_circle, color: Colors.green, size: 20),
-                      const Text(' Фото', style: TextStyle(fontSize: 13)),
+                      Text(' ${S.current.photo}', style: const TextStyle(fontSize: 13)),
                     ],
                   ],
                 ),
@@ -411,8 +416,8 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
                   controller: _notesController,
                   maxLines: 3,
                   decoration: InputDecoration(
-                    labelText: 'Заметки (необязательно)',
-                    hintText: 'Дополнительные детали...',
+                    labelText: S.current.notesOptional,
+                    hintText: S.current.notesHint,
                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                   ),
                 ),
@@ -433,7 +438,7 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
                 ),
                 child: _isLoading
                     ? const CircularProgressIndicator(color: Colors.white)
-                    : const Text('Сохранить', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    : Text(S.current.save, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               ),
             ),
             const SizedBox(height: 32),
@@ -447,7 +452,7 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
   Widget _buildWeatherCard() {
     if (_weatherData != null) {
       final w = _weatherData!;
-      final cacheLabel = w.isCached ? ' (${w.minutesAgo} мин назад)' : '';
+      final cacheLabel = w.isCached ? ' (${S.current.minutesAgo(w.minutesAgo)})' : '';
       final isDark = Theme.of(context).brightness == Brightness.dark;
       return Card(
         color: w.isCached
@@ -469,7 +474,7 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
-                  'Влажн. ${w.humidity.toStringAsFixed(0)}% · Ветер ${w.windSpeed.toStringAsFixed(1)} м/с$cacheLabel',
+                  '${S.current.humidity(w.humidity.toStringAsFixed(0))} · ${S.current.windMs(w.windSpeed.toStringAsFixed(1))}$cacheLabel',
                   style: TextStyle(fontSize: 13, color: Colors.grey[700]),
                 ),
               ),
@@ -513,10 +518,10 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
     final textColor = key == 'white' ? Colors.black87 : Colors.white;
     // Короткое название для плашки
     final shortLabel = switch (key) {
-      'white' => 'Белый',
-      'blue' => 'Синий',
-      'red' => 'Красный',
-      _ => 'Смешан.',
+      'white' => S.current.phaseWhite,
+      'blue' => S.current.phaseBlue,
+      'red' => S.current.phaseRed,
+      _ => S.current.phaseMixed,
     };
 
     return GestureDetector(
@@ -658,7 +663,7 @@ class _HandDiagram extends StatelessWidget {
       children: [
         // Левая рука
         Expanded(child: _HandVisual(
-          label: 'Левая',
+          label: S.current.leftHand,
           fingers: const ['Большой Л', 'Указат. Л', 'Средний Л', 'Безымян. Л', 'Мизинец Л'],
           selectedFingers: selectedFingers,
           onFingerTap: onFingerTap,
@@ -667,7 +672,7 @@ class _HandDiagram extends StatelessWidget {
         const SizedBox(width: 8),
         // Правая рука
         Expanded(child: _HandVisual(
-          label: 'Правая',
+          label: S.current.rightHand,
           fingers: const ['Большой П', 'Указат. П', 'Средний П', 'Безымян. П', 'Мизинец П'],
           selectedFingers: selectedFingers,
           onFingerTap: onFingerTap,
@@ -745,32 +750,37 @@ class _HandVisual extends StatelessWidget {
                     return Positioned(
                       left: x,
                       top: y,
-                      child: GestureDetector(
-                        onTap: () => onFingerTap(fingers[i]),
-                        child: AnimatedContainer(
-                          duration: const Duration(milliseconds: 250),
-                          width: 44,
-                          height: 44,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: isSelected
-                                ? AppColors.phaseBlue.withValues(alpha: 0.3)
-                                : Colors.grey.withValues(alpha: 0.08),
-                            border: Border.all(
-                              color: isSelected ? AppColors.phaseBlue : Colors.grey.withValues(alpha: 0.4),
-                              width: isSelected ? 2.5 : 1,
+                      child: Semantics(
+                        button: true,
+                        label: S.current.a11yFingerButton(fingers[i]),
+                        selected: isSelected,
+                        child: GestureDetector(
+                          onTap: () => onFingerTap(fingers[i]),
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 250),
+                            width: 44,
+                            height: 44,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: isSelected
+                                  ? AppColors.phaseBlue.withValues(alpha: 0.3)
+                                  : Colors.grey.withValues(alpha: 0.08),
+                              border: Border.all(
+                                color: isSelected ? AppColors.phaseBlue : Colors.grey.withValues(alpha: 0.4),
+                                width: isSelected ? 2.5 : 1,
+                              ),
+                              boxShadow: isSelected
+                                  ? [BoxShadow(color: AppColors.phaseBlue.withValues(alpha: 0.3), blurRadius: 8)]
+                                  : null,
                             ),
-                            boxShadow: isSelected
-                                ? [BoxShadow(color: AppColors.phaseBlue.withValues(alpha: 0.3), blurRadius: 8)]
-                                : null,
-                          ),
-                          child: Center(
-                            child: Text(
-                              shortLabels[i],
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: isSelected ? AppColors.phaseBlue : Colors.grey[500],
+                            child: Center(
+                              child: Text(
+                                shortLabels[i],
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: isSelected ? AppColors.phaseBlue : Colors.grey[500],
+                                ),
                               ),
                             ),
                           ),

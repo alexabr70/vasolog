@@ -7,6 +7,7 @@ import '../providers/attack_provider.dart';
 import '../services/weather_service.dart';
 import '../services/location_service.dart';
 import '../utils/constants.dart';
+import '../l10n/app_strings.dart';
 import 'new_attack_screen.dart';
 
 /// Главный экран - дашборд (встраивается в MainShell)
@@ -100,9 +101,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 _AnimatedEntry(
                   delay: 120,
-                  child: const Text(
-                    'Последние приступы',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  child: Text(
+                    S.current.recentAttacks,
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -125,9 +126,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           // Undo через SnackBar
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: const Text('Приступ удалён'),
+                              content: Text(S.current.attackDeleted),
                               action: SnackBarAction(
-                                label: 'Отменить',
+                                label: S.current.undo,
                                 onPressed: () => provider.addAttack(attack),
                               ),
                               duration: const Duration(seconds: 5),
@@ -148,9 +149,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 if (triggers.isNotEmpty) ...[
                   _AnimatedEntry(
                     delay: 600,
-                    child: const Text(
-                      'Частые триггеры (30 дней)',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    child: Text(
+                      S.current.frequentTriggers,
+                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -300,7 +301,7 @@ class _WeekTrendChart extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Тренд за неделю', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+            Text(S.current.weekTrend, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
             const SizedBox(height: 12),
             SizedBox(
               height: 100,
@@ -382,7 +383,13 @@ class _WeatherAlert extends StatelessWidget {
     final isVeryCold = temp <= 0;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return Card(
+    return Semantics(
+      label: S.current.a11yWeatherInfo(
+        temp.toStringAsFixed(0),
+        weather.windSpeed.toStringAsFixed(0),
+        weather.humidity.toStringAsFixed(0),
+      ),
+      child: Card(
       color: isVeryCold
           ? (isDark ? Colors.red[900]?.withValues(alpha: 0.3) : Colors.red[50])
           : isCold
@@ -410,7 +417,7 @@ class _WeatherAlert extends StatelessWidget {
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        'Ветер ${weather.windSpeed.toStringAsFixed(0)} м/с · Влажн. ${weather.humidity.toStringAsFixed(0)}%',
+                        '${S.current.windMs(weather.windSpeed.toStringAsFixed(0))} · ${S.current.humidity(weather.humidity.toStringAsFixed(0))}',
                         style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                       ),
                     ],
@@ -418,8 +425,8 @@ class _WeatherAlert extends StatelessWidget {
                   if (isCold)
                     Text(
                       isVeryCold
-                          ? 'Мороз! Высокий риск приступа. Утепляйте руки.'
-                          : 'Прохладно. Берегите руки от холода.',
+                          ? S.current.frostWarning
+                          : S.current.coldWarning,
                       style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w500,
@@ -431,12 +438,13 @@ class _WeatherAlert extends StatelessWidget {
             ),
             if (weather.isCached)
               Tooltip(
-                message: '${weather.minutesAgo} мин назад',
+                message: S.current.minutesAgo(weather.minutesAgo),
                 child: Icon(Icons.cached, size: 16, color: Colors.grey[400]),
               ),
           ],
         ),
       ),
+    ),
     );
   }
 }
@@ -471,13 +479,13 @@ class _EmptyState extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              const Text(
-                'Пока нет записей',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+              Text(
+                S.current.noRecordsYet,
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 8),
               Text(
-                'Нажми + чтобы записать\nпервый приступ',
+                S.current.tapPlusToRecord,
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 14, color: Colors.grey[500], height: 1.5),
               ),
@@ -523,10 +531,10 @@ class _StatCard extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _StatItem(label: 'Всего', value: '$totalAttacks', icon: Icons.summarize_rounded),
-            _StatItem(label: 'За неделю', value: '$weeklyAttacks', icon: Icons.calendar_today_rounded),
+            _StatItem(label: S.current.statsTotal, value: '$totalAttacks', icon: Icons.summarize_rounded),
+            _StatItem(label: S.current.statsWeek, value: '$weeklyAttacks', icon: Icons.calendar_today_rounded),
             _StatItem(
-              label: 'Средн. RCS',
+              label: S.current.statsAvgRcs,
               value: avgSeverity.toStringAsFixed(1),
               icon: Icons.speed_rounded,
               valueColor: Colors.amber[300],
@@ -580,12 +588,12 @@ class _StreakCard extends StatelessWidget {
     final isMilestone = days >= 7 && days % 7 == 0;
     final emoji = days == 0 ? '💪' : days < 3 ? '🌱' : days < 7 ? '✨' : '🔥';
     final message = days == 0
-        ? 'Держись, ты справишься!'
+        ? S.current.streakKeepGoing
         : days < 3
-            ? 'Хорошее начало!'
+            ? S.current.streakGoodStart
             : days < 7
-                ? 'Отличная серия!'
-                : 'Потрясающий результат!';
+                ? S.current.streakGreatStreak
+                : S.current.streakAmazing;
 
     return Card(
       child: Padding(
@@ -614,7 +622,7 @@ class _StreakCard extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        ' ${_daysLabel(days)} без приступа',
+                        ' ${S.current.daysWithout(days).replaceFirst('$days ', '')}',
                         style: const TextStyle(fontSize: 15),
                       ),
                     ],
@@ -634,11 +642,6 @@ class _StreakCard extends StatelessWidget {
     );
   }
 
-  String _daysLabel(int d) {
-    if (d % 10 == 1 && d % 100 != 11) return 'день';
-    if (d % 10 >= 2 && d % 10 <= 4 && (d % 100 < 10 || d % 100 >= 20)) return 'дня';
-    return 'дней';
-  }
 }
 
 class _AttackTile extends StatelessWidget {
@@ -651,7 +654,9 @@ class _AttackTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dateFormat = DateFormat('dd MMM, HH:mm');
-    return Card(
+    return Semantics(
+      label: S.current.a11ySeverityValue(attack.severity),
+      child: Card(
       margin: const EdgeInsets.symmetric(vertical: 4),
       child: ListTile(
         leading: CircleAvatar(
@@ -674,18 +679,19 @@ class _AttackTile extends StatelessWidget {
           showDialog(
             context: context,
             builder: (_) => AlertDialog(
-              title: const Text('Удалить приступ?'),
+              title: Text(S.current.deleteAttackQuestion),
               actions: [
-                TextButton(onPressed: () => Navigator.pop(context), child: const Text('Отмена')),
+                TextButton(onPressed: () => Navigator.pop(context), child: Text(S.current.cancel)),
                 TextButton(
                   onPressed: () { Navigator.pop(context); onDelete(); },
-                  child: const Text('Удалить', style: TextStyle(color: Colors.red)),
+                  child: Text(S.current.delete, style: const TextStyle(color: Colors.red)),
                 ),
               ],
             ),
           );
         },
       ),
+    ),
     );
   }
 }

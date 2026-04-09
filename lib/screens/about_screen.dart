@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../services/notification_service.dart';
 import '../utils/constants.dart';
+import '../l10n/app_strings.dart';
 
 /// Экран "О приложении" с medical disclaimer и privacy policy
 class AboutScreen extends StatefulWidget {
@@ -31,8 +32,8 @@ class _AboutScreenState extends State<AboutScreen> {
       setState(() => _notificationsEnabled = result);
       if (value && !result) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Разрешите уведомления в настройках устройства'),
+          SnackBar(
+            content: Text(S.current.notificationPermissionDenied),
             duration: Duration(seconds: 3),
           ),
         );
@@ -44,7 +45,7 @@ class _AboutScreenState extends State<AboutScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('О приложении'),
+        title: Text(S.current.aboutTitle),
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -85,7 +86,7 @@ class _AboutScreenState extends State<AboutScreen> {
                   ),
                   const SizedBox(height: 12),
                   const Text('VasoLog', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                  Text('Версия 1.1.0', style: TextStyle(color: Colors.grey[600])),
+                  Text('${S.current.version} 1.1.0', style: TextStyle(color: Colors.grey[600])),
                 ],
               ),
             ),
@@ -93,7 +94,7 @@ class _AboutScreenState extends State<AboutScreen> {
 
             // Medical Disclaimer
             _buildSection(
-              'Медицинский дисклеймер',
+              S.current.medicalDisclaimer,
               Icons.medical_information_rounded,
               Colors.red,
               'VasoLog НЕ является медицинским устройством. '
@@ -107,7 +108,7 @@ class _AboutScreenState extends State<AboutScreen> {
 
             // Privacy Policy
             _buildSection(
-              'Политика конфиденциальности',
+              S.current.privacyPolicy,
               Icons.privacy_tip_rounded,
               AppColors.primary,
               'Какие данные собираются:\n'
@@ -130,14 +131,14 @@ class _AboutScreenState extends State<AboutScreen> {
                   mode: LaunchMode.externalApplication,
                 ),
                 icon: const Icon(Icons.open_in_new, size: 16),
-                label: const Text('Полный текст Privacy Policy'),
+                label: Text(S.current.fullPrivacyPolicy),
               ),
             ),
             const SizedBox(height: 16),
 
             // Ваши права
             _buildSection(
-              'Ваши права',
+              S.current.yourRights,
               Icons.gavel_rounded,
               Colors.teal,
               '- Вы можете экспортировать свои данные через PDF-отчёты\n'
@@ -155,12 +156,12 @@ class _AboutScreenState extends State<AboutScreen> {
                   children: [
                     const Icon(Icons.notifications_rounded, size: 20, color: AppColors.secondary),
                     const SizedBox(width: 8),
-                    const Expanded(
+                    Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Напоминания', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                          Text('Ежедневно в 12:30', style: TextStyle(fontSize: 12, color: Colors.grey)),
+                          Text(S.current.reminders, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                          Text(S.current.dailyAt1230, style: const TextStyle(fontSize: 12, color: Colors.grey)),
                         ],
                       ),
                     ),
@@ -183,11 +184,11 @@ class _AboutScreenState extends State<AboutScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Row(
+                    Row(
                       children: [
-                        Icon(Icons.email_rounded, size: 20, color: AppColors.primary),
-                        SizedBox(width: 8),
-                        Text('Обратная связь', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                        const Icon(Icons.email_rounded, size: 20, color: AppColors.primary),
+                        const SizedBox(width: 8),
+                        Text(S.current.feedback, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                       ],
                     ),
                     const SizedBox(height: 8),

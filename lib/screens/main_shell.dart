@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../services/deep_link_service.dart';
 import '../utils/constants.dart';
+import '../l10n/app_strings.dart';
 import 'home_screen.dart';
 import 'history_screen.dart';
 import 'report_screen.dart';
@@ -120,15 +121,19 @@ class _MainShellState extends State<MainShell> with TickerProviderStateMixin {
           child: _pages[_currentIndex],
         ),
       ),
-      floatingActionButton: ScaleTransition(
-        scale: _fabScale,
-        child: FloatingActionButton.large(
-          onPressed: _openNewAttack,
-          backgroundColor: AppColors.secondary,
-          foregroundColor: Colors.white,
-          elevation: 8,
-          shape: const CircleBorder(),
-          child: const Icon(Icons.add_rounded, size: 36),
+      floatingActionButton: Semantics(
+        button: true,
+        label: S.current.a11yAddAttack,
+        child: ScaleTransition(
+          scale: _fabScale,
+          child: FloatingActionButton.large(
+            onPressed: _openNewAttack,
+            backgroundColor: AppColors.secondary,
+            foregroundColor: Colors.white,
+            elevation: 8,
+            shape: const CircleBorder(),
+            child: const Icon(Icons.add_rounded, size: 36),
+          ),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -150,26 +155,26 @@ class _MainShellState extends State<MainShell> with TickerProviderStateMixin {
           children: [
             _NavItem(
               icon: Icons.dashboard_rounded,
-              label: 'Главная',
+              label: S.current.tabHome,
               isActive: _currentIndex == 0,
               onTap: () => _onTabTap(0),
             ),
             _NavItem(
               icon: Icons.timeline_rounded,
-              label: 'История',
+              label: S.current.tabHistory,
               isActive: _currentIndex == 1,
               onTap: () => _onTabTap(1),
             ),
             const SizedBox(width: 48), // Пространство для FAB
             _NavItem(
               icon: Icons.picture_as_pdf_rounded,
-              label: 'Отчёт',
+              label: S.current.tabReport,
               isActive: _currentIndex == 2,
               onTap: () => _onTabTap(2),
             ),
             _NavItem(
               icon: Icons.info_outline_rounded,
-              label: 'Инфо',
+              label: S.current.tabInfo,
               isActive: _currentIndex == 3,
               onTap: () => _onTabTap(3),
             ),

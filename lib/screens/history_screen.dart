@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:fl_chart/fl_chart.dart';
 import '../providers/attack_provider.dart';
 import '../utils/constants.dart';
+import '../l10n/app_strings.dart';
 
 /// Экран истории приступов с графиком
 class HistoryScreen extends StatelessWidget {
@@ -14,7 +15,7 @@ class HistoryScreen extends StatelessWidget {
     return Scaffold(
 
       appBar: AppBar(
-        title: const Text('История'),
+        title: Text(S.current.tabHistory),
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -31,10 +32,10 @@ class HistoryScreen extends StatelessWidget {
           final attacks = provider.attacks;
 
           if (attacks.isEmpty) {
-            return const Center(
+            return Center(
               child: Text(
-                'Приступов пока нет.',
-                style: TextStyle(fontSize: 16, color: Colors.grey),
+                S.current.noAttacksYet,
+                style: const TextStyle(fontSize: 16, color: Colors.grey),
               ),
             );
           }
@@ -48,8 +49,8 @@ class HistoryScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // График за неделю
-                const Text(
-                  'Приступы за неделю',
+                Text(
+                  S.current.attacksThisWeek,
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -126,8 +127,8 @@ class HistoryScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Статистика',
+                        Text(
+                          S.current.statistics,
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -135,15 +136,15 @@ class HistoryScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 8),
                         _StatRow(
-                          'Средн. тяжесть за неделю',
+                          S.current.avgWeekSeverity,
                           provider.weeklyAverageSeverity.toStringAsFixed(1),
                         ),
                         _StatRow(
-                          'Средн. тяжесть за месяц',
+                          S.current.avgMonthSeverity,
                           provider.monthlyAverageSeverity.toStringAsFixed(1),
                         ),
                         _StatRow(
-                          'Всего приступов',
+                          S.current.totalAttacks,
                           '${provider.totalCount}',
                         ),
                       ],
@@ -153,8 +154,8 @@ class HistoryScreen extends StatelessWidget {
                 const SizedBox(height: 16),
 
                 // Полный список
-                const Text(
-                  'Все приступы',
+                Text(
+                  S.current.allAttacks,
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,

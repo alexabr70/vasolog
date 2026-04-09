@@ -142,4 +142,49 @@ class S {
   String get feedback => _isRu ? 'Обратная связь' : 'Feedback';
   String get deleteAttackQuestion => _isRu ? 'Удалить приступ?' : 'Delete attack?';
   String get enableGeoLocation => _isRu ? 'Включите геолокацию для автозаполнения погоды' : 'Enable location for automatic weather';
+
+  // === Отчёт для врача ===
+  String get reportTitle => _isRu ? 'Отчёт для врача' : 'Doctor report';
+  String get createPdfReport => _isRu ? 'Создать PDF отчёт' : 'Create PDF report';
+  String get reportDescription => _isRu
+      ? 'Создай подробный отчёт о приступах Рейно для лечащего врача. Включает журнал приступов, анализ триггеров и корреляцию с погодой.'
+      : 'Create a detailed Raynaud\'s attack report for your doctor. Includes attack log, trigger analysis and weather correlation.';
+  String get period => _isRu ? 'Период' : 'Period';
+  String attacksInPeriod(int count) => _isRu ? '$count приступов за этот период' : '$count attacks in this period';
+  String get createAndSharePdf => _isRu ? 'Создать и отправить PDF' : 'Create & share PDF';
+  String get noAttacksInPeriod => _isRu ? 'Нет приступов за выбранный период' : 'No attacks in selected period';
+  String periodDays(int days) => '$days ${_isRu ? "дней" : "days"}';
+
+  // === Погода / единицы ===
+  String windMs(String speed) => _isRu ? 'Ветер $speed м/с' : 'Wind $speed m/s';
+  String humidity(String value) => _isRu ? 'Влажн. $value%' : 'Humidity $value%';
+  String minutesAgo(int min) => _isRu ? '$min мин назад' : '${min}m ago';
+  String get min => _isRu ? 'мин' : 'min';
+  String get photo => _isRu ? 'Фото' : 'Photo';
+
+  // === Accessibility ===
+  String get a11ySeveritySlider => _isRu ? 'Шкала тяжести от 0 до 10' : 'Severity scale from 0 to 10';
+  String get a11yDurationSlider => _isRu ? 'Длительность в минутах' : 'Duration in minutes';
+  String a11yFingerButton(String finger) => _isRu ? 'Палец: $finger' : 'Finger: $finger';
+  String a11yTriggerChip(String trigger, bool selected) {
+    final state = selected ? (_isRu ? 'выбран' : 'selected') : (_isRu ? 'не выбран' : 'not selected');
+    return '$trigger, $state';
+  }
+  String get a11yAddAttack => _isRu ? 'Записать новый приступ' : 'Record new attack';
+  String get a11yDeleteAttack => _isRu ? 'Удалить приступ' : 'Delete attack';
+  String get a11yEditAttack => _isRu ? 'Редактировать приступ' : 'Edit attack';
+  String a11ySeverityValue(int value) => _isRu ? 'Тяжесть $value из 10' : 'Severity $value of 10';
+  String a11yWeatherInfo(String temp, String wind, String humid) =>
+      _isRu ? 'Погода: $temp°C, ветер $wind м/с, влажность $humid%' : 'Weather: $temp°C, wind $wind m/s, humidity $humid%';
+
+  // === Дополнительные ===
+  String get notificationPermissionDenied => _isRu ? 'Разрешите уведомления в настройках устройства' : 'Allow notifications in device settings';
+  String get saveError => _isRu ? 'Ошибка сохранения' : 'Save error';
+  String get triggers => _isRu ? 'Триггеры' : 'Triggers';
+  String get fingers => _isRu ? 'Пальцы' : 'Fingers';
+  String get weather => _isRu ? 'Погода' : 'Weather';
+  String get notes => _isRu ? 'Заметки' : 'Notes';
+  String get dailyAt1230 => _isRu ? 'Ежедневно в 12:30' : 'Daily at 12:30';
+  String get fullPrivacyPolicy => _isRu ? 'Полный текст Privacy Policy' : 'Full Privacy Policy';
+  String get contactEmail => 'vasolog.app@gmail.com';
 }
