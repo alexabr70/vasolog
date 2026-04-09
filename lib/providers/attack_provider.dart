@@ -1,17 +1,17 @@
 import 'package:flutter/foundation.dart';
-import '../models/attack_event.dart';
-import '../services/storage_service.dart';
-import '../services/notification_service.dart';
-import '../services/widget_service.dart';
+import 'package:vasolog/models/attack_event.dart';
+import 'package:vasolog/services/notification_service.dart';
+import 'package:vasolog/services/storage_service.dart';
+import 'package:vasolog/services/widget_service.dart';
 
 /// Провайдер состояния приступов
 class AttackProvider extends ChangeNotifier {
-  final StorageService _storage;
-  List<AttackEvent> _attacks = [];
 
   AttackProvider(this._storage) {
     _loadAttacks();
   }
+  final StorageService _storage;
+  List<AttackEvent> _attacks = [];
 
   List<AttackEvent> get attacks => _attacks;
   int get totalCount => _attacks.length;

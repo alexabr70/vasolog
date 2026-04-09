@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
 import 'package:fl_chart/fl_chart.dart';
-import '../providers/attack_provider.dart';
-import '../utils/constants.dart';
-import '../l10n/app_strings.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:vasolog/l10n/app_strings.dart';
+import 'package:vasolog/providers/attack_provider.dart';
+import 'package:vasolog/utils/constants.dart';
 
 /// Экран истории приступов с графиком
 class HistoryScreen extends StatelessWidget {
@@ -51,7 +51,7 @@ class HistoryScreen extends StatelessWidget {
                 // График за неделю
                 Text(
                   S.current.attacksThisWeek,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
@@ -93,10 +93,10 @@ class HistoryScreen extends StatelessWidget {
                               ),
                             ),
                             topTitles: const AxisTitles(
-                              sideTitles: SideTitles(showTitles: false),
+                              
                             ),
                             rightTitles: const AxisTitles(
-                              sideTitles: SideTitles(showTitles: false),
+                              
                             ),
                           ),
                           borderData: FlBorderData(show: false),
@@ -129,7 +129,7 @@ class HistoryScreen extends StatelessWidget {
                       children: [
                         Text(
                           S.current.statistics,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
@@ -156,7 +156,7 @@ class HistoryScreen extends StatelessWidget {
                 // Полный список
                 Text(
                   S.current.allAttacks,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
@@ -213,7 +213,7 @@ class HistoryScreen extends StatelessWidget {
     final weekStart = now.subtract(Duration(days: now.weekday - 1));
     final result = <BarChartGroupData>[];
 
-    for (int i = 0; i < 7; i++) {
+    for (var i = 0; i < 7; i++) {
       final day = weekStart.add(Duration(days: i));
       final dayEnd = day.add(const Duration(days: 1));
       final dayAttacks = provider.getAttacksByRange(day, dayEnd);
@@ -248,10 +248,10 @@ class HistoryScreen extends StatelessWidget {
 }
 
 class _StatRow extends StatelessWidget {
-  final String label;
-  final String value;
 
   const _StatRow(this.label, this.value);
+  final String label;
+  final String value;
 
   @override
   Widget build(BuildContext context) {

@@ -11,9 +11,9 @@ enum DeepLinkAction {
 
 /// Сервис deep linking (app_links + notification payloads)
 class DeepLinkService {
-  static final DeepLinkService _instance = DeepLinkService._();
   factory DeepLinkService() => _instance;
   DeepLinkService._();
+  static final DeepLinkService _instance = DeepLinkService._();
 
   final _appLinks = AppLinks();
   final _actionController = StreamController<DeepLinkAction>.broadcast();
@@ -50,7 +50,7 @@ class DeepLinkService {
 
     // Обработка ссылок когда приложение уже запущено
     _linkSub = _appLinks.uriLinkStream.listen(
-      (uri) => _handleUri(uri),
+      _handleUri,
       onError: (e) => debugPrint('Deep link stream error: $e'),
     );
   }

@@ -1,0 +1,131 @@
+# Codemagic CI/CD для VasoLog
+# 500 бесплатных минут/месяц для Flutter, M2 Mac runners включены
+# https://docs.codemagic.io/yaml-quick-start/building-a-flutter-app/
+#
+# Workflows:
+# 1. android-release - Debug APK + деплой в Play Internal Testing
+# 2. ios-release - TestFlight upload (требует Apple Developer аккаунт)
+# 3. release-all - параллельно Android + iOS для крупных релизов
+
+workflows:
+  android-release:
+    name: Android Release
+    max_build_duration: 60
+    instance_type: linux_x2
+    environment:
+      flutter: 3.41.6
+      java: 21
+      groups:
+        - google_play  # Настроить в Codemagic UI: GOOGLE_PLAY_SERVICE_ACCOUNT
+      vars:
+        PACKAGE_NAME: "com.vasolog.vasolog"
+        GOOGLE_PLAY_TRACK: "internal"
+    scripts:
+      - name: Set up keystore
+        script: |
+          echo $CM_KEYSTORE | base64 --decode > /tmp/keystore.jks
+          cat >> "$CM_BUILD_DIR/android/key.properties" <<EOF
+          storePassword=$CM_KEYSTORE_PASSWORD
+          keyPassword=$CM_KEY_PASSWORD
+          keyAlias=$CM_KEY_ALIAS
+          storeFile=/tmp/keystore.jks
+          EOF
+      - name: Get Flutter dependencies
+        script: flutter pub get
+      - name: Flutter analyze
+        script: flutter analyze --no-fatal-infos
+      - name: Flutter test
+        script: flutter test
+      - name: Build AAB
+        script: flutter build appbundle --release
+      - name: Build APK (for testing)
+        script: flutter build apk --release
+    artifacts:
+      - build/**/outputs/**/*.aab
+      - build/**/outputs/**/*.apk
+      - build/**/outputs/**/mapping.txt
+      - flutter_drive.log
+    publishing:
+      email:
+        recipients:
+          - alex@aiassistpro.ru
+        notify:
+          success: true
+          failure: true
+      google_play:
+        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
+        track: $GOOGLE_PLAY_TRACK
+        submit_as_draft: true
+
+  ios-release:
+    name: iOS Release
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+    integrations:
+      app_store_connect: VasoLog_API_Key  # Настроить в Codemagic UI
+    environment:
+      flutter: 3.41.6
+      xcode: latest
+      cocoapods: default
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.vasolog.vasolog
+    scripts:
+      - name: Set up code signing
+        script: xcode-project use-profiles
+      - name: Get Flutter dependencies
+        script: flutter pub get
+      - name: Install pods
+        script: find . -name "Podfile" -execdir pod install \;
+      - name: Flutter analyze
+        script: flutter analyze --no-fatal-infos
+      - name: Flutter test
+        script: flutter test
+      - name: Flutter build ipa
+        script: |
+          BUILD_NUMBER=$(($(app-store-connect get-latest-app-store-build-number "$APP_APPLE_ID") + 1))
+          flutter build ipa --release \
+            --build-number=$BUILD_NUMBER \
+            --export-options-plist=/Users/builder/export_options.plist
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+      - flutter_drive.log
+    publishing:
+      email:
+        recipients:
+          - alex@aiassistpro.ru
+        notify:
+          success: true
+          failure: true
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
+        beta_groups:
+          - Internal Testers
+
+  pr-check:
+    name: PR Check (Analyze + Test)
+    max_build_duration: 20
+    instance_type: linux_x2
+    triggering:
+      events:
+        - pull_request
+      branch_patterns:
+        - pattern: master
+          include: true
+          source: false
+    environment:
+      flutter: 3.41.6
+      java: 21
+    scripts:
+      - flutter pub get
+      - flutter analyze --no-fatal-infos
+      - flutter test --coverage
+    publishing:
+      email:
+        recipients:
+          - alex@aiassistpro.ru
+        notify:
+          success: false
+          failure: true

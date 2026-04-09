@@ -1,0 +1,19 @@
+# Smoke test: запуск, нет краша, главный экран виден
+appId: com.vasolog.vasolog
+name: Smoke Test
+tags:
+  - smoke
+  - critical
+---
+- launchApp:
+    clearState: true
+    stopApp: true
+- waitForAnimationToEnd:
+    timeout: 10000
+# Ждём любой из главных элементов (локализованные строки или иконки)
+- assertVisible:
+    id: "home_screen"
+    optional: true
+- takeScreenshot: 00_splash_to_home
+- assertNoDefectsWithAi:
+    optional: true

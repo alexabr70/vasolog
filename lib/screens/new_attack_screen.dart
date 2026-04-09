@@ -5,17 +5,18 @@ import 'package:in_app_review/in_app_review.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
-import '../models/attack_event.dart';
-import '../providers/attack_provider.dart';
-import '../services/weather_service.dart';
-import '../services/location_service.dart';
-import '../utils/constants.dart';
-import '../l10n/app_strings.dart';
+import 'package:vasolog/l10n/app_strings.dart';
+import 'package:vasolog/models/attack_event.dart';
+import 'package:vasolog/providers/attack_provider.dart';
+import 'package:vasolog/services/location_service.dart';
+import 'package:vasolog/services/weather_service.dart';
+import 'package:vasolog/utils/constants.dart';
+import 'package:vasolog/utils/weather_format.dart';
 
 /// Экран записи / редактирования приступа
 class NewAttackScreen extends StatefulWidget {
-  final AttackEvent? editAttack;
   const NewAttackScreen({super.key, this.editAttack});
+  final AttackEvent? editAttack;
 
   @override
   State<NewAttackScreen> createState() => _NewAttackScreenState();
@@ -115,7 +116,7 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(S.current.enableGeoLocation),
-          duration: Duration(seconds: 3),
+          duration: const Duration(seconds: 3),
         ),
       );
     }
@@ -285,8 +286,7 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
                             overlayColor: severityColor(_severity).withValues(alpha: 0.1),
                           ),
                           child: Slider(
-                            value: _severity.toDouble(),
-                            min: 0, max: 10, divisions: 10,
+                            value: _severity.toDouble(), max: 10, divisions: 10,
                             label: '$_severity',
                             onChanged: (v) {
                               final newVal = v.round();
@@ -329,8 +329,7 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
                     const SizedBox(width: 16),
                     Expanded(
                       child: Slider(
-                        value: _durationMinutes.toDouble(),
-                        min: 0, max: 120, divisions: 24,
+                        value: _durationMinutes.toDouble(), max: 120, divisions: 24,
                         label: '$_durationMinutes мин',
                         onChanged: (v) {
                           final newVal = v.round();
@@ -468,13 +467,13 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
               ),
               const SizedBox(width: 8),
               Text(
-                '${w.temperature.toStringAsFixed(1)}°C',
+                '${formatTemperature(w.temperature)}°C',
                 style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
-                  '${S.current.humidity(w.humidity.toStringAsFixed(0))} · ${S.current.windMs(w.windSpeed.toStringAsFixed(1))}$cacheLabel',
+                  '${S.current.humidity(formatHumidity(w.humidity))} · ${S.current.windMs(formatWindSpeed(w.windSpeed))}$cacheLabel',
                   style: TextStyle(fontSize: 13, color: Colors.grey[700]),
                 ),
               ),
@@ -610,17 +609,16 @@ class _NewAttackScreenState extends State<NewAttackScreen> with SingleTickerProv
 
 /// Секция-карточка с заголовком и иконкой
 class _SectionCard extends StatelessWidget {
-  final String title;
-  final IconData icon;
-  final Widget? trailing;
-  final List<Widget> children;
 
   const _SectionCard({
     required this.title,
     required this.icon,
-    this.trailing,
-    required this.children,
+    required this.children, this.trailing,
   });
+  final String title;
+  final IconData icon;
+  final Widget? trailing;
+  final List<Widget> children;
 
   @override
   Widget build(BuildContext context) {
@@ -652,10 +650,10 @@ class _SectionCard extends StatelessWidget {
 
 /// Интерактивная визуальная схема рук для выбора пальцев
 class _HandDiagram extends StatelessWidget {
-  final Set<String> selectedFingers;
-  final ValueChanged<String> onFingerTap;
 
   const _HandDiagram({required this.selectedFingers, required this.onFingerTap});
+  final Set<String> selectedFingers;
+  final ValueChanged<String> onFingerTap;
 
   @override
   Widget build(BuildContext context) {
@@ -685,11 +683,6 @@ class _HandDiagram extends StatelessWidget {
 
 /// Визуальная рука с тыкабельными пальцами (CustomPainter)
 class _HandVisual extends StatelessWidget {
-  final String label;
-  final List<String> fingers;
-  final Set<String> selectedFingers;
-  final ValueChanged<String> onFingerTap;
-  final bool isLeft;
 
   const _HandVisual({
     required this.label,
@@ -698,6 +691,11 @@ class _HandVisual extends StatelessWidget {
     required this.onFingerTap,
     required this.isLeft,
   });
+  final String label;
+  final List<String> fingers;
+  final Set<String> selectedFingers;
+  final ValueChanged<String> onFingerTap;
+  final bool isLeft;
 
   @override
   Widget build(BuildContext context) {
@@ -721,7 +719,7 @@ class _HandVisual extends StatelessWidget {
 
     final shortLabels = ['Больш.', 'Указат.', 'Средн.', 'Безым.', 'Мизин.'];
 
-    final hasSelection = fingers.any((f) => selectedFingers.contains(f));
+    final hasSelection = fingers.any(selectedFingers.contains);
     return Column(
       children: [
         Text(label, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.grey[700])),
@@ -731,7 +729,7 @@ class _HandVisual extends StatelessWidget {
           child: LayoutBuilder(
             builder: (context, constraints) {
               final w = constraints.maxWidth;
-              final h = 200.0;
+              const h = 200.0;
               return Stack(
                 children: [
                   // Контур ладони
@@ -815,10 +813,10 @@ class _HandVisual extends StatelessWidget {
 
 /// Контур руки (CustomPainter)
 class _HandOutlinePainter extends CustomPainter {
-  final bool isLeft;
-  final Color color;
 
   _HandOutlinePainter({required this.isLeft, required this.color});
+  final bool isLeft;
+  final Color color;
 
   @override
   void paint(Canvas canvas, Size size) {

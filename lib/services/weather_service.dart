@@ -4,13 +4,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 /// Данные о погоде
 class WeatherData {
-  final double temperature;
-  final double humidity;
-  final double pressure;
-  final double windSpeed;
-  final String description;
-  final DateTime fetchedAt;
-  final bool isCached;
 
   WeatherData({
     required this.temperature,
@@ -21,6 +14,23 @@ class WeatherData {
     DateTime? fetchedAt,
     this.isCached = false,
   }) : fetchedAt = fetchedAt ?? DateTime.now();
+
+  factory WeatherData.fromJson(Map<String, dynamic> json) => WeatherData(
+    temperature: (json['temperature'] as num).toDouble(),
+    humidity: (json['humidity'] as num).toDouble(),
+    pressure: (json['pressure'] as num).toDouble(),
+    windSpeed: (json['windSpeed'] as num).toDouble(),
+    description: json['description'] as String,
+    fetchedAt: DateTime.parse(json['fetchedAt'] as String),
+    isCached: true,
+  );
+  final double temperature;
+  final double humidity;
+  final double pressure;
+  final double windSpeed;
+  final String description;
+  final DateTime fetchedAt;
+  final bool isCached;
 
   /// Сколько минут назад загружены данные
   int get minutesAgo => DateTime.now().difference(fetchedAt).inMinutes;
@@ -33,16 +43,6 @@ class WeatherData {
     'description': description,
     'fetchedAt': fetchedAt.toIso8601String(),
   };
-
-  factory WeatherData.fromJson(Map<String, dynamic> json) => WeatherData(
-    temperature: (json['temperature'] as num).toDouble(),
-    humidity: (json['humidity'] as num).toDouble(),
-    pressure: (json['pressure'] as num).toDouble(),
-    windSpeed: (json['windSpeed'] as num).toDouble(),
-    description: json['description'] as String,
-    fetchedAt: DateTime.parse(json['fetchedAt'] as String),
-    isCached: true,
-  );
 }
 
 /// Сервис погоды через Open-Meteo API (бесплатный, без ключа)

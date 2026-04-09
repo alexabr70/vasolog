@@ -1,28 +1,43 @@
-# This file configures the analyzer, which statically analyzes Dart code to
-# check for errors, warnings, and lints.
+# Статический анализ Dart/Flutter для VasoLog
+# База: very_good_analysis (Very Good Ventures, 150+ правил)
+# https://pub.dev/packages/very_good_analysis
 #
-# The issues identified by the analyzer are surfaced in the UI of Dart-enabled
-# IDEs (https://dart.dev/tools#ides-and-editors). The analyzer can also be
-# invoked from the command line by running `flutter analyze`.
+# Migration strategy: правила добавлены постепенно.
+# Шумные правила отключены - включим по мере исправления кода.
 
-# The following line activates a set of recommended lints for Flutter apps,
-# packages, and plugins designed to encourage good coding practices.
-include: package:flutter_lints/flutter.yaml
+include: package:very_good_analysis/analysis_options.yaml
+
+analyzer:
+  errors:
+    # Info-level правила (не блокируют сборку)
+    todo: ignore
+    public_member_api_docs: ignore
+    lines_longer_than_80_chars: ignore
+    # Strict typing - включим после рефакторинга
+    inference_failure_on_instance_creation: ignore
+    inference_failure_on_function_invocation: ignore
+    inference_failure_on_collection_literal: ignore
+    # Избыточные для solo проекта
+    prefer_final_parameters: ignore
+    avoid_positional_boolean_parameters: ignore
+    one_member_abstracts: ignore
+    sort_pub_dependencies: ignore
+    diagnostic_describe_all_properties: ignore
+  exclude:
+    - build/**
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+    - "**/*.mocks.dart"
+    - lib/generated/**
+    - lib/l10n/generated/**
 
 linter:
-  # The lint rules applied to this project can be customized in the
-  # section below to disable rules from the `package:flutter_lints/flutter.yaml`
-  # included above or to enable additional rules. A list of all available lints
-  # and their documentation is published at https://dart.dev/lints.
-  #
-  # Instead of disabling a lint rule for the entire project in the
-  # section below, it can also be suppressed for a single line of code
-  # or a specific dart file by using the `// ignore: name_of_lint` and
-  # `// ignore_for_file: name_of_lint` syntax on the line or in the file
-  # producing the lint.
   rules:
-    # avoid_print: false  # Uncomment to disable the `avoid_print` rule
-    # prefer_single_quotes: true  # Uncomment to enable the `prefer_single_quotes` rule
-
-# Additional information about this file can be found at
-# https://dart.dev/guides/language/analysis-options
+    # Критичные правила всегда включены
+    avoid_print: true
+    prefer_const_constructors: true
+    prefer_const_literals_to_create_immutables: true
+    require_trailing_commas: true
+    # Отключены до постепенной миграции
+    lines_longer_than_80_chars: false
+    prefer_final_parameters: false

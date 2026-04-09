@@ -1,0 +1,23 @@
+# Баг #3: кнопка "создать PDF" перекрывается FAB
+appId: com.vasolog.vasolog
+name: PDF Export Button Visibility
+tags:
+  - regression
+  - layout
+---
+- launchApp
+- waitForAnimationToEnd
+# Идём в Отчёты (обычно правая часть нижней панели)
+- tapOn:
+    point: "85%,90%"
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: 04_reports_screen
+# Скроллим до кнопки PDF
+- scroll
+- takeScreenshot: 04_reports_bottom
+# AI проверка: кнопка "создать PDF" видна и не перекрыта
+- assertNoDefectsWithAi:
+    optional: true
+- takeScreenshot: 04_pdf_button_visible

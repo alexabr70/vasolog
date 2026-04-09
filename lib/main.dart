@@ -1,26 +1,27 @@
 import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'services/storage_service.dart';
-import 'services/notification_service.dart';
-import 'services/deep_link_service.dart';
-import 'services/widget_service.dart';
-import 'providers/attack_provider.dart';
-import 'screens/main_shell.dart';
-import 'screens/onboarding_screen.dart';
-import 'utils/constants.dart';
-import 'l10n/app_strings.dart';
+import 'package:vasolog/l10n/app_strings.dart';
+import 'package:vasolog/providers/attack_provider.dart';
+import 'package:vasolog/screens/main_shell.dart';
+import 'package:vasolog/screens/onboarding_screen.dart';
+import 'package:vasolog/services/deep_link_service.dart';
+import 'package:vasolog/services/notification_service.dart';
+import 'package:vasolog/services/storage_service.dart';
+import 'package:vasolog/services/widget_service.dart';
+import 'package:vasolog/utils/constants.dart';
 
 void main() async {
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   StorageService? storage;
-  bool onboardingDone = false;
+  var onboardingDone = false;
 
   try {
     storage = StorageService();
@@ -61,10 +62,10 @@ void main() async {
 }
 
 class VasoLogApp extends StatelessWidget {
+
+  const VasoLogApp({required this.storage, required this.showOnboarding, super.key});
   final StorageService storage;
   final bool showOnboarding;
-
-  const VasoLogApp({super.key, required this.storage, required this.showOnboarding});
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +76,6 @@ class VasoLogApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: _lightTheme(),
         darkTheme: _darkTheme(),
-        themeMode: ThemeMode.system,
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,

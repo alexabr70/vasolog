@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../services/notification_service.dart';
-import '../utils/constants.dart';
-import '../l10n/app_strings.dart';
+import 'package:vasolog/l10n/app_strings.dart';
+import 'package:vasolog/services/notification_service.dart';
+import 'package:vasolog/utils/constants.dart';
 
 /// Экран "О приложении" с medical disclaimer и privacy policy
 class AboutScreen extends StatefulWidget {
@@ -34,7 +34,7 @@ class _AboutScreenState extends State<AboutScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(S.current.notificationPermissionDenied),
-            duration: Duration(seconds: 3),
+            duration: const Duration(seconds: 3),
           ),
         );
       }
@@ -198,8 +198,8 @@ class _AboutScreenState extends State<AboutScreen> {
                             queryParameters: {'subject': 'VasoLog - Обратная связь'}),
                       ),
                       borderRadius: BorderRadius.circular(4),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 4),
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 4),
                         child: Text(
                           'vasolog.app@gmail.com',
                           style: TextStyle(

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../services/notification_service.dart';
-import '../services/location_service.dart';
-import '../utils/constants.dart';
-import '../l10n/app_strings.dart';
-import 'main_shell.dart';
+import 'package:vasolog/l10n/app_strings.dart';
+import 'package:vasolog/screens/main_shell.dart';
+import 'package:vasolog/services/location_service.dart';
+import 'package:vasolog/services/notification_service.dart';
+import 'package:vasolog/utils/constants.dart';
 
 /// Онбординг - 3 экрана при первом запуске
 class OnboardingScreen extends StatefulWidget {
@@ -220,10 +220,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 }
 
 class _OnboardingPage extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final String description;
-  final Color color;
 
   const _OnboardingPage({
     required this.icon,
@@ -231,6 +227,10 @@ class _OnboardingPage extends StatelessWidget {
     required this.description,
     required this.color,
   });
+  final IconData icon;
+  final String title;
+  final String description;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {

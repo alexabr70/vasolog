@@ -1,0 +1,13 @@
+# Maestro config для VasoLog
+# https://maestro.mobile.dev/cli/configuration
+flows: .
+executionOrder:
+  continueOnFailure: true
+  flowsOrder:
+    - 00_smoke
+    - 01_weather_sync
+    - 02_new_attack
+    - 03_hand_diagram
+    - 04_pdf_export
+    - 05_cold_threshold
+    - 06_language_switch

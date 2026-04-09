@@ -1,8 +1,9 @@
 import 'dart:typed_data';
+
+import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:intl/intl.dart';
-import '../models/attack_event.dart';
+import 'package:vasolog/models/attack_event.dart';
 
 /// Генерация PDF-отчёта для врача
 class PdfReportService {
@@ -41,7 +42,7 @@ class PdfReportService {
           pw.Header(
             level: 0,
             child: pw.Text(
-              'VasoLog - Raynaud\'s Phenomenon Report',
+              "VasoLog - Raynaud's Phenomenon Report",
               style: pw.TextStyle(
                 fontSize: 22,
                 fontWeight: pw.FontWeight.bold,
@@ -60,7 +61,7 @@ class PdfReportService {
           pw.SizedBox(height: 20),
 
           // Сводка
-          pw.Header(level: 1, text: 'Summary'),
+          pw.Header(text: 'Summary'),
           pw.TableHelper.fromTextArray(
             headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold),
             cellAlignment: pw.Alignment.centerLeft,
@@ -70,7 +71,7 @@ class PdfReportService {
               ['Average Severity (RCS)', avgSeverity.toStringAsFixed(1)],
               [
                 'Most Common Trigger',
-                sortedTriggers.isNotEmpty ? sortedTriggers.first.key : 'N/A'
+                if (sortedTriggers.isNotEmpty) sortedTriggers.first.key else 'N/A'
               ],
               [
                 'Avg. Temperature During Attacks',
@@ -82,7 +83,7 @@ class PdfReportService {
 
           // Таблица триггеров
           if (sortedTriggers.isNotEmpty) ...[
-            pw.Header(level: 1, text: 'Trigger Analysis'),
+            pw.Header(text: 'Trigger Analysis'),
             pw.TableHelper.fromTextArray(
               headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold),
               data: [
@@ -98,7 +99,7 @@ class PdfReportService {
           ],
 
           // Детальный лог приступов
-          pw.Header(level: 1, text: 'Attack Log'),
+          pw.Header(text: 'Attack Log'),
           pw.TableHelper.fromTextArray(
             headerStyle: pw.TextStyle(
               fontWeight: pw.FontWeight.bold,
@@ -107,9 +108,9 @@ class PdfReportService {
             cellStyle: const pw.TextStyle(fontSize: 8),
             columnWidths: {
               0: const pw.FlexColumnWidth(2),
-              1: const pw.FlexColumnWidth(1),
+              1: const pw.FlexColumnWidth(),
               2: const pw.FlexColumnWidth(1.5),
-              3: const pw.FlexColumnWidth(1),
+              3: const pw.FlexColumnWidth(),
               4: const pw.FlexColumnWidth(2),
             },
             data: [

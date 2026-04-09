@@ -1,0 +1,23 @@
+# Баг #2: погода разная на home и new_attack
+# Флоу: home → скриншот температуры → FAB → new_attack → скриншот → сравнить вручную
+appId: com.vasolog.vasolog
+name: Weather Sync Between Screens
+tags:
+  - regression
+  - weather
+---
+- launchApp:
+    clearState: false
+- waitForAnimationToEnd:
+    timeout: 5000
+- takeScreenshot: 01_home_weather
+# Открываем "Новая атака" через центральную FAB
+- tapOn:
+    point: "50%,90%"  # центр нижней панели (FAB)
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: 01_new_attack_weather
+# Возвращаемся назад
+- back
+- waitForAnimationToEnd
+- takeScreenshot: 01_home_weather_after

@@ -1,14 +1,16 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fl_chart/fl_chart.dart';
-import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
-import '../providers/attack_provider.dart';
-import '../services/weather_service.dart';
-import '../services/location_service.dart';
-import '../utils/constants.dart';
-import '../l10n/app_strings.dart';
-import 'new_attack_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:vasolog/l10n/app_strings.dart';
+import 'package:vasolog/models/attack_event.dart';
+import 'package:vasolog/providers/attack_provider.dart';
+import 'package:vasolog/screens/new_attack_screen.dart';
+import 'package:vasolog/services/location_service.dart';
+import 'package:vasolog/services/weather_service.dart';
+import 'package:vasolog/utils/constants.dart';
+import 'package:vasolog/utils/weather_format.dart';
 
 /// Главный экран - дашборд (встраивается в MainShell)
 class HomeScreen extends StatefulWidget {
@@ -214,10 +216,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
 /// Анимация появления элементов снизу с задержкой
 class _AnimatedEntry extends StatefulWidget {
-  final Widget child;
-  final int delay;
 
   const _AnimatedEntry({required this.child, required this.delay});
+  final Widget child;
+  final int delay;
 
   @override
   State<_AnimatedEntry> createState() => _AnimatedEntryState();
@@ -269,8 +271,8 @@ class _AnimatedEntryState extends State<_AnimatedEntry>
 
 /// Мини-график тренда тяжести за 7 дней
 class _WeekTrendChart extends StatelessWidget {
-  final AttackProvider provider;
   const _WeekTrendChart({required this.provider});
+  final AttackProvider provider;
 
   @override
   Widget build(BuildContext context) {
@@ -278,7 +280,7 @@ class _WeekTrendChart extends StatelessWidget {
     final spots = <FlSpot>[];
     final days = <String>[];
 
-    for (int i = 6; i >= 0; i--) {
+    for (var i = 6; i >= 0; i--) {
       final day = now.subtract(Duration(days: i));
       final dayStart = DateTime(day.year, day.month, day.day);
       final dayEnd = dayStart.add(const Duration(days: 1));
@@ -312,9 +314,9 @@ class _WeekTrendChart extends StatelessWidget {
                   gridData: const FlGridData(show: false),
                   borderData: FlBorderData(show: false),
                   titlesData: FlTitlesData(
-                    leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                    rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                    topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    leftTitles: const AxisTitles(),
+                    rightTitles: const AxisTitles(),
+                    topTitles: const AxisTitles(),
                     bottomTitles: AxisTitles(
                       sideTitles: SideTitles(
                         showTitles: true,
@@ -337,11 +339,9 @@ class _WeekTrendChart extends StatelessWidget {
                       color: AppColors.primary,
                       barWidth: 2.5,
                       dotData: FlDotData(
-                        show: true,
                         getDotPainter: (spot, percent, bar, index) => FlDotCirclePainter(
                           radius: spot.y > 0 ? 3 : 0,
                           color: severityColor(spot.y.round()),
-                          strokeWidth: 0,
                         ),
                       ),
                       belowBarData: BarAreaData(
@@ -373,15 +373,8 @@ class _WeekTrendChart extends StatelessWidget {
 
 /// Карточка погоды с предупреждением о холоде
 class _WeatherAlert extends StatelessWidget {
-  final WeatherData weather;
   const _WeatherAlert({required this.weather});
-
-  /// Форматирование температуры без "-0"
-  static String _formatTemp(double temp) {
-    final rounded = temp.roundToDouble();
-    if (rounded == 0 || rounded == -0) return '0';
-    return temp.toStringAsFixed(0);
-  }
+  final WeatherData weather;
 
   @override
   Widget build(BuildContext context) {
@@ -392,9 +385,9 @@ class _WeatherAlert extends StatelessWidget {
 
     return Semantics(
       label: S.current.a11yWeatherInfo(
-        temp.toStringAsFixed(0),
-        weather.windSpeed.toStringAsFixed(0),
-        weather.humidity.toStringAsFixed(0),
+        formatTemperature(temp),
+        formatWindSpeed(weather.windSpeed),
+        formatHumidity(weather.humidity),
       ),
       child: Card(
       color: isVeryCold
@@ -419,12 +412,12 @@ class _WeatherAlert extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        '${_formatTemp(temp)}°C',
+                        '${formatTemperature(temp)}°C',
                         style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        '${S.current.windMs(weather.windSpeed.toStringAsFixed(0))} · ${S.current.humidity(weather.humidity.toStringAsFixed(0))}',
+                        '${S.current.windMs(formatWindSpeed(weather.windSpeed))} · ${S.current.humidity(formatHumidity(weather.humidity))}',
                         style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                       ),
                     ],
@@ -505,15 +498,15 @@ class _EmptyState extends StatelessWidget {
 }
 
 class _StatCard extends StatelessWidget {
-  final int totalAttacks;
-  final int weeklyAttacks;
-  final double avgSeverity;
 
   const _StatCard({
     required this.totalAttacks,
     required this.weeklyAttacks,
     required this.avgSeverity,
   });
+  final int totalAttacks;
+  final int weeklyAttacks;
+  final double avgSeverity;
 
   @override
   Widget build(BuildContext context) {
@@ -554,12 +547,12 @@ class _StatCard extends StatelessWidget {
 }
 
 class _StatItem extends StatelessWidget {
+
+  const _StatItem({required this.label, required this.value, required this.icon, this.valueColor});
   final String label;
   final String value;
   final IconData icon;
   final Color? valueColor;
-
-  const _StatItem({required this.label, required this.value, required this.icon, this.valueColor});
 
   @override
   Widget build(BuildContext context) {
@@ -587,8 +580,8 @@ class _StatItem extends StatelessWidget {
 }
 
 class _StreakCard extends StatelessWidget {
-  final int days;
   const _StreakCard({required this.days});
+  final int days;
 
   @override
   Widget build(BuildContext context) {
@@ -652,11 +645,11 @@ class _StreakCard extends StatelessWidget {
 }
 
 class _AttackTile extends StatelessWidget {
-  final dynamic attack;
-  final VoidCallback onDelete;
-  final VoidCallback? onEdit;
 
   const _AttackTile({required this.attack, required this.onDelete, this.onEdit});
+  final AttackEvent attack;
+  final VoidCallback onDelete;
+  final VoidCallback? onEdit;
 
   @override
   Widget build(BuildContext context) {

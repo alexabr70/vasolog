@@ -54,6 +54,18 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  integration_test:
+    sdk: flutter
+  # Статический анализ (150+ правил от Very Good Ventures)
+  very_good_analysis: ^6.0.0
+  # Визуальная регрессия (golden tests на разных размерах экрана)
+  golden_toolkit: ^0.15.0
+  # Моки для unit/widget тестов
+  mocktail: ^1.0.4
+  # Property-based testing (находит edge cases через рандом входы)
+  glados: ^1.1.4
+  # Mutation testing (проверка качества тестов)
+  mutation_test: ^1.2.7
   flutter_lints: ^6.0.0
   flutter_launcher_icons: ^0.14.4
 

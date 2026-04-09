@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:printing/printing.dart';
 import 'package:intl/intl.dart';
-import '../providers/attack_provider.dart';
-import '../services/pdf_report_service.dart';
-import '../utils/constants.dart';
-import '../l10n/app_strings.dart';
+import 'package:printing/printing.dart';
+import 'package:provider/provider.dart';
+import 'package:vasolog/l10n/app_strings.dart';
+import 'package:vasolog/providers/attack_provider.dart';
+import 'package:vasolog/services/pdf_report_service.dart';
+import 'package:vasolog/utils/constants.dart';
 
 /// Экран генерации PDF-отчёта для врача
 class ReportScreen extends StatefulWidget {
@@ -120,7 +120,7 @@ class _ReportScreenState extends State<ReportScreen> {
                   children: [
                     Text(
                       S.current.period,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),

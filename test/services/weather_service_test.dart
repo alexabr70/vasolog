@@ -5,10 +5,10 @@ void main() {
   group('WeatherData', () {
     test('создаётся с правильными полями', () {
       final data = WeatherData(
-        temperature: -5.0,
-        humidity: 85.0,
-        pressure: 1015.0,
-        windSpeed: 7.0,
+        temperature: -5,
+        humidity: 85,
+        pressure: 1015,
+        windSpeed: 7,
         description: 'снег',
       );
       expect(data.temperature, -5.0);
@@ -18,10 +18,10 @@ void main() {
 
     test('isCached по умолчанию false', () {
       final data = WeatherData(
-        temperature: 20.0,
-        humidity: 50.0,
-        pressure: 1013.0,
-        windSpeed: 3.0,
+        temperature: 20,
+        humidity: 50,
+        pressure: 1013,
+        windSpeed: 3,
         description: 'ясно',
       );
       expect(data.isCached, false);
@@ -30,11 +30,11 @@ void main() {
     test('toJson/fromJson roundtrip', () {
       final original = WeatherData(
         temperature: 15.5,
-        humidity: 60.0,
-        pressure: 1020.0,
+        humidity: 60,
+        pressure: 1020,
         windSpeed: 2.5,
         description: 'облачно',
-        fetchedAt: DateTime(2026, 4, 9, 12, 0),
+        fetchedAt: DateTime(2026, 4, 9, 12),
       );
       final json = original.toJson();
       final restored = WeatherData.fromJson(json);
@@ -49,10 +49,10 @@ void main() {
 
     test('minutesAgo вычисляется корректно', () {
       final data = WeatherData(
-        temperature: 10.0,
-        humidity: 50.0,
-        pressure: 1013.0,
-        windSpeed: 1.0,
+        temperature: 10,
+        humidity: 50,
+        pressure: 1013,
+        windSpeed: 1,
         description: 'ясно',
         fetchedAt: DateTime.now().subtract(const Duration(minutes: 15)),
       );

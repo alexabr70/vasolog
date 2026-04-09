@@ -48,3 +48,11 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Testing artifacts (локальные скрины с устройства, отчёты Maestro/monkey/fastbot)
+/screenshots/
+/maestro-reports/
+/maestro-artifacts/
+/fastbot-output/
+monkey-output.txt
+logcat.txt

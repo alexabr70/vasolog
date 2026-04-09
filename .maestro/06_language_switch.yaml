@@ -1,0 +1,23 @@
+# Фича 4: переключение языка интерфейса в настройках
+# Placeholder - будет дополнен после добавления экрана настроек
+appId: com.vasolog.vasolog
+name: Language Switch in Settings
+tags:
+  - feature
+  - i18n
+---
+- launchApp
+- waitForAnimationToEnd
+# Открываем настройки (иконка или пункт меню)
+- tapOn:
+    text: "Settings"
+    optional: true
+- tapOn:
+    text: "Настройки"
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: 06_settings_screen
+# Ищем секцию языка
+- scroll
+- takeScreenshot: 06_language_section

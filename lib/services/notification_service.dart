@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:timezone/timezone.dart' as tz;
-import 'package:timezone/data/latest_all.dart' as tz_data;
 import 'package:flutter_timezone/flutter_timezone.dart';
-import 'deep_link_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:timezone/data/latest_all.dart' as tz_data;
+import 'package:timezone/timezone.dart' as tz;
+import 'package:vasolog/services/deep_link_service.dart';
 
 /// Обработчик нажатия на уведомление (top-level для изоляции)
 @pragma('vm:entry-point')
@@ -15,9 +15,9 @@ void onDidReceiveNotificationResponse(NotificationResponse response) {
 
 /// Сервис локальных уведомлений
 class NotificationService {
-  static final NotificationService _instance = NotificationService._();
   factory NotificationService() => _instance;
   NotificationService._();
+  static final NotificationService _instance = NotificationService._();
 
   final _plugin = FlutterLocalNotificationsPlugin();
   bool _initialized = false;
@@ -108,16 +108,14 @@ class NotificationService {
       'Как ваши руки?',
       'Запишите состояние, если был приступ',
       _nextInstanceOfTime(12, 30),
-      NotificationDetails(
+      const NotificationDetails(
         android: AndroidNotificationDetails(
           _channelId,
           _channelName,
           channelDescription: 'Ежедневные напоминания о записи состояния',
-          importance: Importance.defaultImportance,
-          priority: Priority.defaultPriority,
-          styleInformation: const DefaultStyleInformation(true, true),
+          styleInformation: DefaultStyleInformation(true, true),
         ),
-        iOS: const DarwinNotificationDetails(
+        iOS: DarwinNotificationDetails(
           presentAlert: true,
           presentBadge: true,
           presentSound: true,
@@ -141,15 +139,13 @@ class NotificationService {
       'Давно не было записей',
       'Всё хорошо? Если был приступ - запишите его',
       scheduledDate,
-      NotificationDetails(
+      const NotificationDetails(
         android: AndroidNotificationDetails(
           _channelId,
           _channelName,
           channelDescription: 'Напоминание при отсутствии записей',
-          importance: Importance.defaultImportance,
-          priority: Priority.defaultPriority,
         ),
-        iOS: const DarwinNotificationDetails(
+        iOS: DarwinNotificationDetails(
           presentAlert: true,
           presentBadge: true,
           presentSound: true,

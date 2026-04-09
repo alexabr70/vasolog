@@ -1,14 +1,15 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../services/deep_link_service.dart';
-import '../utils/constants.dart';
-import '../l10n/app_strings.dart';
-import 'home_screen.dart';
-import 'history_screen.dart';
-import 'report_screen.dart';
-import 'about_screen.dart';
-import 'new_attack_screen.dart';
+import 'package:vasolog/l10n/app_strings.dart';
+import 'package:vasolog/screens/about_screen.dart';
+import 'package:vasolog/screens/history_screen.dart';
+import 'package:vasolog/screens/home_screen.dart';
+import 'package:vasolog/screens/new_attack_screen.dart';
+import 'package:vasolog/screens/report_screen.dart';
+import 'package:vasolog/services/deep_link_service.dart';
+import 'package:vasolog/utils/constants.dart';
 
 /// Главная оболочка с Bottom Navigation + центральный FAB
 class MainShell extends StatefulWidget {
@@ -38,7 +39,7 @@ class _MainShellState extends State<MainShell> with TickerProviderStateMixin {
       vsync: this,
       duration: const Duration(milliseconds: 600),
     );
-    _fabScale = Tween<double>(begin: 0.0, end: 1.0).animate(
+    _fabScale = Tween<double>(begin: 0, end: 1).animate(
       CurvedAnimation(parent: _fabController, curve: Curves.elasticOut),
     );
     // Анимация появления FAB
@@ -121,21 +122,25 @@ class _MainShellState extends State<MainShell> with TickerProviderStateMixin {
           child: _pages[_currentIndex],
         ),
       ),
-      floatingActionButton: Semantics(
-        button: true,
-        label: S.current.a11yAddAttack,
-        child: ScaleTransition(
-          scale: _fabScale,
-          child: FloatingActionButton.large(
-            onPressed: _openNewAttack,
-            backgroundColor: AppColors.secondary,
-            foregroundColor: Colors.white,
-            elevation: 8,
-            shape: const CircleBorder(),
-            child: const Icon(Icons.add_rounded, size: 36),
-          ),
-        ),
-      ),
+      // FAB скрыт на экранах Report (2) и About (3) - там он перекрывает
+      // полезный контент (например кнопку "Создать PDF" на экране отчёта)
+      floatingActionButton: (_currentIndex == 2 || _currentIndex == 3)
+          ? null
+          : Semantics(
+              button: true,
+              label: S.current.a11yAddAttack,
+              child: ScaleTransition(
+                scale: _fabScale,
+                child: FloatingActionButton.large(
+                  onPressed: _openNewAttack,
+                  backgroundColor: AppColors.secondary,
+                  foregroundColor: Colors.white,
+                  elevation: 8,
+                  shape: const CircleBorder(),
+                  child: const Icon(Icons.add_rounded, size: 36),
+                ),
+              ),
+            ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: _buildBottomBar(isDark),
     );
@@ -149,7 +154,7 @@ class _MainShellState extends State<MainShell> with TickerProviderStateMixin {
       color: isDark ? const Color(0xFF1E1E2E) : Colors.white,
       surfaceTintColor: Colors.transparent,
       child: SizedBox(
-        height: 60,
+        height: 72,
         child: Row(
           children: [
             Expanded(
@@ -193,10 +198,6 @@ class _MainShellState extends State<MainShell> with TickerProviderStateMixin {
 }
 
 class _NavItem extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final bool isActive;
-  final VoidCallback onTap;
 
   const _NavItem({
     required this.icon,
@@ -204,6 +205,10 @@ class _NavItem extends StatelessWidget {
     required this.isActive,
     required this.onTap,
   });
+  final IconData icon;
+  final String label;
+  final bool isActive;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -212,22 +217,26 @@ class _NavItem extends StatelessWidget {
       borderRadius: BorderRadius.circular(12),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
             AnimatedScale(
-              scale: isActive ? 1.2 : 1.0,
+              scale: isActive ? 1.15 : 1.0,
               duration: const Duration(milliseconds: 200),
               child: Icon(
                 icon,
                 color: isActive ? AppColors.primary : Colors.grey,
-                size: 24,
+                size: 22,
               ),
             ),
-            const SizedBox(height: 2),
+            const SizedBox(height: 4),
             Text(
               label,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 10,
                 fontWeight: isActive ? FontWeight.bold : FontWeight.normal,

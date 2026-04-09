@@ -1,0 +1,29 @@
+# Создание новой атаки: severity, пальцы, сохранение
+appId: com.vasolog.vasolog
+name: Create New Attack
+tags:
+  - happy_path
+  - critical
+---
+- launchApp
+- waitForAnimationToEnd
+- tapOn:
+    point: "50%,90%"
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: 02_new_attack_initial
+# Пытаемся выбрать несколько пальцев (tap на диаграмме - позиции примерные)
+- tapOn:
+    point: "30%,40%"  # левая рука, один из пальцев
+    optional: true
+- tapOn:
+    point: "70%,40%"  # правая рука
+    optional: true
+- takeScreenshot: 02_fingers_selected
+# Пробуем сохранить (кнопка внизу)
+- tapOn:
+    point: "50%,92%"
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: 02_after_save

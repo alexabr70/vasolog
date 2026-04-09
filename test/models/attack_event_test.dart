@@ -16,8 +16,8 @@ void main() {
         triggers: ['Холод', 'Стресс'],
         notes: 'Тестовая заметка',
         temperature: -5.2,
-        humidity: 80.0,
-        pressure: 1013.0,
+        humidity: 80,
+        pressure: 1013,
         windSpeed: 7.5,
         weatherDescription: 'Снег',
         latitude: 53.9,
@@ -47,7 +47,7 @@ void main() {
     });
 
     test('colorPhaseLabel возвращает русские названия', () {
-      expect(AttackEvent(id: '1', timestamp: DateTime.now(), severity: 1, colorPhase: 'white').colorPhaseLabel, 'Белый (ишемия)');
+      expect(AttackEvent(id: '1', timestamp: DateTime.now(), severity: 1).colorPhaseLabel, 'Белый (ишемия)');
       expect(AttackEvent(id: '2', timestamp: DateTime.now(), severity: 1, colorPhase: 'blue').colorPhaseLabel, 'Синий (цианоз)');
       expect(AttackEvent(id: '3', timestamp: DateTime.now(), severity: 1, colorPhase: 'red').colorPhaseLabel, 'Красный (реперфузия)');
       expect(AttackEvent(id: '4', timestamp: DateTime.now(), severity: 1, colorPhase: 'mixed').colorPhaseLabel, 'Смешанный');
@@ -78,7 +78,7 @@ void main() {
     test('toMap/fromMap с null полями', () {
       final minimal = AttackEvent(
         id: 'min-1',
-        timestamp: DateTime(2026, 1, 1),
+        timestamp: DateTime(2026),
         severity: 3,
       );
       final map = minimal.toMap();

@@ -1,0 +1,21 @@
+# Баг #1: порог "Мороз!" и отображение -0°C
+# Этот тест визуальный - AI проверяет что нигде нет "-0°C"
+appId: com.vasolog.vasolog
+name: Cold Threshold and Temperature Display
+tags:
+  - regression
+  - weather
+---
+- launchApp
+- waitForAnimationToEnd
+- takeScreenshot: 05_home_temperature
+# Проверяем что НЕТ строки "-0°C" (отрицательный ноль)
+- assertNotVisible: "-0°C"
+- assertNotVisible: "-0 °C"
+- tapOn:
+    point: "50%,90%"
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: 05_new_attack_temperature
+- assertNotVisible: "-0°C"
+- assertNotVisible: "-0 °C"

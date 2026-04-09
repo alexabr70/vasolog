@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import '../models/attack_event.dart';
+import 'package:vasolog/models/attack_event.dart';
 
 /// Сервис локального хранилища (Hive с шифрованием)
 /// Медицинские данные хранятся в зашифрованном box (AES-256)
@@ -80,7 +80,7 @@ class StorageService {
   List<AttackEvent> getAllAttacks() {
     if (_cachedAttacks != null) return _cachedAttacks!;
     final attacks = _box.values
-        .map((map) => AttackEvent.fromMap(map))
+        .map(AttackEvent.fromMap)
         .toList();
     attacks.sort((a, b) => b.timestamp.compareTo(a.timestamp));
     _cachedAttacks = attacks;
