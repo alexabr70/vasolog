@@ -3,6 +3,7 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vasolog/l10n/app_strings.dart';
@@ -24,6 +25,7 @@ void main() async {
   }
 
   WidgetsFlutterBinding.ensureInitialized();
+  await initializeDateFormatting(); // все локали для DateFormat с locale-параметром
   // Раньше был FlutterNativeSplash.preserve() + remove в post-frame callback,
   // но это удерживало native blue splash до первого кадра Flutter (+800ms).
   // Без preserve - native splash исчезает как только Flutter engine готов,

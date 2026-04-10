@@ -800,7 +800,8 @@ class _AttackTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dateFormat = DateFormat('dd MMM, HH:mm');
+    final locale = Localizations.localeOf(context).toString();
+    final dateFormat = DateFormat.MMMd(locale).add_Hm();
     return Semantics(
       label: S.current.a11ySeverityValue(attack.severity),
       child: Card(
