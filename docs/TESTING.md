@@ -265,7 +265,7 @@ Setup:
 
 - **HDB vs ADB**: у Huawei есть свой HDB. Если `adb devices` не видит, попробовать: `Settings` → `Developer options` → выключить `Enable HDB`.
 - **EMUI permissions**: EMUI агрессивно убивает фоновые процессы. Если приложение закрывается само - `Settings` → `Apps` → VasoLog → `Battery` → `Launch` → manual (снять автооптимизацию).
-- **Uninstall предыдущих версий**: если новый APK не ставится из-за подписи - сначала `adb uninstall com.vasolog.vasolog`.
+- **Uninstall предыдущих версий**: если новый APK не ставится из-за подписи - сначала `adb uninstall com.vasolog.app`.
 
 ---
 
@@ -305,7 +305,7 @@ Setup:
    - `.maestro/config.yaml`
    - `scripts/testing/*.sh`
 3. Обновить `pubspec.yaml` (dev_dependencies из VasoLog)
-4. Поменять `com.vasolog.vasolog` на новый package во всех файлах
+4. Поменять `com.vasolog.app` на новый package во всех файлах
 5. `flutter pub get`
 6. Написать первый Maestro flow
 7. `git push` → CI работает

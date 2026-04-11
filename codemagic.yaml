@@ -18,7 +18,7 @@ workflows:
       groups:
         - google_play  # Настроить в Codemagic UI: GOOGLE_PLAY_SERVICE_ACCOUNT
       vars:
-        PACKAGE_NAME: "com.vasolog.vasolog"
+        PACKAGE_NAME: "com.vasolog.app"
         GOOGLE_PLAY_TRACK: "internal"
     scripts:
       - name: Set up keystore
@@ -69,7 +69,7 @@ workflows:
       cocoapods: default
       ios_signing:
         distribution_type: app_store
-        bundle_identifier: com.vasolog.vasolog
+        bundle_identifier: com.vasolog.app
     scripts:
       - name: Set up code signing
         script: xcode-project use-profiles

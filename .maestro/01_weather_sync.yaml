@@ -1,6 +1,6 @@
 # Баг #2: погода разная на home и new_attack
 # Флоу: home → скриншот температуры → FAB → new_attack → скриншот → сравнить вручную
-appId: com.vasolog.vasolog
+appId: com.vasolog.app
 name: Weather Sync Between Screens
 tags:
   - regression

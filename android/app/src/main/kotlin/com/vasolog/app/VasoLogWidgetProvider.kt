@@ -1,4 +1,4 @@
-package com.vasolog.vasolog
+package com.vasolog.app
 
 import android.appwidget.AppWidgetManager
 import android.content.Context

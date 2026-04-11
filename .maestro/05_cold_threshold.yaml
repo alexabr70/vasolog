@@ -1,6 +1,6 @@
 # Баг #1: порог "Мороз!" и отображение -0°C
 # Этот тест визуальный - AI проверяет что нигде нет "-0°C"
-appId: com.vasolog.vasolog
+appId: com.vasolog.app
 name: Cold Threshold and Temperature Display
 tags:
   - regression

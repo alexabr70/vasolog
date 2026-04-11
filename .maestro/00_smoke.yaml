@@ -1,5 +1,5 @@
 # Smoke test: запуск, нет краша, главный экран виден
-appId: com.vasolog.vasolog
+appId: com.vasolog.app
 name: Smoke Test
 tags:
   - smoke

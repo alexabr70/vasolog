@@ -1,4 +1,4 @@
-package com.vasolog.vasolog
+package com.vasolog.app
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -10,7 +10,7 @@ set -e
 
 DURATION_MINUTES="${1:-10}"
 ADB="${ADB:-/d/dev/AndroidSDK/platform-tools/adb.exe}"
-PACKAGE="com.vasolog.vasolog"
+PACKAGE="com.vasolog.app"
 FASTBOT_DIR="/d/dev/tools/fastbot"
 
 if [[ ! -x "$ADB" ]]; then

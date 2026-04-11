@@ -6,8 +6,8 @@ set -e
 
 BUILD_TYPE="${1:-debug}"
 ADB="${ADB:-/d/dev/AndroidSDK/platform-tools/adb.exe}"
-PACKAGE="com.vasolog.vasolog"
-ACTIVITY="com.vasolog.vasolog.MainActivity"
+PACKAGE="com.vasolog.app"
+ACTIVITY="com.vasolog.app.MainActivity"
 
 if [[ ! -x "$ADB" ]]; then
   ADB=$(which adb 2>/dev/null)

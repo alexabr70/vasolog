@@ -1,5 +1,5 @@
 # Создание новой атаки: severity, пальцы, сохранение
-appId: com.vasolog.vasolog
+appId: com.vasolog.app
 name: Create New Attack
 tags:
   - happy_path

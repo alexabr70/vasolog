@@ -5,7 +5,7 @@ import 'package:home_widget/home_widget.dart';
 class WidgetService {
   static const _androidWidgetName = 'VasoLogWidgetProvider';
   static const _iosWidgetName = 'VasoLogWidget';
-  static const _appGroupId = 'group.com.vasolog.vasolog';
+  static const _appGroupId = 'group.com.vasolog.app';
 
   /// Инициализация
   static Future<void> init() async {

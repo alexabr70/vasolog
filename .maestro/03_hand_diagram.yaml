@@ -1,5 +1,5 @@
 # Баг #5: диаграмма рук - проверяем что все 10 пальцев кликабельны и подписаны
-appId: com.vasolog.vasolog
+appId: com.vasolog.app
 name: Hand Diagram Tappability
 tags:
   - regression

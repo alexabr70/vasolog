@@ -1,6 +1,6 @@
 # Фича 4: переключение языка интерфейса в настройках
 # Placeholder - будет дополнен после добавления экрана настроек
-appId: com.vasolog.vasolog
+appId: com.vasolog.app
 name: Language Switch in Settings
 tags:
   - feature

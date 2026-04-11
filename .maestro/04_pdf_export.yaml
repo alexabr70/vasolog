@@ -1,5 +1,5 @@
 # Баг #3: кнопка "создать PDF" перекрывается FAB
-appId: com.vasolog.vasolog
+appId: com.vasolog.app
 name: PDF Export Button Visibility
 tags:
   - regression
