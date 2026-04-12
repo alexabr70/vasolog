@@ -1,0 +1,24 @@
+name: Release Pipeline
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'        # полный релиз в оба стора
+  workflow_dispatch:
+    inputs:
+      release_track:
+        description: 'Android track'
+        type: choice
+        options: [internal, alpha, beta, production]
+        default: internal
+
+jobs:
+  release:
+    uses: ./.github/workflows/_flutter-build.yml
+    with:
+      flutter_version: '3.41.6'
+      ios_bundle_id: 'com.vasolog.app'
+      android_package_name: 'com.vasolog.app'
+      release_track: ${{ inputs.release_track || 'internal' }}
+      xcode_version: 'latest-stable'
+    secrets: inherit
