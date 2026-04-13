@@ -1,5 +1,10 @@
 name: Flutter Build (Reusable)
 
+# Параллельная сборка iOS (TestFlight) + Android (Google Play).
+# iOS → macos-26 (10x cost, необходим для Xcode).
+# Android → ubuntu-latest (1x cost, экономим квоту).
+# Build name и build number приходят из вызывающего release.yml (детерминированные).
+
 on:
   workflow_call:
     inputs:
@@ -15,9 +20,14 @@ on:
       release_track:
         type: string
         default: 'internal'
-      xcode_version:
+      build_name:
+        description: 'Semver из release.yml (например 1.2.0)'
         type: string
-        default: 'latest-stable'
+        required: true
+      build_number:
+        description: 'Build number из release.yml (github.run_number)'
+        type: string
+        required: true
 
     secrets:
       ASC_API_KEY_ID:
@@ -25,6 +35,7 @@ on:
       ASC_API_KEY_ISSUER_ID:
         required: true
       ASC_API_KEY_CONTENT:
+        description: 'base64 от .p8 файла'
         required: true
       MATCH_GIT_BASIC_AUTHORIZATION:
         required: true
@@ -40,15 +51,24 @@ on:
         required: true
       KEY_PASSWORD:
         required: true
-      GOOGLE_PLAY_JSON_KEY_CONTENT:
+      GOOGLE_PLAY_JSON_KEY_BASE64:
+        description: 'base64 от service-account JSON'
         required: true
 
-# ─── iOS Build ───────────────────────────────────────────────────────────────
 jobs:
+  # ─── iOS Build ───────────────────────────────────────────────────────────────
   build-ios:
     name: iOS Release
-    runs-on: macos-latest
+    runs-on: macos-26
     timeout-minutes: 60
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+
+    env:
+      BUILD_NAME: ${{ inputs.build_name }}
+      BUILD_NUMBER: ${{ inputs.build_number }}
 
     steps:
       - name: Checkout
@@ -56,10 +76,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Xcode ${{ inputs.xcode_version }}
+      - name: Setup Xcode (latest-stable)
         uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: ${{ inputs.xcode_version }}
+          xcode-version: latest-stable
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -74,22 +94,49 @@ jobs:
           ruby-version: '3.3'
           bundler-cache: true
 
+      # base64 -d совместим с BSD (macOS) и GNU (Linux). --decode - только GNU.
       - name: Write ASC API Key
+        env:
+          ASC_KEY_B64: ${{ secrets.ASC_API_KEY_CONTENT }}
+          ASC_KEY_ID: ${{ secrets.ASC_API_KEY_ID }}
         run: |
+          set -euo pipefail
           mkdir -p ~/.appstoreconnect/private_keys
-          echo "${{ secrets.ASC_API_KEY_CONTENT }}" | base64 --decode \
-            > ~/.appstoreconnect/private_keys/AuthKey_${{ secrets.ASC_API_KEY_ID }}.p8
+          echo "$ASC_KEY_B64" | base64 -d > ~/.appstoreconnect/private_keys/AuthKey_${ASC_KEY_ID}.p8
+          chmod 600 ~/.appstoreconnect/private_keys/AuthKey_${ASC_KEY_ID}.p8
 
       - name: Flutter pub get
         run: flutter pub get
 
-      - name: Ensure PrivacyInfo.xcprivacy exists
+      # Единый источник правды для версии - sed работает на BSD и GNU.
+      - name: Update pubspec.yaml version
+        shell: bash
         run: |
-          PLIST="ios/Runner/PrivacyInfo.xcprivacy"
-          if [ ! -f "$PLIST" ]; then
-            echo "::error::PrivacyInfo.xcprivacy не найден - добавь ios/Runner/PrivacyInfo.xcprivacy"
+          set -euo pipefail
+          sed -i.bak "s/^version: .*/version: ${BUILD_NAME}+${BUILD_NUMBER}/" pubspec.yaml
+          rm -f pubspec.yaml.bak
+          grep "^version:" pubspec.yaml
+
+      - name: Verify PrivacyInfo.xcprivacy
+        run: |
+          if [ ! -f "ios/Runner/PrivacyInfo.xcprivacy" ]; then
+            echo "::error::ios/Runner/PrivacyInfo.xcprivacy не найден"
             exit 1
           fi
+
+      - name: Cache CocoaPods
+        uses: actions/cache@v4
+        with:
+          path: |
+            ios/Pods
+            ~/Library/Caches/CocoaPods
+          key: pods-${{ runner.os }}-${{ hashFiles('ios/Podfile.lock') }}
+          restore-keys: pods-${{ runner.os }}-
+
+      # Явный pod install - чтобы не падать на первом билде из-за чистого окружения.
+      - name: Pod install
+        working-directory: ios
+        run: pod install --repo-update
 
       - name: iOS Release via Fastlane
         env:
@@ -101,18 +148,54 @@ jobs:
           IOS_BUNDLE_ID: ${{ inputs.ios_bundle_id }}
         run: bundle exec fastlane ios release
 
+      - name: Locate IPA
+        id: ipa
+        shell: bash
+        run: |
+          set -euo pipefail
+          IPA=$(find build/ios/ipa -name "*.ipa" -type f | head -n1)
+          if [[ -z "$IPA" ]]; then
+            echo "::error::IPA не найден в build/ios/ipa"
+            exit 1
+          fi
+          echo "path=$IPA" >> "$GITHUB_OUTPUT"
+          ls -lh "$IPA"
+
+      # Supply chain provenance - подписывает артефакт через GitHub sigstore.
+      - name: Attest IPA provenance
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: ${{ steps.ipa.outputs.path }}
+
       - name: Upload IPA artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ios-release-ipa
+          name: ios-release-${{ inputs.build_name }}-${{ inputs.build_number }}
           path: build/ios/ipa/*.ipa
-          retention-days: 7
+          retention-days: 30
 
-# ─── Android Build ────────────────────────────────────────────────────────────
+      # Debug symbols для symbolication crash reports. Храним дольше IPA.
+      - name: Upload iOS debug symbols
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-symbols-${{ inputs.build_name }}-${{ inputs.build_number }}
+          path: build/symbols
+          retention-days: 90
+          if-no-files-found: warn
+
+  # ─── Android Build ────────────────────────────────────────────────────────────
   build-android:
     name: Android Release
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+
+    env:
+      BUILD_NAME: ${{ inputs.build_name }}
+      BUILD_NUMBER: ${{ inputs.build_number }}
 
     steps:
       - name: Checkout
@@ -137,27 +220,60 @@ jobs:
           ruby-version: '3.3'
           bundler-cache: true
 
+      - name: Cache Gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('android/**/*.gradle*', 'android/**/gradle-wrapper.properties') }}
+          restore-keys: gradle-${{ runner.os }}-
+
       - name: Decode Android Keystore
+        env:
+          KS_B64: ${{ secrets.KEYSTORE_BASE64 }}
         run: |
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode \
-            > android/app/upload-keystore.jks
+          set -euo pipefail
+          echo "$KS_B64" | base64 -d > android/app/upload-keystore.jks
+          chmod 600 android/app/upload-keystore.jks
 
       - name: Create key.properties
+        env:
+          STORE_PASS: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_PASS: ${{ secrets.KEY_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
         run: |
+          set -euo pipefail
           cat > android/key.properties << EOF
-          storePassword=${{ secrets.KEYSTORE_PASSWORD }}
-          keyPassword=${{ secrets.KEY_PASSWORD }}
-          keyAlias=${{ secrets.KEY_ALIAS }}
+          storePassword=${STORE_PASS}
+          keyPassword=${KEY_PASS}
+          keyAlias=${KEY_ALIAS}
           storeFile=upload-keystore.jks
           EOF
+          chmod 600 android/key.properties
 
       - name: Flutter pub get
         run: flutter pub get
 
-      - name: Write Google Play JSON Key
+      - name: Update pubspec.yaml version
+        shell: bash
         run: |
-          echo '${{ secrets.GOOGLE_PLAY_JSON_KEY_CONTENT }}' \
-            > android/fastlane/google-play-key.json
+          set -euo pipefail
+          sed -i.bak "s/^version: .*/version: ${BUILD_NAME}+${BUILD_NUMBER}/" pubspec.yaml
+          rm -f pubspec.yaml.bak
+          grep "^version:" pubspec.yaml
+
+      # base64 -d вместо raw echo - надёжнее при multiline JSON и special chars.
+      # Пишем в абсолютный путь - Fastfile читает его через GOOGLE_PLAY_JSON_KEY_PATH.
+      - name: Decode Google Play JSON Key
+        env:
+          PLAY_KEY_B64: ${{ secrets.GOOGLE_PLAY_JSON_KEY_BASE64 }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$HOME/.play"
+          echo "$PLAY_KEY_B64" | base64 -d > "$HOME/.play/google-play-key.json"
+          chmod 600 "$HOME/.play/google-play-key.json"
+          echo "GOOGLE_PLAY_JSON_KEY_PATH=$HOME/.play/google-play-key.json" >> "$GITHUB_ENV"
 
       - name: Android Release via Fastlane
         env:
@@ -165,16 +281,42 @@ jobs:
           RELEASE_TRACK: ${{ inputs.release_track }}
         run: bundle exec fastlane android release
 
+      - name: Locate AAB
+        id: aab
+        shell: bash
+        run: |
+          set -euo pipefail
+          AAB="build/app/outputs/bundle/release/app-release.aab"
+          if [[ ! -f "$AAB" ]]; then
+            echo "::error::AAB не найден: $AAB"
+            exit 1
+          fi
+          echo "path=$AAB" >> "$GITHUB_OUTPUT"
+          ls -lh "$AAB"
+
+      - name: Attest AAB provenance
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: ${{ steps.aab.outputs.path }}
+
       - name: Upload AAB artifact
         uses: actions/upload-artifact@v4
         with:
-          name: android-release-aab
+          name: android-release-${{ inputs.build_name }}-${{ inputs.build_number }}
           path: build/app/outputs/bundle/release/*.aab
-          retention-days: 7
+          retention-days: 30
+
+      - name: Upload Android debug symbols
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-symbols-${{ inputs.build_name }}-${{ inputs.build_number }}
+          path: build/symbols
+          retention-days: 90
+          if-no-files-found: warn
 
       - name: Cleanup sensitive files
         if: always()
         run: |
           rm -f android/app/upload-keystore.jks
           rm -f android/key.properties
-          rm -f android/fastlane/google-play-key.json
+          rm -f "$HOME/.play/google-play-key.json"

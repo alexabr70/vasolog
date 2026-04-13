@@ -5,9 +5,11 @@ name: Bootstrap Match Certificates (ONE-TIME)
 on:
   workflow_dispatch:
 
+permissions: {}
+
 jobs:
   bootstrap:
-    runs-on: macos-latest
+    runs-on: macos-26
     timeout-minutes: 30
 
     steps:
@@ -22,11 +24,16 @@ jobs:
           ruby-version: '3.3'
           bundler-cache: true
 
+      # base64 -d совместим с BSD (macOS) - --decode только GNU.
       - name: Write ASC API Key
+        env:
+          ASC_KEY_B64: ${{ secrets.ASC_API_KEY_CONTENT }}
+          ASC_KEY_ID: ${{ secrets.ASC_API_KEY_ID }}
         run: |
+          set -euo pipefail
           mkdir -p ~/.appstoreconnect/private_keys
-          echo "${{ secrets.ASC_API_KEY_CONTENT }}" | base64 --decode \
-            > ~/.appstoreconnect/private_keys/AuthKey_${{ secrets.ASC_API_KEY_ID }}.p8
+          echo "$ASC_KEY_B64" | base64 -d > ~/.appstoreconnect/private_keys/AuthKey_${ASC_KEY_ID}.p8
+          chmod 600 ~/.appstoreconnect/private_keys/AuthKey_${ASC_KEY_ID}.p8
 
       - name: Bootstrap Match
         env:
