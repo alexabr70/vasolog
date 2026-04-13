@@ -4,6 +4,7 @@ name: Flutter Build (Reusable)
 # iOS → macos-26 (10x cost, необходим для Xcode).
 # Android → ubuntu-latest (1x cost, экономим квоту).
 # Build name и build number приходят из вызывающего release.yml (детерминированные).
+# platforms: 'ios' | 'android' | 'all' — позволяет собирать только одну платформу.
 
 on:
   workflow_call:
@@ -28,8 +29,13 @@ on:
         description: 'Build number из release.yml (github.run_number)'
         type: string
         required: true
+      platforms:
+        description: 'Платформы для сборки: ios | android | all'
+        type: string
+        default: 'all'
 
     secrets:
+      # iOS (обязательные)
       ASC_API_KEY_ID:
         required: true
       ASC_API_KEY_ISSUER_ID:
@@ -43,17 +49,18 @@ on:
         required: true
       MATCH_GIT_URL:
         required: true
+      # Android (необязательные - нужны только при platforms=android|all)
       KEYSTORE_BASE64:
-        required: true
+        required: false
       KEYSTORE_PASSWORD:
-        required: true
+        required: false
       KEY_ALIAS:
-        required: true
+        required: false
       KEY_PASSWORD:
-        required: true
+        required: false
       GOOGLE_PLAY_JSON_KEY_BASE64:
         description: 'base64 от service-account JSON'
-        required: true
+        required: false
 
 jobs:
   # ─── iOS Build ───────────────────────────────────────────────────────────────
@@ -186,6 +193,7 @@ jobs:
   # ─── Android Build ────────────────────────────────────────────────────────────
   build-android:
     name: Android Release
+    if: inputs.platforms == 'android' || inputs.platforms == 'all'
     runs-on: ubuntu-latest
     timeout-minutes: 45
     permissions:

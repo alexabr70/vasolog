@@ -15,6 +15,11 @@ on:
         description: 'Semver (например 1.2.0). Если пусто - берётся из тега.'
         required: false
         type: string
+      platforms:
+        description: 'Платформы для сборки'
+        type: choice
+        options: [all, ios, android]
+        default: all
       release_track:
         description: 'Google Play track'
         type: choice
@@ -66,6 +71,7 @@ jobs:
       flutter_version: '3.41.6'
       ios_bundle_id: 'com.vasolog.app'
       android_package_name: 'com.vasolog.app'
+      platforms: ${{ inputs.platforms || 'all' }}
       release_track: ${{ inputs.release_track || 'internal' }}
       build_name: ${{ needs.prepare.outputs.build_name }}
       build_number: ${{ needs.prepare.outputs.build_number }}
