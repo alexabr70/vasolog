@@ -4,7 +4,6 @@
 set -e
 
 MODE=${1:-debug}
-API_KEY="963fe87900f276da9f0957b422accfea"
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -22,9 +21,9 @@ echo ""
 # 2. Сборка
 echo -e "${YELLOW}[2/3] Сборка APK (${MODE})...${NC}"
 if [ "$MODE" = "release" ]; then
-  flutter build apk --release --dart-define=WEATHER_API_KEY=$API_KEY
+  flutter build apk --release
 else
-  flutter build apk --debug --dart-define=WEATHER_API_KEY=$API_KEY
+  flutter build apk --debug
 fi
 
 APK_PATH="build/app/outputs/flutter-apk/app-${MODE}.apk"

@@ -178,7 +178,7 @@ class _AboutScreenState extends State<AboutScreen> {
               child: TextButton.icon(
                 onPressed: () => launchUrl(
                   Uri.parse(
-                    'https://vasolog-app.github.io/privacy_policy.html',
+                    'https://alexabr70.github.io/vasolog/privacy_policy.html',
                   ),
                   mode: LaunchMode.externalApplication,
                 ),

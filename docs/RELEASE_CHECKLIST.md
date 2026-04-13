@@ -2,24 +2,23 @@
 
 ## Сборка с обфускацией
 
+WeatherService использует Open-Meteo (без ключа) - dart-define не нужен.
+
 ```bash
 # Android (AAB для Google Play)
 flutter build appbundle --release \
   --obfuscate \
-  --split-debug-info=./build/symbols \
-  --dart-define=WEATHER_API_KEY=963fe87900f276da9f0957b422accfea
+  --split-debug-info=./build/symbols
 
 # Android (APK для тестирования)
 flutter build apk --release \
   --obfuscate \
-  --split-debug-info=./build/symbols \
-  --dart-define=WEATHER_API_KEY=963fe87900f276da9f0957b422accfea
+  --split-debug-info=./build/symbols
 
 # iOS
 flutter build ipa --release \
   --obfuscate \
-  --split-debug-info=./build/symbols \
-  --dart-define=WEATHER_API_KEY=963fe87900f276da9f0957b422accfea
+  --split-debug-info=./build/symbols
 ```
 
 Символы для crash reports сохраняются в `./build/symbols/`.
