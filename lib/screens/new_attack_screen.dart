@@ -127,10 +127,10 @@ class _NewAttackScreenState extends State<NewAttackScreen>
   /// Подсказка триггеров на основе погоды
   void _updateSuggestedTriggers(WeatherData data) {
     _suggestedTriggers.clear();
-    if (data.temperature <= 10) _suggestedTriggers.add('Холод');
-    if (data.temperature <= 5) _suggestedTriggers.add('Холодная вода');
-    if (data.windSpeed >= 5) _suggestedTriggers.add('Холод');
-    if (data.humidity >= 85) _suggestedTriggers.add('Стресс');
+    if (data.temperature <= 10) _suggestedTriggers.add(S.current.triggerCold);
+    if (data.temperature <= 5) _suggestedTriggers.add(S.current.triggerColdWater);
+    if (data.windSpeed >= 5) _suggestedTriggers.add(S.current.triggerCold);
+    if (data.humidity >= 85) _suggestedTriggers.add(S.current.triggerStress);
   }
 
   Future<void> _takePhoto() async {

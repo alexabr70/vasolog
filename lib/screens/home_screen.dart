@@ -316,6 +316,7 @@ class _WeekTrendChart extends StatelessWidget {
     final now = DateTime.now();
     final spots = <FlSpot>[];
     final days = <String>[];
+    final weekdayAbbrs = S.current.weekdayAbbrs; // 0=Пн..6=Вс
 
     for (var i = 6; i >= 0; i--) {
       final day = now.subtract(Duration(days: i));
@@ -330,7 +331,8 @@ class _WeekTrendChart extends StatelessWidget {
             dayAttacks.length;
       }
       spots.add(FlSpot((6 - i).toDouble(), avg));
-      days.add(DateFormat('E', 'ru').format(day).substring(0, 2));
+      // day.weekday: 1=Mon..7=Sun → index 0..6
+      days.add(weekdayAbbrs[day.weekday - 1]);
     }
 
     // Если все нули - не показывать

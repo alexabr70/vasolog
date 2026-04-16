@@ -1062,6 +1062,17 @@ class S {
     'ko': '혼합',
   });
 
+  /// Аббревиатуры дней недели [Пн..Вс] для графиков (индекс 0=Пн, 6=Вс)
+  List<String> get weekdayAbbrs => [
+    _t({'en':'Mo','ru':'Пн','de':'Mo','fr':'Lu','es':'Lu','pt':'Seg','it':'Lu','sv':'Mån','fi':'Ma','nb':'Ma','da':'Ma','nl':'Ma','pl':'Pon','cs':'Po','hu':'H','uk':'Пн','ja':'月','ko':'월'}),
+    _t({'en':'Tu','ru':'Вт','de':'Di','fr':'Ma','es':'Ma','pt':'Ter','it':'Ma','sv':'Ti','fi':'Ti','nb':'Ti','da':'Ti','nl':'Di','pl':'Wt','cs':'Út','hu':'K','uk':'Вт','ja':'火','ko':'화'}),
+    _t({'en':'We','ru':'Ср','de':'Mi','fr':'Me','es':'Mi','pt':'Qua','it':'Me','sv':'On','fi':'Ke','nb':'On','da':'On','nl':'Wo','pl':'Śr','cs':'St','hu':'Sz','uk':'Ср','ja':'水','ko':'수'}),
+    _t({'en':'Th','ru':'Чт','de':'Do','fr':'Je','es':'Ju','pt':'Qui','it':'Gi','sv':'To','fi':'To','nb':'To','da':'To','nl':'Do','pl':'Czw','cs':'Čt','hu':'Cs','uk':'Чт','ja':'木','ko':'목'}),
+    _t({'en':'Fr','ru':'Пт','de':'Fr','fr':'Ve','es':'Vi','pt':'Sex','it':'Ve','sv':'Fr','fi':'Pe','nb':'Fr','da':'Fr','nl':'Vr','pl':'Pt','cs':'Pá','hu':'P','uk':'Пт','ja':'金','ko':'금'}),
+    _t({'en':'Sa','ru':'Сб','de':'Sa','fr':'Sa','es':'Sá','pt':'Sáb','it':'Sa','sv':'Lö','fi':'La','nb':'Lø','da':'Lø','nl':'Za','pl':'So','cs':'So','hu':'Szo','uk':'Сб','ja':'土','ko':'토'}),
+    _t({'en':'Su','ru':'Вс','de':'So','fr':'Di','es':'Do','pt':'Dom','it':'Do','sv':'Sö','fi':'Su','nb':'Sø','da':'Sø','nl':'Zo','pl':'Nie','cs':'Ne','hu':'V','uk':'Нд','ja':'日','ko':'일'}),
+  ];
+
   /// Локализованное название фазы по ключу хранения ('white'/'blue'/'red'/'mixed')
   String phaseFromKey(String key) {
     switch (key) {

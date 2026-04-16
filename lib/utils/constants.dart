@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vasolog/l10n/app_strings.dart';
 
 /// Константы приложения
 class AppColors {
@@ -28,19 +29,19 @@ class AppColors {
   static const gradientEnd = Color(0xFF5E35B1);
 }
 
-/// Доступные триггеры
-const availableTriggers = [
-  'Холод',
-  'Стресс',
-  'Холодная вода',
-  'Кондиционер',
-  'Вибрация',
-  'Курение',
-  'Кофеин',
-  'Физ. нагрузка',
-  'Эмоции',
-  'Лекарства',
-  'Неизвестно',
+/// Доступные триггеры (локализованные через S.current)
+List<String> get availableTriggers => [
+  S.current.triggerCold,
+  S.current.triggerStress,
+  S.current.triggerColdWater,
+  S.current.triggerAC,
+  S.current.triggerVibration,
+  S.current.triggerSmoking,
+  S.current.triggerCaffeine,
+  S.current.triggerExercise,
+  S.current.triggerEmotions,
+  S.current.triggerMedication,
+  S.current.triggerUnknown,
 ];
 
 /// Пальцы
@@ -57,12 +58,12 @@ const fingerNames = [
   'Мизинец П',
 ];
 
-/// Цветовые фазы
-const colorPhases = {
-  'white': 'Белый (ишемия)',
-  'blue': 'Синий (цианоз)',
-  'red': 'Красный (реперфузия)',
-  'mixed': 'Смешанный',
+/// Цветовые фазы (локализованные через S.current)
+Map<String, String> get colorPhases => {
+  'white': S.current.phaseWhite,
+  'blue': S.current.phaseBlue,
+  'red': S.current.phaseRed,
+  'mixed': S.current.phaseMixed,
 };
 
 /// Цвет по тяжести

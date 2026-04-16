@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:vasolog/l10n/app_strings.dart';
 
 /// Модель приступа феномена Рейно
 class AttackEvent extends HiveObject {
@@ -99,19 +100,8 @@ class AttackEvent extends HiveObject {
     return 'Тяжёлый';
   }
 
-  /// Цвет фазы на русском
+  /// Локализованный цвет фазы
   String get colorPhaseLabel {
-    switch (colorPhase) {
-      case 'white':
-        return 'Белый (ишемия)';
-      case 'blue':
-        return 'Синий (цианоз)';
-      case 'red':
-        return 'Красный (реперфузия)';
-      case 'mixed':
-        return 'Смешанный';
-      default:
-        return colorPhase;
-    }
+    return S.current.phaseFromKey(colorPhase);
   }
 }

@@ -41,6 +41,8 @@ class HistoryScreen extends StatelessWidget {
 
           // Данные для графика за 7 дней
           final weekData = _buildWeekData(provider);
+          // Локализованные аббревиатуры дней (0=Пн..6=Вс)
+          final weekDayLabels = S.current.weekdayAbbrs;
 
           return SingleChildScrollView(
             padding: const EdgeInsets.all(16),
@@ -76,19 +78,10 @@ class HistoryScreen extends StatelessWidget {
                               sideTitles: SideTitles(
                                 showTitles: true,
                                 getTitlesWidget: (value, meta) {
-                                  final days = [
-                                    'Пн',
-                                    'Вт',
-                                    'Ср',
-                                    'Чт',
-                                    'Пт',
-                                    'Сб',
-                                    'Вс',
-                                  ];
                                   final index = value.toInt();
-                                  if (index >= 0 && index < days.length) {
+                                  if (index >= 0 && index < weekDayLabels.length) {
                                     return Text(
-                                      days[index],
+                                      weekDayLabels[index],
                                       style: const TextStyle(fontSize: 10),
                                     );
                                   }
