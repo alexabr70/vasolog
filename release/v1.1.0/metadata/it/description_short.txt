@@ -1,0 +1,1 @@
+Monitora gli episodi di Raynaud: meteo, trigger e report PDF per il medico.

@@ -1,0 +1,28 @@
+Manos frías, cambios de color, entumecimiento — el fenómeno de Raynaud convierte momentos ordinarios en interrupciones dolorosas. VasoLog fue creado especialmente para quienes viven con este diagnóstico.
+
+VasoLog es un rastreador médico para el fenómeno de Raynaud que te ayuda a comprender tus episodios, identificar los desencadenantes y comunicarte efectivamente con tu médico.
+
+── REGISTRA CADA EPISODIO ──
+Documenta cada ataque en segundos: dedos afectados, fase de color (blanco → azul → rojo), gravedad en la escala RCS validada (0–10) y duración. Agrega fotos y notas.
+
+── DATOS METEOROLÓGICOS AUTOMÁTICOS ──
+Cada episodio se vincula automáticamente a las condiciones climáticas en tiempo real: temperatura, humedad, presión atmosférica y velocidad del viento — capturados en tu ubicación exacta.
+
+── IDENTIFICA TUS DESENCADENANTES ──
+Selecciona entre los desencadenantes más comunes: frío, estrés emocional, vibración, tabaco, cafeína y más. Con el tiempo, VasoLog revela patrones — mostrándote exactamente qué provoca tus episodios.
+
+── GRÁFICOS Y ESTADÍSTICAS ──
+El panel muestra la frecuencia de episodios en los últimos 7 días y el desglose mensual de desencadenantes. Detecta patrones y comprende cómo las estaciones afectan tu condición.
+
+── INFORME PDF PARA TU MÉDICO ──
+Genera un informe médico profesional para cualquier período con un solo toque. Compártelo con tu reumatólogo, especialista vascular o médico de cabecera — para consultas más eficientes.
+
+── TUS DATOS SON TUYOS ──
+Todos los datos se almacenan únicamente en tu dispositivo. Sin nube, sin cuenta, sin rastreo. Privacidad total — tu información médica te pertenece solo a ti.
+
+── WIDGET EN PANTALLA DE INICIO ──
+Mantén el resumen de tu último episodio siempre visible.
+
+El fenómeno de Raynaud afecta hasta al 20% de las mujeres en climas fríos. Mereces una herramienta que tome en serio tu condición.
+
+Descarga VasoLog hoy y comienza tu diario de salud.

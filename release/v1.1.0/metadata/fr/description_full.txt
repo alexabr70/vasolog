@@ -1,0 +1,28 @@
+Mains froides, changements de couleur, engourdissement — le phénomène de Raynaud transforme les moments ordinaires en interruptions douloureuses. VasoLog a été conçu spécialement pour les personnes vivant avec ce diagnostic.
+
+VasoLog est un journal médical pour le phénomène de Raynaud qui vous aide à comprendre vos crises, identifier les déclencheurs et dialoguer efficacement avec votre médecin.
+
+── ENREGISTRER CHAQUE CRISE ──
+Documentez chaque épisode en quelques secondes : doigts touchés, phase colorée (blanc → bleu → rouge), sévérité sur l'échelle RCS validée (0–10) et durée. Ajoutez une photo et des notes.
+
+── DONNÉES MÉTÉO AUTOMATIQUES ──
+Chaque crise est automatiquement associée aux conditions météorologiques en temps réel : température, humidité, pression atmosphérique et vitesse du vent — capturées à votre emplacement exact.
+
+── IDENTIFIER VOS DÉCLENCHEURS ──
+Choisissez parmi les déclencheurs fréquents : froid, stress émotionnel, vibrations, tabac, caféine et autres. Au fil du temps, VasoLog révèle des schémas et vous montre ce qui provoque vos crises.
+
+── TABLEAUX DE BORD & STATISTIQUES ──
+Le tableau de bord affiche la fréquence de vos crises sur 7 jours et la répartition mensuelle des déclencheurs. Identifiez les tendances et comprenez l'impact des saisons sur votre état.
+
+── RAPPORT PDF POUR VOTRE MÉDECIN ──
+Générez un rapport médical professionnel pour n'importe quelle période en un seul geste. Partagez-le avec votre rhumatologue, angiologue ou médecin généraliste — pour des consultations plus efficaces.
+
+── VOS DONNÉES VOUS APPARTIENNENT ──
+Toutes les données sont stockées uniquement sur votre appareil. Aucun cloud, aucun compte, aucun suivi. Confidentialité totale — vos informations médicales n'appartiennent qu'à vous.
+
+── WIDGET ÉCRAN D'ACCUEIL ──
+Gardez un résumé de votre dernière crise visible en permanence sur votre écran d'accueil.
+
+Le phénomène de Raynaud touche jusqu'à 20 % des femmes dans les régions froides. Vous méritez un outil qui prend votre état au sérieux.
+
+Téléchargez VasoLog aujourd'hui et commencez votre journal de santé.

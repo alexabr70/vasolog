@@ -1,0 +1,23 @@
+Soğuk eller, renk değişiklikleri, uyuşma — Raynaud sendromu sıradan anları acı verici kesintilere dönüştürür. VasoLog, bu tanıyla yaşayan kişiler için özel olarak tasarlanmıştır.
+
+VasoLog, Raynaud sendromu için bir tıbbi takip uygulamasıdır. Ataklarınızı anlamanıza, tetikleyicileri belirlemenize ve doktorunuzla etkili iletişim kurmanıza yardımcı olur.
+
+── HER ATAKI KAYDEDIN ──
+Her atağı saniyeler içinde belgeleyin: etkilenen parmaklar, renk fazı (beyaz → mavi → kırmızı), doğrulanmış RCS ölçeğinde (0–10) şiddet ve süre. Fotoğraf ve notlar ekleyin.
+
+── OTOMATİK HAVA DURUMU VERİLERİ ──
+Her atak, gerçek zamanlı hava koşullarıyla otomatik olarak eşlenir: sıcaklık, nem, atmosferik basınç ve rüzgar hızı — tam konumunuzda kaydedilir.
+
+── TETİKLEYİCİLERİ BELİRLEYİN ──
+Yaygın tetikleyiciler arasından seçin: soğuk, duygusal stres, titreşim, sigara, kafein ve daha fazlası. Zamanla VasoLog kalıpları ortaya çıkarır.
+
+── GRAFİKLER VE İSTATİSTİKLER ──
+Gösterge paneli, son 7 günün atak sıklığını ve aylık tetikleyici dağılımını gösterir.
+
+── DOKTORUNUZ İÇİN PDF RAPORU ──
+Tek dokunuşla herhangi bir dönem için profesyonel tıbbi rapor oluşturun. Romatologunuz veya aile hekiminizle anında paylaşın.
+
+── VERİLERİNİZ SİZE AİT ──
+Tüm veriler yalnızca cihazınızda depolanır. Bulut yok, hesap yok, takip yok. Tam gizlilik.
+
+Raynaud sendromu soğuk iklimlerdeki kadınların %20'sine kadarını etkiler. VasoLog'u bugün indirin.
