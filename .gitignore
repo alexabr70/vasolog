@@ -57,3 +57,8 @@ app.*.map.json
 monkey-output.txt
 logcat.txt
 docs/aso/secrets/
+
+# Release artifacts (тяжелые бинарники - не хранить в git)
+release/v*/artifacts/
+release/v*/assets/feature_graphics/
+scripts/publishing/.tmp/
