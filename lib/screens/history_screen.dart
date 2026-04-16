@@ -161,7 +161,7 @@ class HistoryScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 ...attacks.map((attack) {
-                  final dateFormat = DateFormat('dd MMM yyyy, HH:mm');
+                  final dateFormat = DateFormat('dd MMM yyyy, HH:mm', S.current.locale);
                   return Card(
                     margin: const EdgeInsets.symmetric(vertical: 4),
                     child: ExpansionTile(
@@ -179,22 +179,22 @@ class HistoryScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               if (attack.triggers.isNotEmpty)
-                                Text('Триггеры: ${attack.triggers.join(", ")}'),
+                                Text('${S.current.labelTriggers}: ${attack.triggers.join(", ")}'),
                               if (attack.affectedFingers.isNotEmpty)
                                 Text(
-                                  'Пальцы: ${attack.affectedFingers.join(", ")}',
+                                  '${S.current.labelFingers}: ${attack.affectedFingers.join(", ")}',
                                 ),
                               if (attack.durationMinutes > 0)
                                 Text(
-                                  'Длительность: ${attack.durationMinutes} мин',
+                                  '${S.current.labelDuration}: ${attack.durationMinutes} ${S.current.minutesAbbr}',
                                 ),
                               if (attack.temperature != null)
                                 Text(
-                                  'Погода: ${attack.temperature!.toStringAsFixed(1)}°C, '
-                                  'влажн. ${attack.humidity?.toStringAsFixed(0)}%',
+                                  '${S.current.labelWeather}: ${attack.temperature!.toStringAsFixed(1)}°C, '
+                                  '${S.current.labelHumidity} ${attack.humidity?.toStringAsFixed(0)}%',
                                 ),
                               if (attack.notes != null)
-                                Text('Заметки: ${attack.notes}'),
+                                Text('${S.current.notes}: ${attack.notes}'),
                             ],
                           ),
                         ),

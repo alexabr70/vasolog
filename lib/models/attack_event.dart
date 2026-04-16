@@ -94,10 +94,10 @@ class AttackEvent extends HiveObject {
 
   /// Описание тяжести по RCS
   String get severityLabel {
-    if (severity <= 2) return 'Лёгкий';
-    if (severity <= 5) return 'Умеренный';
-    if (severity <= 7) return 'Сильный';
-    return 'Тяжёлый';
+    if (severity <= 2) return S.current.severityLow;
+    if (severity <= 5) return S.current.severityModerate;
+    if (severity <= 7) return S.current.severitySevere;
+    return S.current.severityCritical;
   }
 
   /// Локализованный цвет фазы

@@ -17,10 +17,11 @@ class PdfReportService {
     required List<AttackEvent> attacks,
     required DateTime startDate,
     required DateTime endDate,
+    String locale = 'en',
   }) async {
     final pdf = pw.Document();
-    final dateFormat = DateFormat('dd.MM.yyyy');
-    final dateTimeFormat = DateFormat('dd.MM.yyyy HH:mm');
+    final dateFormat = DateFormat('dd.MM.yyyy', locale);
+    final dateTimeFormat = DateFormat('dd.MM.yyyy HH:mm', locale);
 
     // Загружаем Noto Sans - покрывает латиницу, кириллицу, греческий и т.д.
     // CJK (японский/корейский) пока не поддерживается - там будут квадраты.

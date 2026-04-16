@@ -53,6 +53,7 @@ class _ReportScreenState extends State<ReportScreen> {
       attacks: attacks,
       startDate: _startDate,
       endDate: _endDate,
+      locale: S.current.locale,
     );
 
     // Поделиться PDF через системный share sheet
@@ -63,7 +64,7 @@ class _ReportScreenState extends State<ReportScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final dateFormat = DateFormat('dd MMM yyyy');
+    final dateFormat = DateFormat('dd MMM yyyy', S.current.locale);
     final provider = context.watch<AttackProvider>();
     final attacksInRange = provider.getAttacksByRange(_startDate, _endDate);
 

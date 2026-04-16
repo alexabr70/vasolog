@@ -44,18 +44,18 @@ List<String> get availableTriggers => [
   S.current.triggerUnknown,
 ];
 
-/// Пальцы
-const fingerNames = [
-  'Большой Л',
-  'Указат. Л',
-  'Средний Л',
-  'Безымян. Л',
-  'Мизинец Л',
-  'Большой П',
-  'Указат. П',
-  'Средний П',
-  'Безымян. П',
-  'Мизинец П',
+/// Пальцы (локализованные через S.current)
+List<String> get fingerNames => [
+  S.current.thumbLeft,
+  S.current.indexLeft,
+  S.current.middleLeft,
+  S.current.ringLeft,
+  S.current.pinkyLeft,
+  S.current.thumbRight,
+  S.current.indexRight,
+  S.current.middleRight,
+  S.current.ringRight,
+  S.current.pinkyRight,
 ];
 
 /// Цветовые фазы (локализованные через S.current)
