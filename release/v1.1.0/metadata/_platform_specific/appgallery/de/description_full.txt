@@ -1,0 +1,30 @@
+Kalte Hände, Farbveränderungen, Taubheitsgefühl — das Raynaud-Syndrom macht alltägliche Momente zu schmerzhaften Unterbrechungen. VasoLog wurde speziell für Menschen mit dieser Diagnose entwickelt.
+
+VasoLog ist ein medizinischer Tracker für das Raynaud-Syndrom, der Ihnen hilft, Ihre Anfälle zu verstehen, Auslöser zu identifizieren und effektiv mit Ihrem Arzt zu kommunizieren.
+
+── JEDEN ANFALL DOKUMENTIEREN ──
+Erfassen Sie jeden Anfall in Sekunden: betroffene Finger, Farbphase (Weiß → Blau → Rot), Schweregrad auf der validierten RCS-Skala (0–10) und Dauer. Fügen Sie Fotos und Notizen hinzu.
+
+── AUTOMATISCHE WETTERDATEN ──
+Jeder Anfall wird automatisch mit den aktuellen Wetterbedingungen verknüpft: Temperatur, Luftfeuchtigkeit, Luftdruck und Windgeschwindigkeit — an Ihrem genauen Standort erfasst.
+
+── TRIGGER ERKENNEN ──
+Wählen Sie aus häufigen Auslösern: Kälte, emotionaler Stress, Vibration, Rauchen, Koffein und weitere. Mit der Zeit zeigt VasoLog Muster — was genau Ihre Anfälle provoziert.
+
+── STATISTIKEN & VERLAUF ──
+Das Dashboard zeigt Ihre Anfallshäufigkeit der letzten 7 Tage und die monatliche Trigger-Auswertung. Erkennen Sie Muster und verstehen Sie, wie Jahreszeiten Ihren Zustand beeinflussen.
+
+── PDF-BERICHT FÜR DEN ARZT ──
+Erstellen Sie mit einem Tippen einen professionellen Bericht für jeden Zeitraum. Senden Sie ihn direkt an Ihren Rheumatologen oder Hausarzt — für effektivere Konsultationen und bessere Behandlungsentscheidungen.
+
+── DATENSCHUTZ AN ERSTER STELLE ──
+Alle Daten bleiben ausschließlich auf Ihrem Gerät. Keine Cloud, kein Konto, kein Tracking. Vollständige Datenschutz-Konformität — Ihre Gesundheitsdaten gehören nur Ihnen.
+
+── WIDGET FÜR DEN STARTBILDSCHIRM ──
+Behalten Sie Ihre letzte Zusammenfassung immer im Blick.
+
+Das Raynaud-Syndrom betrifft bis zu 20 % der Frauen in kalten Klimazonen. Sie verdienen ein Tool, das Ihren Zustand ernst nimmt.
+
+Laden Sie VasoLog jetzt herunter und starten Sie Ihr Gesundheitstagebuch.
+---
+HAFTUNGSAUSSCHLUSS: VasoLog ist ein persönliches Symptomtagebuch und KEIN Medizinprodukt. Die App diagnostiziert, behandelt oder heilt keine Erkrankungen. Bitte konsultieren Sie für medizinische Entscheidungen einen qualifizierten Arzt.

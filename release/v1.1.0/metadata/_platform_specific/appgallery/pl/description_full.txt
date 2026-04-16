@@ -1,0 +1,27 @@
+Zimne dłonie, zmiany koloru, drętwienie — zespół Raynauda zamienia codzienne chwile w bolesne przerwy. VasoLog został stworzony specjalnie dla osób żyjących z tą diagnozą.
+
+VasoLog to medyczny tracker zespołu Raynauda, który pomaga zrozumieć ataki, zidentyfikować wyzwalacze i skutecznie komunikować się z lekarzem.
+
+── REJESTRUJ KAŻDY ATAK ──
+Dokumentuj każdy atak w kilka sekund: dotknięte palce, faza kolorystyczna (biały → niebieski → czerwony), nasilenie w zwalidowanej skali RCS (0–10) i czas trwania. Dodaj zdjęcia i notatki.
+
+── AUTOMATYCZNE DANE POGODOWE ──
+Każdy atak jest automatycznie powiązany z aktualnymi warunkami pogodowymi: temperatura, wilgotność, ciśnienie atmosferyczne i prędkość wiatru — zarejestrowane w Twojej dokładnej lokalizacji.
+
+── IDENTYFIKUJ WYZWALACZE ──
+Wybierz spośród typowych wyzwalaczy: zimno, stres emocjonalny, wibracje, palenie, kofeina i inne. Z czasem VasoLog ujawnia wzorce — pokazując dokładnie, co wywołuje Twoje ataki.
+
+── WYKRESY I STATYSTYKI ──
+Panel wyświetla częstotliwość ataków z ostatnich 7 dni i miesięczny podział wyzwalaczy.
+
+── RAPORT PDF DLA LEKARZA ──
+Generuj profesjonalny raport medyczny za dowolny okres jednym dotknięciem. Udostępnij go reumatologowi lub lekarzowi pierwszego kontaktu.
+
+── TWOJE DANE SĄ TWOJE ──
+Wszystkie dane są przechowywane wyłącznie na Twoim urządzeniu. Bez chmury, bez konta, bez śledzenia. Pełna prywatność.
+
+Zespół Raynauda dotyka do 20% kobiet w zimnym klimacie. Zasługujesz na narzędzie, które traktuje Twój stan poważnie.
+
+Pobierz VasoLog i zacznij swój dziennik zdrowia.
+---
+ZASTRZEŻENIE: VasoLog jest osobistym dziennikiem objawów i NIE jest urządzeniem medycznym. Aplikacja nie diagnozuje, nie leczy ani nie wyleczy żadnej choroby. Przed podjęciem decyzji medycznych skonsultuj się z wykwalifikowanym lekarzem.

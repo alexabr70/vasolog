@@ -1,0 +1,33 @@
+Cold hands, color changes, numbness — Raynaud's phenomenon turns ordinary moments into painful interruptions. Now you have a tool built specifically for your condition.
+
+VasoLog is a medical-grade tracker for Raynaud's phenomenon that helps you understand your episodes, identify what triggers them, and communicate effectively with your doctor.
+
+── TRACK EVERY EPISODE ──
+Log each attack in seconds: which fingers are affected, the color phase (white ischemia → blue cyanosis → red reperfusion), severity on the validated RCS scale (0–10), and duration. Add a photo and personal notes for complete documentation.
+
+── AUTOMATIC WEATHER DATA ──
+Every episode is automatically paired with real-time weather conditions: temperature, humidity, atmospheric pressure, and wind speed — captured at your exact location. No manual entry needed.
+
+── IDENTIFY YOUR TRIGGERS ──
+Select from common triggers: cold exposure, emotional stress, vibration, smoking, caffeine, and more. Over time, VasoLog reveals patterns — showing you exactly what provokes your episodes.
+
+── CHARTS & INSIGHTS ──
+The dashboard displays your episode frequency over the last 7 days and your monthly trigger breakdown. Spot patterns, track your progress, and understand how seasons affect your condition.
+
+── PDF REPORT FOR YOUR DOCTOR ──
+Generate a professional medical report covering any date range with a single tap. Share it instantly with your rheumatologist, vascular specialist, or GP — saving precious consultation time and helping your doctor make better decisions.
+
+── YOUR DATA STAYS YOURS ──
+All data is stored locally on your device. No cloud, no account, no tracking. Complete privacy — your health information belongs to you alone.
+
+── HOME SCREEN WIDGET ──
+Keep your last episode summary visible on your home screen for quick reference and reminders.
+
+── DESIGNED WITH PATIENTS IN MIND ──
+VasoLog was designed to be a bridge between you and your healthcare provider. Whether you're newly diagnosed or have lived with Raynaud's for years, clear data leads to better care.
+
+Raynaud's affects up to 20% of women in cold climates. You deserve a tool that takes your condition seriously.
+
+Download VasoLog today and start your health journal.
+---
+DISCLAIMER: VasoLog is a personal symptom diary and is NOT a medical device. It does not diagnose, treat, cure, or prevent any medical condition. Please consult a qualified healthcare professional for medical advice, diagnosis, or treatment.

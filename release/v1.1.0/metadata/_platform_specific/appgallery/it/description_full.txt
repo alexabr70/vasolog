@@ -1,0 +1,30 @@
+Mani fredde, cambiamenti di colore, intorpidimento — il fenomeno di Raynaud trasforma i momenti quotidiani in interruzioni dolorose. VasoLog è stato progettato specificamente per chi convive con questa diagnosi.
+
+VasoLog è un tracker medico per il fenomeno di Raynaud che ti aiuta a comprendere i tuoi episodi, identificare i fattori scatenanti e comunicare efficacemente con il tuo medico.
+
+── REGISTRA OGNI EPISODIO ──
+Documenta ogni attacco in pochi secondi: dita coinvolte, fase cromatica (bianco → blu → rosso), gravità sulla scala RCS validata (0–10) e durata. Aggiungi foto e note.
+
+── DATI METEO AUTOMATICI ──
+Ogni episodio viene automaticamente associato alle condizioni meteorologiche in tempo reale: temperatura, umidità, pressione atmosferica e velocità del vento — rilevate nella tua posizione esatta.
+
+── IDENTIFICA I TUOI TRIGGER ──
+Seleziona tra i trigger più comuni: freddo, stress emotivo, vibrazioni, fumo, caffeina e altri. Nel tempo, VasoLog rivela i modelli — mostrandoti esattamente cosa provoca i tuoi episodi.
+
+── GRAFICI E STATISTICHE ──
+Il dashboard mostra la frequenza degli episodi negli ultimi 7 giorni e la ripartizione mensile dei trigger. Individua i pattern e comprendi come le stagioni influenzano la tua condizione.
+
+── REFERTO PDF PER IL MEDICO ──
+Genera un referto medico professionale per qualsiasi periodo con un solo tocco. Condividilo immediatamente con il tuo reumatologo o medico di base — per consultazioni più efficaci.
+
+── I TUOI DATI RIMANGONO TUOI ──
+Tutti i dati sono archiviati solo sul tuo dispositivo. Nessun cloud, nessun account, nessun tracciamento. Privacy totale — le tue informazioni sanitarie appartengono solo a te.
+
+── WIDGET SCHERMATA HOME ──
+Tieni sempre a portata di mano il riepilogo dell'ultimo episodio.
+
+Il fenomeno di Raynaud colpisce fino al 20% delle donne nelle zone fredde. Meriti uno strumento che prenda sul serio la tua condizione.
+
+Scarica VasoLog oggi e inizia il tuo diario della salute.
+---
+AVVERTENZA: VasoLog è un diario personale dei sintomi e NON è un dispositivo medico. L'app non diagnostica, non tratta né guarisce alcuna malattia. Consultare un medico qualificato per decisioni mediche.
