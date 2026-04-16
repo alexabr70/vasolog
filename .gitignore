@@ -61,4 +61,7 @@ docs/aso/secrets/
 # Release artifacts (тяжелые бинарники - не хранить в git)
 release/v*/artifacts/
 release/v*/assets/feature_graphics/
+release/v*/*.apk
+release/v*/*.aab
+release/v*/*.ipa
 scripts/publishing/.tmp/
