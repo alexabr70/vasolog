@@ -3,6 +3,9 @@
 *.keystore
 android/key.properties
 
+# AppGallery upload artifacts (derivatives of mockups_final/)
+release/*/store_assets/appgallery/upload_packages/
+
 # Miscellaneous
 *.class
 *.log
