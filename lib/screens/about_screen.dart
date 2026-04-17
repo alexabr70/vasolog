@@ -278,7 +278,7 @@ class _AboutScreenState extends State<AboutScreen> {
                           scheme: 'mailto',
                           path: 'vasolog.app@gmail.com',
                           queryParameters: {
-                            'subject': 'VasoLog - Обратная связь',
+                            'subject': S.current.feedbackEmailSubject,
                           },
                         ),
                       ),

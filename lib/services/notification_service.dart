@@ -4,6 +4,7 @@ import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/data/latest_all.dart' as tz_data;
 import 'package:timezone/timezone.dart' as tz;
+import 'package:vasolog/l10n/app_strings.dart';
 import 'package:vasolog/services/deep_link_service.dart';
 
 /// Обработчик нажатия на уведомление (top-level для изоляции)
@@ -22,7 +23,6 @@ class NotificationService {
   final _plugin = FlutterLocalNotificationsPlugin();
   bool _initialized = false;
   static const _channelId = 'vasolog_reminders';
-  static const _channelName = 'Напоминания VasoLog';
 
   // ID уведомлений
   static const _weeklyReminderId = 100;
@@ -112,17 +112,17 @@ class NotificationService {
 
     await _plugin.zonedSchedule(
       _weeklyReminderId,
-      'Как ваши руки?',
-      'Запишите состояние, если был приступ',
+      S.current.reminderDailyTitle,
+      S.current.reminderDailyBody,
       _nextInstanceOfTime(12, 30),
-      const NotificationDetails(
+      NotificationDetails(
         android: AndroidNotificationDetails(
           _channelId,
-          _channelName,
-          channelDescription: 'Ежедневные напоминания о записи состояния',
-          styleInformation: DefaultStyleInformation(true, true),
+          S.current.notificationChannelName,
+          channelDescription: S.current.notificationChannelDailyDesc,
+          styleInformation: const DefaultStyleInformation(true, true),
         ),
-        iOS: DarwinNotificationDetails(
+        iOS: const DarwinNotificationDetails(
           presentAlert: true,
           presentBadge: true,
           presentSound: true,
@@ -146,16 +146,16 @@ class NotificationService {
 
     await _plugin.zonedSchedule(
       _inactivityReminderId,
-      'Давно не было записей',
-      'Всё хорошо? Если был приступ - запишите его',
+      S.current.reminderInactivityTitle,
+      S.current.reminderInactivityBody,
       scheduledDate,
-      const NotificationDetails(
+      NotificationDetails(
         android: AndroidNotificationDetails(
           _channelId,
-          _channelName,
-          channelDescription: 'Напоминание при отсутствии записей',
+          S.current.notificationChannelName,
+          channelDescription: S.current.notificationChannelInactivityDesc,
         ),
-        iOS: DarwinNotificationDetails(
+        iOS: const DarwinNotificationDetails(
           presentAlert: true,
           presentBadge: true,
           presentSound: true,

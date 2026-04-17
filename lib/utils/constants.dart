@@ -29,35 +29,6 @@ class AppColors {
   static const gradientEnd = Color(0xFF5E35B1);
 }
 
-/// Доступные триггеры (локализованные через S.current)
-List<String> get availableTriggers => [
-  S.current.triggerCold,
-  S.current.triggerStress,
-  S.current.triggerColdWater,
-  S.current.triggerAC,
-  S.current.triggerVibration,
-  S.current.triggerSmoking,
-  S.current.triggerCaffeine,
-  S.current.triggerExercise,
-  S.current.triggerEmotions,
-  S.current.triggerMedication,
-  S.current.triggerUnknown,
-];
-
-/// Пальцы (локализованные через S.current)
-List<String> get fingerNames => [
-  S.current.thumbLeft,
-  S.current.indexLeft,
-  S.current.middleLeft,
-  S.current.ringLeft,
-  S.current.pinkyLeft,
-  S.current.thumbRight,
-  S.current.indexRight,
-  S.current.middleRight,
-  S.current.ringRight,
-  S.current.pinkyRight,
-];
-
 /// Цветовые фазы (локализованные через S.current)
 Map<String, String> get colorPhases => {
   'white': S.current.phaseWhite,

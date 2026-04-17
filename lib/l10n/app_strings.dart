@@ -2730,6 +2730,52 @@ class S {
         'alla diagnosi, al trattamento o alla prevenzione di malattie.\n\n'
         'I dati sono solo a scopo informativo e non sostituiscono il '
         'consulto medico.\n\nIn caso di sintomi, consulta un reumatologo.',
+    'sv':
+        'VasoLog är INTE en medicinteknisk produkt. Appen är inte avsedd '
+        'för diagnos, behandling eller förebyggande av sjukdom.\n\n'
+        'Data i appen är endast i informationssyfte och ersätter inte '
+        'läkarkonsultation.\n\n'
+        'Kontakta en reumatolog vid symtom.',
+    'fi':
+        'VasoLog EI ole lääkinnällinen laite. Sovellusta ei ole tarkoitettu '
+        'sairauksien diagnosointiin, hoitoon tai ehkäisyyn.\n\n'
+        'Sovelluksen tiedot ovat vain tiedoksi eivätkä korvaa lääkärin '
+        'konsultaatiota.\n\n'
+        'Jos oireita ilmenee, ota yhteyttä reumatologiin.',
+    'nb':
+        'VasoLog er IKKE et medisinsk utstyr. Appen er ikke ment for '
+        'diagnostisering, behandling eller forebygging av sykdommer.\n\n'
+        'Dataene er kun til informasjon og erstatter ikke legekonsultasjon.\n\n'
+        'Kontakt en revmatolog hvis symptomer oppstår.',
+    'da':
+        'VasoLog er IKKE medicinsk udstyr. Appen er ikke beregnet til '
+        'diagnosticering, behandling eller forebyggelse af sygdomme.\n\n'
+        'Dataene er kun vejledende og erstatter ikke lægekonsultation.\n\n'
+        'Konsultér en reumatolog, hvis der opstår symptomer.',
+    'nl':
+        'VasoLog is GEEN medisch hulpmiddel. De app is niet bedoeld voor '
+        'diagnose, behandeling of preventie van ziekten.\n\n'
+        'De gegevens dienen uitsluitend ter informatie en vervangen geen '
+        'medisch consult.\n\n'
+        'Raadpleeg een reumatoloog bij symptomen.',
+    'pl':
+        'VasoLog NIE jest wyrobem medycznym. Aplikacja nie jest przeznaczona '
+        'do diagnozowania, leczenia ani zapobiegania chorobom.\n\n'
+        'Dane mają wyłącznie charakter informacyjny i nie zastępują '
+        'konsultacji lekarskiej.\n\n'
+        'W razie objawów skontaktuj się z reumatologiem.',
+    'cs':
+        'VasoLog NENÍ zdravotnický prostředek. Aplikace není určena k '
+        'diagnostice, léčbě ani prevenci jakýchkoli onemocnění.\n\n'
+        'Data slouží pouze pro informační účely a nenahrazují konzultaci '
+        's lékařem.\n\n'
+        'Při výskytu příznaků se obraťte na revmatologa.',
+    'hu':
+        'A VasoLog NEM orvostechnikai eszköz. Az alkalmazás nem szolgál '
+        'betegségek diagnosztizálására, kezelésére vagy megelőzésére.\n\n'
+        'Az adatok kizárólag tájékoztató jellegűek, és nem helyettesítik '
+        'az orvosi konzultációt.\n\n'
+        'Tünetek esetén forduljon reumatológushoz.',
     'uk':
         'VasoLog НЕ є медичним пристроєм. Додаток не призначений для '
         'діагностики, лікування чи профілактики захворювань.\n\n'
@@ -2772,6 +2818,186 @@ class S {
         '- Все данные хранятся исключительно на вашем устройстве\n'
         '- Вы можете удалить все данные удалив приложение\n'
         '- PDF-отчёты создаются локально',
+    'de':
+        'Welche Daten werden erfasst:\n'
+        '- Anfallsprotokolle (lokal auf Ihrem Gerät gespeichert)\n'
+        '- Standort (nur zur Wetterbestimmung, nicht an Dritte weitergegeben)\n'
+        '- Fotos (lokal auf Ihrem Gerät gespeichert)\n\n'
+        'Wohin Daten gesendet werden:\n'
+        '- Open-Meteo API: nur Koordinaten für Wetterdaten\n'
+        '- Keine persönlichen oder medizinischen Daten werden an Server gesendet\n\n'
+        'Datenspeicherung:\n'
+        '- Alle Daten bleiben ausschließlich auf Ihrem Gerät\n'
+        '- Beim Deinstallieren der App werden alle Daten gelöscht\n'
+        '- PDF-Berichte werden lokal erstellt',
+    'fr':
+        'Données collectées :\n'
+        '- Enregistrements de crises (stockés localement sur votre appareil)\n'
+        '- Localisation (uniquement pour la météo, non partagée avec des tiers)\n'
+        '- Photos (stockées localement sur votre appareil)\n\n'
+        'Où les données sont envoyées :\n'
+        '- API Open-Meteo : seules les coordonnées sont envoyées pour la météo\n'
+        '- Aucune donnée personnelle ou médicale n\'est envoyée sur des serveurs\n\n'
+        'Stockage des données :\n'
+        '- Toutes les données sont stockées exclusivement sur votre appareil\n'
+        '- Vous pouvez supprimer toutes les données en désinstallant l\'application\n'
+        '- Les rapports PDF sont générés localement',
+    'es':
+        'Qué datos se recopilan:\n'
+        '- Registros de crisis (guardados localmente en su dispositivo)\n'
+        '- Ubicación (solo para determinar el clima, no se comparte con terceros)\n'
+        '- Fotos (guardadas localmente en su dispositivo)\n\n'
+        'Adónde se envían los datos:\n'
+        '- API Open-Meteo: solo se envían coordenadas para el clima\n'
+        '- No se envían datos personales ni médicos a ningún servidor\n\n'
+        'Almacenamiento:\n'
+        '- Todos los datos se guardan exclusivamente en su dispositivo\n'
+        '- Puede eliminar todos los datos desinstalando la aplicación\n'
+        '- Los informes PDF se generan localmente',
+    'pt':
+        'Quais dados são recolhidos:\n'
+        '- Registos de crises (armazenados localmente no seu dispositivo)\n'
+        '- Localização (apenas para obter o clima, não partilhada com terceiros)\n'
+        '- Fotos (armazenadas localmente no seu dispositivo)\n\n'
+        'Para onde os dados são enviados:\n'
+        '- API Open-Meteo: apenas coordenadas para o clima\n'
+        '- Nenhum dado pessoal ou médico é enviado para servidores\n\n'
+        'Armazenamento:\n'
+        '- Todos os dados ficam exclusivamente no seu dispositivo\n'
+        '- Pode apagar todos os dados desinstalando a aplicação\n'
+        '- Os relatórios PDF são gerados localmente',
+    'it':
+        'Quali dati vengono raccolti:\n'
+        '- Registrazioni delle crisi (memorizzate localmente sul dispositivo)\n'
+        '- Posizione (solo per determinare il meteo, non condivisa con terzi)\n'
+        '- Foto (memorizzate localmente sul dispositivo)\n\n'
+        'Dove vengono inviati i dati:\n'
+        '- API Open-Meteo: solo coordinate per il meteo\n'
+        '- Nessun dato personale o medico viene inviato a server\n\n'
+        'Memorizzazione:\n'
+        '- Tutti i dati rimangono esclusivamente sul dispositivo\n'
+        '- È possibile eliminare tutti i dati disinstallando l\'app\n'
+        '- I rapporti PDF vengono generati localmente',
+    'sv':
+        'Vilka data samlas in:\n'
+        '- Anfallsregistreringar (lagras lokalt på din enhet)\n'
+        '- Plats (endast för väder, delas inte med tredje part)\n'
+        '- Foton (lagras lokalt på din enhet)\n\n'
+        'Vart data skickas:\n'
+        '- Open-Meteo API: endast koordinater skickas för väder\n'
+        '- Inga personliga eller medicinska data skickas till servrar\n\n'
+        'Datalagring:\n'
+        '- All data lagras uteslutande på din enhet\n'
+        '- Du kan radera all data genom att avinstallera appen\n'
+        '- PDF-rapporter genereras lokalt',
+    'fi':
+        'Mitä tietoja kerätään:\n'
+        '- Kohtausmerkinnät (tallennetaan paikallisesti laitteellesi)\n'
+        '- Sijainti (vain säätä varten, ei jaeta kolmansille osapuolille)\n'
+        '- Valokuvat (tallennetaan paikallisesti laitteellesi)\n\n'
+        'Minne tiedot lähetetään:\n'
+        '- Open-Meteo API: vain koordinaatit säätä varten\n'
+        '- Henkilötietoja tai terveystietoja ei lähetetä palvelimille\n\n'
+        'Tietojen säilytys:\n'
+        '- Kaikki tiedot säilytetään yksinomaan laitteellasi\n'
+        '- Voit poistaa kaikki tiedot poistamalla sovelluksen\n'
+        '- PDF-raportit luodaan paikallisesti',
+    'nb':
+        'Hvilke data samles inn:\n'
+        '- Anfallsregistreringer (lagret lokalt på enheten)\n'
+        '- Plassering (kun for å finne vær, deles ikke med tredjepart)\n'
+        '- Bilder (lagret lokalt på enheten)\n\n'
+        'Hvor data sendes:\n'
+        '- Open-Meteo API: kun koordinater sendes for vær\n'
+        '- Ingen personlige eller medisinske data sendes til servere\n\n'
+        'Datalagring:\n'
+        '- Alle data lagres utelukkende på enheten din\n'
+        '- Du kan slette alle data ved å avinstallere appen\n'
+        '- PDF-rapporter genereres lokalt',
+    'da':
+        'Hvilke data indsamles:\n'
+        '- Anfaldsregistreringer (gemmes lokalt på din enhed)\n'
+        '- Placering (kun til vejrdata, deles ikke med tredjepart)\n'
+        '- Fotos (gemmes lokalt på din enhed)\n\n'
+        'Hvor data sendes:\n'
+        '- Open-Meteo API: kun koordinater sendes til vejr\n'
+        '- Ingen personlige eller medicinske data sendes til servere\n\n'
+        'Datalagring:\n'
+        '- Alle data gemmes udelukkende på din enhed\n'
+        '- Du kan slette alle data ved at afinstallere appen\n'
+        '- PDF-rapporter genereres lokalt',
+    'nl':
+        'Welke gegevens worden verzameld:\n'
+        '- Aanvalsregistraties (lokaal op je apparaat opgeslagen)\n'
+        '- Locatie (alleen voor het weer, niet gedeeld met derden)\n'
+        '- Foto\'s (lokaal op je apparaat opgeslagen)\n\n'
+        'Waar gegevens naartoe gaan:\n'
+        '- Open-Meteo API: alleen coördinaten voor het weer\n'
+        '- Er worden geen persoonlijke of medische gegevens naar servers gestuurd\n\n'
+        'Gegevensopslag:\n'
+        '- Alle gegevens worden uitsluitend op je apparaat opgeslagen\n'
+        '- Je kunt alle gegevens verwijderen door de app te verwijderen\n'
+        '- PDF-rapporten worden lokaal gegenereerd',
+    'pl':
+        'Jakie dane są zbierane:\n'
+        '- Zapisy ataków (przechowywane lokalnie na urządzeniu)\n'
+        '- Lokalizacja (tylko do pogody, nieudostępniana osobom trzecim)\n'
+        '- Zdjęcia (przechowywane lokalnie na urządzeniu)\n\n'
+        'Dokąd wysyłane są dane:\n'
+        '- API Open-Meteo: tylko współrzędne do pogody\n'
+        '- Żadne dane osobowe ani medyczne nie są wysyłane na serwery\n\n'
+        'Przechowywanie danych:\n'
+        '- Wszystkie dane są przechowywane wyłącznie na urządzeniu\n'
+        '- Możesz usunąć wszystkie dane, odinstalowując aplikację\n'
+        '- Raporty PDF są generowane lokalnie',
+    'cs':
+        'Jaká data se shromažďují:\n'
+        '- Záznamy záchvatů (ukládány lokálně v zařízení)\n'
+        '- Poloha (pouze pro počasí, nesdílena s třetími stranami)\n'
+        '- Fotografie (ukládány lokálně v zařízení)\n\n'
+        'Kam se data odesílají:\n'
+        '- Open-Meteo API: pouze souřadnice pro počasí\n'
+        '- Žádná osobní ani zdravotní data nejsou odesílána na servery\n\n'
+        'Ukládání dat:\n'
+        '- Všechna data jsou uložena výhradně ve vašem zařízení\n'
+        '- Všechna data smažete odinstalací aplikace\n'
+        '- PDF reporty se generují lokálně',
+    'hu':
+        'Milyen adatok gyűlnek:\n'
+        '- Rohambejegyzések (helyben, az eszközön tárolva)\n'
+        '- Helyadat (csak időjáráshoz, harmadik féllel nem osztjuk meg)\n'
+        '- Fényképek (helyben, az eszközön tárolva)\n\n'
+        'Hová kerülnek az adatok:\n'
+        '- Open-Meteo API: csak koordinátákat küldünk időjáráshoz\n'
+        '- Személyes vagy egészségügyi adatot semmilyen szerverre nem küldünk\n\n'
+        'Adattárolás:\n'
+        '- Minden adat kizárólag a te eszközödön marad\n'
+        '- Az alkalmazás eltávolításával minden adat törlődik\n'
+        '- A PDF-jelentések helyben készülnek',
+    'ja':
+        '収集されるデータ:\n'
+        '- 発作記録（端末にローカル保存）\n'
+        '- 位置情報（天気取得のみに使用、第三者とは共有しません）\n'
+        '- 写真（端末にローカル保存）\n\n'
+        'データの送信先:\n'
+        '- Open-Meteo API: 天気取得のために座標のみを送信\n'
+        '- 個人情報や医療情報はサーバーに送信されません\n\n'
+        'データの保管:\n'
+        '- すべてのデータは端末内のみに保管されます\n'
+        '- アプリをアンインストールするとすべてのデータが削除されます\n'
+        '- PDFレポートは端末内で生成されます',
+    'ko':
+        '수집되는 데이터:\n'
+        '- 발작 기록 (기기에 로컬 저장)\n'
+        '- 위치 (날씨 확인 전용, 제3자와 공유하지 않음)\n'
+        '- 사진 (기기에 로컬 저장)\n\n'
+        '데이터 전송:\n'
+        '- Open-Meteo API: 날씨 확인을 위한 좌표만 전송\n'
+        '- 개인정보나 의료 정보는 어떤 서버로도 전송되지 않습니다\n\n'
+        '데이터 저장:\n'
+        '- 모든 데이터는 기기에만 저장됩니다\n'
+        '- 앱 삭제 시 모든 데이터가 삭제됩니다\n'
+        '- PDF 보고서는 기기에서 생성됩니다',
     'uk':
         'Які дані збираються:\n'
         '- Записи про напади (зберігаються локально на пристрої)\n'
@@ -2797,6 +3023,81 @@ class S {
         '- Вы можете удалить все данные, удалив приложение\n'
         '- Вы можете отозвать разрешения в настройках устройства\n'
         '- Приложение работает полностью офлайн (кроме погоды)',
+    'de':
+        '- Sie können Ihre Daten als PDF-Bericht exportieren\n'
+        '- Sie können alle Daten durch Deinstallation der App löschen\n'
+        '- Sie können Berechtigungen in den Geräteeinstellungen widerrufen\n'
+        '- Die App funktioniert vollständig offline (außer Wetter)',
+    'fr':
+        '- Vous pouvez exporter vos données via des rapports PDF\n'
+        '- Vous pouvez supprimer toutes les données en désinstallant l\'application\n'
+        '- Vous pouvez révoquer les permissions dans les paramètres de l\'appareil\n'
+        '- L\'application fonctionne entièrement hors ligne (sauf pour la météo)',
+    'es':
+        '- Puede exportar sus datos mediante informes PDF\n'
+        '- Puede eliminar todos los datos desinstalando la aplicación\n'
+        '- Puede revocar los permisos en los ajustes del dispositivo\n'
+        '- La aplicación funciona completamente sin conexión (excepto el clima)',
+    'pt':
+        '- Pode exportar os seus dados em relatórios PDF\n'
+        '- Pode apagar todos os dados desinstalando a aplicação\n'
+        '- Pode revogar permissões nas definições do dispositivo\n'
+        '- A aplicação funciona totalmente offline (exceto para o clima)',
+    'it':
+        '- Puoi esportare i tuoi dati tramite rapporti PDF\n'
+        '- Puoi eliminare tutti i dati disinstallando l\'app\n'
+        '- Puoi revocare i permessi nelle impostazioni del dispositivo\n'
+        '- L\'app funziona completamente offline (tranne il meteo)',
+    'sv':
+        '- Du kan exportera dina data via PDF-rapporter\n'
+        '- Du kan radera alla data genom att avinstallera appen\n'
+        '- Du kan återkalla behörigheter i enhetens inställningar\n'
+        '- Appen fungerar helt offline (förutom väder)',
+    'fi':
+        '- Voit viedä tietosi PDF-raporttina\n'
+        '- Voit poistaa kaikki tiedot poistamalla sovelluksen\n'
+        '- Voit peruuttaa luvat laitteen asetuksissa\n'
+        '- Sovellus toimii täysin offline (paitsi sää)',
+    'nb':
+        '- Du kan eksportere dataene dine som PDF-rapport\n'
+        '- Du kan slette alle data ved å avinstallere appen\n'
+        '- Du kan tilbakekalle tillatelser i enhetens innstillinger\n'
+        '- Appen fungerer helt offline (unntatt vær)',
+    'da':
+        '- Du kan eksportere dine data som PDF-rapport\n'
+        '- Du kan slette alle data ved at afinstallere appen\n'
+        '- Du kan tilbagekalde tilladelser i enhedens indstillinger\n'
+        '- Appen fungerer helt offline (undtagen vejr)',
+    'nl':
+        '- Je kunt je gegevens exporteren via PDF-rapporten\n'
+        '- Je kunt alle gegevens verwijderen door de app te verwijderen\n'
+        '- Je kunt rechten intrekken in de apparaatinstellingen\n'
+        '- De app werkt volledig offline (behalve weer)',
+    'pl':
+        '- Możesz wyeksportować swoje dane w raporcie PDF\n'
+        '- Możesz usunąć wszystkie dane, odinstalowując aplikację\n'
+        '- Możesz cofnąć uprawnienia w ustawieniach urządzenia\n'
+        '- Aplikacja działa w pełni offline (oprócz pogody)',
+    'cs':
+        '- Data můžete exportovat jako PDF report\n'
+        '- Všechna data odstraníte odinstalováním aplikace\n'
+        '- Oprávnění můžete odvolat v nastavení zařízení\n'
+        '- Aplikace funguje plně offline (kromě počasí)',
+    'hu':
+        '- Az adataidat PDF-jelentésként exportálhatod\n'
+        '- Az alkalmazás eltávolításával minden adat törlődik\n'
+        '- Az engedélyeket az eszköz beállításaiban vonhatod vissza\n'
+        '- Az alkalmazás teljesen offline működik (kivéve az időjárást)',
+    'ja':
+        '- データはPDFレポートとしてエクスポートできます\n'
+        '- アプリをアンインストールするとすべてのデータが削除されます\n'
+        '- 権限はデバイス設定から取り消せます\n'
+        '- 天気以外はすべてオフラインで動作します',
+    'ko':
+        '- PDF 보고서로 데이터를 내보낼 수 있습니다\n'
+        '- 앱을 삭제하면 모든 데이터가 삭제됩니다\n'
+        '- 기기 설정에서 권한을 철회할 수 있습니다\n'
+        '- 날씨를 제외한 모든 기능은 완전히 오프라인에서 작동합니다',
     'uk':
         '- Ви можете експортувати дані через PDF-звіти\n'
         '- Ви можете видалити всі дані, видаливши додаток\n'
@@ -2813,6 +3114,14 @@ class S {
     'es': 'VasoLog - Informe sobre el síndrome de Raynaud',
     'pt': 'VasoLog - Relatório sobre a síndrome de Raynaud',
     'it': 'VasoLog - Rapporto sulla sindrome di Raynaud',
+    'sv': 'VasoLog - Rapport om Raynauds fenomen',
+    'fi': 'VasoLog - Raportti Raynaud\'n oireyhtymästä',
+    'nb': 'VasoLog - Rapport om Raynauds fenomen',
+    'da': 'VasoLog - Rapport om Raynauds syndrom',
+    'nl': 'VasoLog - Rapport over het fenomeen van Raynaud',
+    'pl': 'VasoLog - Raport o zespole Raynauda',
+    'cs': 'VasoLog - Zpráva o Raynaudově fenoménu',
+    'hu': 'VasoLog - Jelentés a Raynaud-jelenségről',
     'uk': 'VasoLog - Звіт за синдромом Рейно',
     'ja': 'VasoLog - レイノー現象レポート',
     'ko': 'VasoLog - 레이노 현상 보고서',
@@ -2825,6 +3134,14 @@ class S {
     'es': 'Período',
     'pt': 'Período',
     'it': 'Periodo',
+    'sv': 'Period',
+    'fi': 'Jakso',
+    'nb': 'Periode',
+    'da': 'Periode',
+    'nl': 'Periode',
+    'pl': 'Okres',
+    'cs': 'Období',
+    'hu': 'Időszak',
     'uk': 'Період',
     'ja': '期間',
     'ko': '기간',
@@ -2837,6 +3154,14 @@ class S {
     'es': 'Generado',
     'pt': 'Gerado',
     'it': 'Generato',
+    'sv': 'Genererad',
+    'fi': 'Luotu',
+    'nb': 'Generert',
+    'da': 'Oprettet',
+    'nl': 'Gegenereerd',
+    'pl': 'Wygenerowano',
+    'cs': 'Vygenerováno',
+    'hu': 'Létrehozva',
     'uk': 'Створено',
     'ja': '作成日時',
     'ko': '생성됨',
@@ -2849,6 +3174,14 @@ class S {
     'es': 'Resumen',
     'pt': 'Resumo',
     'it': 'Riepilogo',
+    'sv': 'Sammanfattning',
+    'fi': 'Yhteenveto',
+    'nb': 'Sammendrag',
+    'da': 'Resumé',
+    'nl': 'Samenvatting',
+    'pl': 'Podsumowanie',
+    'cs': 'Shrnutí',
+    'hu': 'Összefoglaló',
     'uk': 'Зведення',
     'ja': '概要',
     'ko': '요약',
@@ -2861,6 +3194,14 @@ class S {
     'es': 'Métrica',
     'pt': 'Métrica',
     'it': 'Metrica',
+    'sv': 'Mätvärde',
+    'fi': 'Mittari',
+    'nb': 'Måleverdi',
+    'da': 'Måling',
+    'nl': 'Metriek',
+    'pl': 'Miernik',
+    'cs': 'Metrika',
+    'hu': 'Mutató',
     'uk': 'Показник',
     'ja': '指標',
     'ko': '지표',
@@ -2873,6 +3214,14 @@ class S {
     'es': 'Valor',
     'pt': 'Valor',
     'it': 'Valore',
+    'sv': 'Värde',
+    'fi': 'Arvo',
+    'nb': 'Verdi',
+    'da': 'Værdi',
+    'nl': 'Waarde',
+    'pl': 'Wartość',
+    'cs': 'Hodnota',
+    'hu': 'Érték',
     'uk': 'Значення',
     'ja': '値',
     'ko': '값',
@@ -2885,6 +3234,14 @@ class S {
     'es': 'Total de crisis',
     'pt': 'Total de crises',
     'it': 'Totale crisi',
+    'sv': 'Totalt antal anfall',
+    'fi': 'Kohtauksia yhteensä',
+    'nb': 'Totalt antall anfall',
+    'da': 'Anfald i alt',
+    'nl': 'Totaal aanvallen',
+    'pl': 'Ataki ogółem',
+    'cs': 'Záchvaty celkem',
+    'hu': 'Összes roham',
     'uk': 'Усього нападів',
     'ja': '発作合計',
     'ko': '총 발작',
@@ -2897,6 +3254,14 @@ class S {
     'es': 'Gravedad media (RCS)',
     'pt': 'Gravidade média (RCS)',
     'it': 'Gravità media (RCS)',
+    'sv': 'Genomsnittlig svårighetsgrad (RCS)',
+    'fi': 'Keskimääräinen vakavuus (RCS)',
+    'nb': 'Gjennomsnittlig alvorlighet (RCS)',
+    'da': 'Gennemsnitlig sværhedsgrad (RCS)',
+    'nl': 'Gem. ernst (RCS)',
+    'pl': 'Średnie nasilenie (RCS)',
+    'cs': 'Průměrná závažnost (RCS)',
+    'hu': 'Átlagos súlyosság (RCS)',
     'uk': 'Середня тяжкість (RCS)',
     'ja': '平均重症度 (RCS)',
     'ko': '평균 심각도 (RCS)',
@@ -2909,6 +3274,14 @@ class S {
     'es': 'Desencadenante principal',
     'pt': 'Gatilho principal',
     'it': 'Fattore principale',
+    'sv': 'Vanligaste utlösaren',
+    'fi': 'Yleisin laukaisija',
+    'nb': 'Vanligste utløser',
+    'da': 'Hyppigste udløser',
+    'nl': 'Meest voorkomende trigger',
+    'pl': 'Najczęstszy wyzwalacz',
+    'cs': 'Nejčastější spouštěč',
+    'hu': 'Leggyakoribb kiváltó ok',
     'uk': 'Найчастіший тригер',
     'ja': '最も多い誘因',
     'ko': '가장 흔한 유발 요인',
@@ -2921,6 +3294,14 @@ class S {
     'es': 'Temp. media durante las crisis',
     'pt': 'Temp. média durante as crises',
     'it': 'Temp. media durante le crisi',
+    'sv': 'Medeltemp. vid anfall',
+    'fi': 'Kesk. lämpötila kohtausten aikana',
+    'nb': 'Gj.snitt temp. under anfall',
+    'da': 'Gns. temp. under anfald',
+    'nl': 'Gem. temp. tijdens aanvallen',
+    'pl': 'Śr. temp. podczas ataków',
+    'cs': 'Prům. teplota při záchvatech',
+    'hu': 'Átl. hőmérséklet rohamok alatt',
     'uk': 'Сер. температура при нападах',
     'ja': '発作時の平均気温',
     'ko': '발작 중 평균 기온',
@@ -2933,6 +3314,14 @@ class S {
     'es': 'Análisis de desencadenantes',
     'pt': 'Análise de gatilhos',
     'it': 'Analisi dei fattori',
+    'sv': 'Utlösaranalys',
+    'fi': 'Laukaisijoiden analyysi',
+    'nb': 'Utløseranalyse',
+    'da': 'Udløseranalyse',
+    'nl': 'Trigger-analyse',
+    'pl': 'Analiza wyzwalaczy',
+    'cs': 'Analýza spouštěčů',
+    'hu': 'Kiváltó okok elemzése',
     'uk': 'Аналіз тригерів',
     'ja': '誘因分析',
     'ko': '유발 요인 분석',
@@ -2945,6 +3334,14 @@ class S {
     'es': 'Desencadenante',
     'pt': 'Gatilho',
     'it': 'Fattore',
+    'sv': 'Utlösare',
+    'fi': 'Laukaisija',
+    'nb': 'Utløser',
+    'da': 'Udløser',
+    'nl': 'Trigger',
+    'pl': 'Wyzwalacz',
+    'cs': 'Spouštěč',
+    'hu': 'Kiváltó ok',
     'uk': 'Тригер',
     'ja': '誘因',
     'ko': '유발 요인',
@@ -2957,6 +3354,14 @@ class S {
     'es': 'Cantidad',
     'pt': 'Quantidade',
     'it': 'Conteggio',
+    'sv': 'Antal',
+    'fi': 'Määrä',
+    'nb': 'Antall',
+    'da': 'Antal',
+    'nl': 'Aantal',
+    'pl': 'Liczba',
+    'cs': 'Počet',
+    'hu': 'Darab',
     'uk': 'Кількість',
     'ja': '回数',
     'ko': '횟수',
@@ -2969,6 +3374,14 @@ class S {
     'es': '% de crisis',
     'pt': '% de crises',
     'it': '% di crisi',
+    'sv': '% av anfall',
+    'fi': '% kohtauksista',
+    'nb': '% av anfall',
+    'da': '% af anfald',
+    'nl': '% van aanvallen',
+    'pl': '% ataków',
+    'cs': '% záchvatů',
+    'hu': 'Rohamok %-a',
     'uk': '% нападів',
     'ja': '発作の%',
     'ko': '발작 %',
@@ -2981,6 +3394,14 @@ class S {
     'es': 'Registro de crisis',
     'pt': 'Registro de crises',
     'it': 'Registro crisi',
+    'sv': 'Anfallslogg',
+    'fi': 'Kohtausloki',
+    'nb': 'Anfallslogg',
+    'da': 'Anfaldslog',
+    'nl': 'Aanvallogboek',
+    'pl': 'Dziennik ataków',
+    'cs': 'Deník záchvatů',
+    'hu': 'Rohamnapló',
     'uk': 'Журнал нападів',
     'ja': '発作ログ',
     'ko': '발작 기록',
@@ -2993,6 +3414,14 @@ class S {
     'es': 'Fecha/Hora',
     'pt': 'Data/Hora',
     'it': 'Data/Ora',
+    'sv': 'Datum/Tid',
+    'fi': 'Päivämäärä/Aika',
+    'nb': 'Dato/Tid',
+    'da': 'Dato/Tid',
+    'nl': 'Datum/Tijd',
+    'pl': 'Data/Godzina',
+    'cs': 'Datum/Čas',
+    'hu': 'Dátum/Idő',
     'uk': 'Дата/Час',
     'ja': '日時',
     'ko': '날짜/시간',
@@ -3006,6 +3435,14 @@ class S {
     'es': 'Fase de color',
     'pt': 'Fase de cor',
     'it': 'Fase colore',
+    'sv': 'Färgfas',
+    'fi': 'Värivaihe',
+    'nb': 'Fargefase',
+    'da': 'Farvefase',
+    'nl': 'Kleurfase',
+    'pl': 'Faza koloru',
+    'cs': 'Barevná fáze',
+    'hu': 'Színfázis',
     'uk': 'Фаза кольору',
     'ja': '色相',
     'ko': '색상 단계',
@@ -3018,6 +3455,14 @@ class S {
     'es': 'Temp. °C',
     'pt': 'Temp. °C',
     'it': 'Temp. °C',
+    'sv': 'Temp. °C',
+    'fi': 'Lämp. °C',
+    'nb': 'Temp. °C',
+    'da': 'Temp. °C',
+    'nl': 'Temp. °C',
+    'pl': 'Temp. °C',
+    'cs': 'Teplota °C',
+    'hu': 'Hőm. °C',
     'uk': 'Темп. °C',
     'ja': '気温 °C',
     'ko': '온도 °C',
@@ -3030,6 +3475,14 @@ class S {
     'es': 'Desencadenantes',
     'pt': 'Gatilhos',
     'it': 'Fattori',
+    'sv': 'Utlösare',
+    'fi': 'Laukaisijat',
+    'nb': 'Utløsere',
+    'da': 'Udløsere',
+    'nl': 'Triggers',
+    'pl': 'Wyzwalacze',
+    'cs': 'Spouštěče',
+    'hu': 'Kiváltó okok',
     'uk': 'Тригери',
     'ja': '誘因',
     'ko': '유발 요인',
@@ -3045,6 +3498,30 @@ class S {
         'Ce rapport a été généré par l\'application VasoLog à titre informatif uniquement. Consultez votre médecin pour tout avis médical.',
     'es':
         'Este informe fue generado por la aplicación VasoLog y es solo con fines informativos. Consulte a su médico para obtener consejo médico.',
+    'pt':
+        'Este relatório foi gerado pela aplicação VasoLog e destina-se apenas a fins informativos. Consulte o seu médico para obter aconselhamento médico.',
+    'it':
+        'Questo rapporto è stato generato dall\'app VasoLog a scopo puramente informativo. Consulta il tuo medico per consigli medici.',
+    'sv':
+        'Denna rapport har genererats av VasoLog-appen och är endast avsedd för informationssyfte. Rådgör med din läkare för medicinsk rådgivning.',
+    'fi':
+        'Tämän raportin on luonut VasoLog-sovellus, ja se on tarkoitettu vain tiedoksi. Ota yhteyttä lääkäriisi lääketieteellistä neuvoa varten.',
+    'nb':
+        'Denne rapporten er generert av VasoLog-appen og er kun til informasjonsformål. Kontakt legen din for medisinsk råd.',
+    'da':
+        'Denne rapport er genereret af VasoLog-appen og er kun til informationsformål. Kontakt din læge for medicinsk rådgivning.',
+    'nl':
+        'Dit rapport is gegenereerd door de VasoLog-app en is uitsluitend bedoeld ter informatie. Raadpleeg uw arts voor medisch advies.',
+    'pl':
+        'Raport wygenerowany przez aplikację VasoLog w celach informacyjnych. W sprawach medycznych skonsultuj się z lekarzem.',
+    'cs':
+        'Tuto zprávu vygenerovala aplikace VasoLog a slouží pouze pro informační účely. Lékařskou radu vyhledejte u svého lékaře.',
+    'hu':
+        'Ezt a jelentést a VasoLog alkalmazás készítette, és kizárólag tájékoztató jellegű. Orvosi tanácsért fordulj orvosodhoz.',
+    'ja':
+        'このレポートはVasoLogアプリによって生成され、情報提供のみを目的としています。医学的な助言については医師にご相談ください。',
+    'ko':
+        '이 보고서는 VasoLog 앱에서 생성되었으며 정보 제공 목적으로만 사용됩니다. 의학적 조언은 담당 의사에게 문의하세요.',
     'uk':
         'Цей звіт створено додатком VasoLog лише в інформаційних цілях. Будь ласка, зверніться до лікаря за медичною консультацією.',
   });
@@ -3374,6 +3851,378 @@ class S {
     'nb': 'Lillefingr H','da': 'Lillefingr H', 'nl': 'Pink R',
     'pl': 'Mały P',    'cs': 'Malík P',        'hu': 'Kisujj J',
     'uk': 'Мізинець П','ja': '小指 右',        'ko': '새끼 우',
+  });
+
+  /// Стабильные ID пальцев для хранения в БД (не меняются между локалями).
+  /// Формат: <finger>_<hand>, где hand = l|r.
+  static const List<String> fingerKeysLeft = [
+    'thumb_l', 'index_l', 'middle_l', 'ring_l', 'pinky_l',
+  ];
+  static const List<String> fingerKeysRight = [
+    'thumb_r', 'index_r', 'middle_r', 'ring_r', 'pinky_r',
+  ];
+
+  /// Стабильные ID триггеров для хранения в БД.
+  static const List<String> triggerKeys = [
+    'cold', 'stress', 'cold_water', 'ac', 'vibration',
+    'smoking', 'caffeine', 'exercise', 'emotions', 'medication', 'unknown',
+  ];
+
+  /// Локализованное имя пальца по стабильному ID.
+  /// Для обратной совместимости со старыми записями (до рефакторинга)
+  /// распознаёт также ru-строки, которые использовались как ID раньше.
+  String fingerFromKey(String key) {
+    switch (key) {
+      case 'thumb_l':
+      case 'Большой Л':
+        return thumbLeft;
+      case 'index_l':
+      case 'Указат. Л':
+        return indexLeft;
+      case 'middle_l':
+      case 'Средний Л':
+        return middleLeft;
+      case 'ring_l':
+      case 'Безымян. Л':
+        return ringLeft;
+      case 'pinky_l':
+      case 'Мизинец Л':
+        return pinkyLeft;
+      case 'thumb_r':
+      case 'Большой П':
+        return thumbRight;
+      case 'index_r':
+      case 'Указат. П':
+        return indexRight;
+      case 'middle_r':
+      case 'Средний П':
+        return middleRight;
+      case 'ring_r':
+      case 'Безымян. П':
+        return ringRight;
+      case 'pinky_r':
+      case 'Мизинец П':
+        return pinkyRight;
+      default:
+        return key;
+    }
+  }
+
+  /// Локализованное имя триггера по стабильному ID.
+  String triggerFromKey(String key) {
+    switch (key) {
+      case 'cold':
+        return triggerCold;
+      case 'stress':
+        return triggerStress;
+      case 'cold_water':
+        return triggerColdWater;
+      case 'ac':
+        return triggerAC;
+      case 'vibration':
+        return triggerVibration;
+      case 'smoking':
+        return triggerSmoking;
+      case 'caffeine':
+        return triggerCaffeine;
+      case 'exercise':
+        return triggerExercise;
+      case 'emotions':
+        return triggerEmotions;
+      case 'medication':
+        return triggerMedication;
+      case 'unknown':
+        return triggerUnknown;
+      default:
+        return key;
+    }
+  }
+
+  /// Локализованное описание погоды по WMO коду.
+  /// Коды: https://open-meteo.com/en/docs (weather_code)
+  String wmoDescription(int code) {
+    final key = switch (code) {
+      0 => 'clear',
+      1 || 2 || 3 => 'cloudy',
+      45 || 48 => 'fog',
+      51 || 53 || 55 => 'drizzle',
+      61 || 63 || 65 => 'rain',
+      71 || 73 || 75 => 'snow',
+      77 => 'snow_grains',
+      80 || 81 || 82 => 'showers',
+      85 || 86 => 'snow_showers',
+      95 => 'thunder',
+      96 || 99 => 'thunder_hail',
+      _ => 'unknown',
+    };
+    switch (key) {
+      case 'clear':
+        return _t({
+          'en': 'Clear', 'ru': 'Ясно', 'de': 'Klar', 'fr': 'Clair',
+          'es': 'Despejado', 'pt': 'Limpo', 'it': 'Sereno', 'sv': 'Klart',
+          'fi': 'Selkeää', 'nb': 'Klart', 'da': 'Klart', 'nl': 'Helder',
+          'pl': 'Pogodnie', 'cs': 'Jasno', 'hu': 'Tiszta', 'uk': 'Ясно',
+          'ja': '晴れ', 'ko': '맑음',
+        });
+      case 'cloudy':
+        return _t({
+          'en': 'Cloudy', 'ru': 'Облачно', 'de': 'Bewölkt', 'fr': 'Nuageux',
+          'es': 'Nublado', 'pt': 'Nublado', 'it': 'Nuvoloso', 'sv': 'Molnigt',
+          'fi': 'Pilvistä', 'nb': 'Skyet', 'da': 'Skyet', 'nl': 'Bewolkt',
+          'pl': 'Pochmurno', 'cs': 'Oblačno', 'hu': 'Felhős', 'uk': 'Хмарно',
+          'ja': '曇り', 'ko': '흐림',
+        });
+      case 'fog':
+        return _t({
+          'en': 'Fog', 'ru': 'Туман', 'de': 'Nebel', 'fr': 'Brouillard',
+          'es': 'Niebla', 'pt': 'Nevoeiro', 'it': 'Nebbia', 'sv': 'Dimma',
+          'fi': 'Sumua', 'nb': 'Tåke', 'da': 'Tåge', 'nl': 'Mist',
+          'pl': 'Mgła', 'cs': 'Mlha', 'hu': 'Köd', 'uk': 'Туман',
+          'ja': '霧', 'ko': '안개',
+        });
+      case 'drizzle':
+        return _t({
+          'en': 'Drizzle', 'ru': 'Морось', 'de': 'Nieselregen', 'fr': 'Bruine',
+          'es': 'Llovizna', 'pt': 'Chuvisco', 'it': 'Pioviggine', 'sv': 'Duggregn',
+          'fi': 'Tihkusade', 'nb': 'Yr', 'da': 'Støvregn', 'nl': 'Motregen',
+          'pl': 'Mżawka', 'cs': 'Mrholení', 'hu': 'Szitálás', 'uk': 'Мряка',
+          'ja': '霧雨', 'ko': '이슬비',
+        });
+      case 'rain':
+        return _t({
+          'en': 'Rain', 'ru': 'Дождь', 'de': 'Regen', 'fr': 'Pluie',
+          'es': 'Lluvia', 'pt': 'Chuva', 'it': 'Pioggia', 'sv': 'Regn',
+          'fi': 'Sade', 'nb': 'Regn', 'da': 'Regn', 'nl': 'Regen',
+          'pl': 'Deszcz', 'cs': 'Déšť', 'hu': 'Eső', 'uk': 'Дощ',
+          'ja': '雨', 'ko': '비',
+        });
+      case 'snow':
+        return _t({
+          'en': 'Snow', 'ru': 'Снег', 'de': 'Schnee', 'fr': 'Neige',
+          'es': 'Nieve', 'pt': 'Neve', 'it': 'Neve', 'sv': 'Snö',
+          'fi': 'Lumi', 'nb': 'Snø', 'da': 'Sne', 'nl': 'Sneeuw',
+          'pl': 'Śnieg', 'cs': 'Sníh', 'hu': 'Hó', 'uk': 'Сніг',
+          'ja': '雪', 'ko': '눈',
+        });
+      case 'snow_grains':
+        return _t({
+          'en': 'Snow grains', 'ru': 'Снежная крупа', 'de': 'Schneegriesel',
+          'fr': 'Grésil', 'es': 'Cinarra', 'pt': 'Grãos de neve',
+          'it': 'Granuli di neve', 'sv': 'Snökorn', 'fi': 'Lumijyvät',
+          'nb': 'Snøkorn', 'da': 'Snekorn', 'nl': 'Sneeuwkorrels',
+          'pl': 'Ziarna śniegu', 'cs': 'Sněhová zrna', 'hu': 'Hódara',
+          'uk': 'Снігова крупа', 'ja': '霧雪', 'ko': '싸락눈',
+        });
+      case 'showers':
+        return _t({
+          'en': 'Showers', 'ru': 'Ливень', 'de': 'Schauer', 'fr': 'Averses',
+          'es': 'Chubascos', 'pt': 'Aguaceiros', 'it': 'Rovesci', 'sv': 'Skurar',
+          'fi': 'Kuuroja', 'nb': 'Regnbyger', 'da': 'Byger', 'nl': 'Buien',
+          'pl': 'Ulewy', 'cs': 'Přeháňky', 'hu': 'Zápor', 'uk': 'Злива',
+          'ja': 'にわか雨', 'ko': '소나기',
+        });
+      case 'snow_showers':
+        return _t({
+          'en': 'Snow showers', 'ru': 'Снегопад', 'de': 'Schneeschauer',
+          'fr': 'Averses de neige', 'es': 'Chubascos de nieve',
+          'pt': 'Aguaceiros de neve', 'it': 'Rovesci di neve',
+          'sv': 'Snöbyar', 'fi': 'Lumikuuroja', 'nb': 'Snøbyger',
+          'da': 'Snebyger', 'nl': 'Sneeuwbuien', 'pl': 'Śnieżyce',
+          'cs': 'Sněhové přeháňky', 'hu': 'Havas zápor',
+          'uk': 'Снігопад', 'ja': 'にわか雪', 'ko': '눈 소나기',
+        });
+      case 'thunder':
+        return _t({
+          'en': 'Thunderstorm', 'ru': 'Гроза', 'de': 'Gewitter', 'fr': 'Orage',
+          'es': 'Tormenta', 'pt': 'Tempestade', 'it': 'Temporale', 'sv': 'Åska',
+          'fi': 'Ukkonen', 'nb': 'Tordenvær', 'da': 'Tordenvejr',
+          'nl': 'Onweer', 'pl': 'Burza', 'cs': 'Bouřka', 'hu': 'Zivatar',
+          'uk': 'Гроза', 'ja': '雷雨', 'ko': '뇌우',
+        });
+      case 'thunder_hail':
+        return _t({
+          'en': 'Thunder with hail', 'ru': 'Гроза с градом',
+          'de': 'Gewitter mit Hagel', 'fr': 'Orage avec grêle',
+          'es': 'Tormenta con granizo', 'pt': 'Tempestade com granizo',
+          'it': 'Temporale con grandine', 'sv': 'Åska med hagel',
+          'fi': 'Ukkonen ja rakeita', 'nb': 'Torden med hagl',
+          'da': 'Torden med hagl', 'nl': 'Onweer met hagel',
+          'pl': 'Burza z gradem', 'cs': 'Bouřka s krupobitím',
+          'hu': 'Zivatar jégesővel', 'uk': 'Гроза з градом',
+          'ja': '雷と雹', 'ko': '우박을 동반한 뇌우',
+        });
+      default:
+        return _t({
+          'en': 'Unknown', 'ru': 'Неизвестно', 'de': 'Unbekannt',
+          'fr': 'Inconnu', 'es': 'Desconocido', 'pt': 'Desconhecido',
+          'it': 'Sconosciuto', 'sv': 'Okänt', 'fi': 'Tuntematon',
+          'nb': 'Ukjent', 'da': 'Ukendt', 'nl': 'Onbekend',
+          'pl': 'Nieznane', 'cs': 'Neznámé', 'hu': 'Ismeretlen',
+          'uk': 'Невідомо', 'ja': '不明', 'ko': '알 수 없음',
+        });
+    }
+  }
+
+  /// Заголовок ежедневного напоминания (push).
+  String get reminderDailyTitle => _t({
+    'en': 'How are your hands?',
+    'ru': 'Как ваши руки?',
+    'de': 'Wie geht es Ihren Händen?',
+    'fr': 'Comment vont vos mains ?',
+    'es': '¿Cómo están tus manos?',
+    'pt': 'Como estão as suas mãos?',
+    'it': 'Come stanno le tue mani?',
+    'sv': 'Hur mår dina händer?',
+    'fi': 'Kuinka kätesi voivat?',
+    'nb': 'Hvordan har hendene dine det?',
+    'da': 'Hvordan har dine hænder det?',
+    'nl': 'Hoe gaat het met je handen?',
+    'pl': 'Jak Twoje dłonie?',
+    'cs': 'Jak se mají vaše ruce?',
+    'hu': 'Hogy vannak a kezeid?',
+    'uk': 'Як ваші руки?',
+    'ja': '手の調子はいかがですか？',
+    'ko': '손 상태는 어떠신가요?',
+  });
+  String get reminderDailyBody => _t({
+    'en': 'Log how you feel if you had an attack',
+    'ru': 'Запишите состояние, если был приступ',
+    'de': 'Erfasse deinen Zustand, wenn du einen Anfall hattest',
+    'fr': 'Enregistrez votre état si vous avez eu une crise',
+    'es': 'Registra tu estado si tuviste un ataque',
+    'pt': 'Registe o seu estado se teve um ataque',
+    'it': 'Registra il tuo stato se hai avuto un attacco',
+    'sv': 'Logga ditt tillstånd om du hade ett anfall',
+    'fi': 'Kirjaa vointisi, jos sinulla oli kohtaus',
+    'nb': 'Registrer tilstanden din hvis du hadde et anfall',
+    'da': 'Registrer din tilstand, hvis du havde et anfald',
+    'nl': 'Noteer hoe je je voelt als je een aanval had',
+    'pl': 'Zapisz stan, jeśli wystąpił atak',
+    'cs': 'Zaznamenejte si stav, pokud jste měli záchvat',
+    'hu': 'Jegyezd fel, ha rohamot kaptál',
+    'uk': 'Запишіть стан, якщо був напад',
+    'ja': '発作があったら状態を記録してください',
+    'ko': '발작이 있었다면 상태를 기록하세요',
+  });
+  String get reminderInactivityTitle => _t({
+    'en': 'No records for a while',
+    'ru': 'Давно не было записей',
+    'de': 'Schon eine Weile keine Einträge',
+    'fr': 'Pas d\'enregistrements depuis longtemps',
+    'es': 'Hace tiempo que no hay registros',
+    'pt': 'Há muito tempo sem registos',
+    'it': 'Non ci sono registrazioni da un po\'',
+    'sv': 'Inga anteckningar på ett tag',
+    'fi': 'Ei merkintöjä vähään aikaan',
+    'nb': 'Ingen oppføringer på en stund',
+    'da': 'Ingen registreringer i et stykke tid',
+    'nl': 'Al een tijdje geen registraties',
+    'pl': 'Dawno nie było wpisów',
+    'cs': 'Dlouho žádné záznamy',
+    'hu': 'Rég nem volt bejegyzés',
+    'uk': 'Давно не було записів',
+    'ja': 'しばらく記録がありません',
+    'ko': '한동안 기록이 없네요',
+  });
+  String get reminderInactivityBody => _t({
+    'en': 'All good? Log if you had an attack',
+    'ru': 'Всё хорошо? Если был приступ - запишите его',
+    'de': 'Alles gut? Erfasse es, wenn du einen Anfall hattest',
+    'fr': 'Tout va bien ? Enregistrez si vous avez eu une crise',
+    'es': '¿Todo bien? Registra si tuviste un ataque',
+    'pt': 'Tudo bem? Registe se teve um ataque',
+    'it': 'Tutto bene? Registra se hai avuto un attacco',
+    'sv': 'Allt bra? Logga om du fick ett anfall',
+    'fi': 'Onko kaikki hyvin? Kirjaa, jos sinulla oli kohtaus',
+    'nb': 'Alt bra? Registrer om du hadde et anfall',
+    'da': 'Alt vel? Registrer, hvis du havde et anfald',
+    'nl': 'Alles goed? Log als je een aanval had',
+    'pl': 'Wszystko dobrze? Zapisz, jeśli był atak',
+    'cs': 'Vše v pořádku? Zapište, pokud jste měli záchvat',
+    'hu': 'Minden rendben? Jegyezd fel, ha rohamot kaptál',
+    'uk': 'Все гаразд? Якщо був напад - запишіть',
+    'ja': '大丈夫ですか？発作があったら記録してください',
+    'ko': '괜찮으신가요? 발작이 있었다면 기록하세요',
+  });
+  String get notificationChannelName => _t({
+    'en': 'VasoLog Reminders',
+    'ru': 'Напоминания VasoLog',
+    'de': 'VasoLog-Erinnerungen',
+    'fr': 'Rappels VasoLog',
+    'es': 'Recordatorios de VasoLog',
+    'pt': 'Lembretes do VasoLog',
+    'it': 'Promemoria VasoLog',
+    'sv': 'VasoLog-påminnelser',
+    'fi': 'VasoLog-muistutukset',
+    'nb': 'VasoLog-påminnelser',
+    'da': 'VasoLog-påmindelser',
+    'nl': 'VasoLog-herinneringen',
+    'pl': 'Przypomnienia VasoLog',
+    'cs': 'Připomenutí VasoLog',
+    'hu': 'VasoLog emlékeztetők',
+    'uk': 'Нагадування VasoLog',
+    'ja': 'VasoLog リマインダー',
+    'ko': 'VasoLog 알림',
+  });
+  String get notificationChannelDailyDesc => _t({
+    'en': 'Daily reminders to log your state',
+    'ru': 'Ежедневные напоминания о записи состояния',
+    'de': 'Tägliche Erinnerungen, deinen Zustand zu erfassen',
+    'fr': 'Rappels quotidiens pour enregistrer votre état',
+    'es': 'Recordatorios diarios para registrar tu estado',
+    'pt': 'Lembretes diários para registar o seu estado',
+    'it': 'Promemoria giornalieri per registrare il tuo stato',
+    'sv': 'Dagliga påminnelser att logga ditt tillstånd',
+    'fi': 'Päivittäiset muistutukset tilan kirjaamisesta',
+    'nb': 'Daglige påminnelser om å registrere tilstanden',
+    'da': 'Daglige påmindelser om at registrere din tilstand',
+    'nl': 'Dagelijkse herinneringen om je status te loggen',
+    'pl': 'Codzienne przypomnienia o zapisaniu stanu',
+    'cs': 'Denní připomenutí zapsat stav',
+    'hu': 'Napi emlékeztetők állapot rögzítésére',
+    'uk': 'Щоденні нагадування про запис стану',
+    'ja': '状態を記録する毎日のリマインダー',
+    'ko': '상태를 기록하기 위한 일일 알림',
+  });
+  String get notificationChannelInactivityDesc => _t({
+    'en': 'Reminder when there are no records',
+    'ru': 'Напоминание при отсутствии записей',
+    'de': 'Erinnerung, wenn keine Einträge vorliegen',
+    'fr': 'Rappel en l\'absence d\'enregistrements',
+    'es': 'Recordatorio cuando no hay registros',
+    'pt': 'Lembrete quando não há registos',
+    'it': 'Promemoria quando non ci sono registrazioni',
+    'sv': 'Påminnelse när det inte finns några anteckningar',
+    'fi': 'Muistutus, kun merkintöjä ei ole',
+    'nb': 'Påminnelse når det ikke er oppføringer',
+    'da': 'Påmindelse, når der ikke er registreringer',
+    'nl': 'Herinnering wanneer er geen registraties zijn',
+    'pl': 'Przypomnienie, gdy nie ma wpisów',
+    'cs': 'Připomenutí, když nejsou žádné záznamy',
+    'hu': 'Emlékeztető, ha nincsenek bejegyzések',
+    'uk': 'Нагадування при відсутності записів',
+    'ja': '記録がない時のリマインダー',
+    'ko': '기록이 없을 때 알림',
+  });
+  String get feedbackEmailSubject => _t({
+    'en': 'VasoLog - Feedback',
+    'ru': 'VasoLog - Обратная связь',
+    'de': 'VasoLog - Feedback',
+    'fr': 'VasoLog - Commentaires',
+    'es': 'VasoLog - Comentarios',
+    'pt': 'VasoLog - Comentários',
+    'it': 'VasoLog - Feedback',
+    'sv': 'VasoLog - Feedback',
+    'fi': 'VasoLog - Palaute',
+    'nb': 'VasoLog - Tilbakemelding',
+    'da': 'VasoLog - Feedback',
+    'nl': 'VasoLog - Feedback',
+    'pl': 'VasoLog - Opinia',
+    'cs': 'VasoLog - Zpětná vazba',
+    'hu': 'VasoLog - Visszajelzés',
+    'uk': 'VasoLog - Зворотний зв\'язок',
+    'ja': 'VasoLog - フィードバック',
+    'ko': 'VasoLog - 피드백',
   });
 
   /// Нативные названия поддерживаемых языков (на самом языке)

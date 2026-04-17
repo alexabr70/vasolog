@@ -17,7 +17,7 @@ class AttackEvent extends HiveObject {
     this.humidity,
     this.pressure,
     this.windSpeed,
-    this.weatherDescription,
+    this.weatherCode,
     this.latitude,
     this.longitude,
   });
@@ -42,7 +42,7 @@ class AttackEvent extends HiveObject {
       humidity: (map['humidity'] as num?)?.toDouble(),
       pressure: (map['pressure'] as num?)?.toDouble(),
       windSpeed: (map['windSpeed'] as num?)?.toDouble(),
-      weatherDescription: map['weatherDescription'] as String?,
+      weatherCode: (map['weatherCode'] as num?)?.toInt(),
       latitude: (map['latitude'] as num?)?.toDouble(),
       longitude: (map['longitude'] as num?)?.toDouble(),
     );
@@ -64,7 +64,7 @@ class AttackEvent extends HiveObject {
   double? humidity; // %
   double? pressure; // hPa
   double? windSpeed; // м/с
-  String? weatherDescription;
+  int? weatherCode; // WMO код; локализация через S.current.wmoDescription
 
   // Геолокация
   double? latitude;
@@ -86,7 +86,7 @@ class AttackEvent extends HiveObject {
       'humidity': humidity,
       'pressure': pressure,
       'windSpeed': windSpeed,
-      'weatherDescription': weatherDescription,
+      'weatherCode': weatherCode,
       'latitude': latitude,
       'longitude': longitude,
     };

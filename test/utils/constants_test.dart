@@ -1,7 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:vasolog/l10n/app_strings.dart';
 import 'package:vasolog/utils/constants.dart';
 
 void main() {
+  setUpAll(() {
+    S.init('ru');
+  });
+
   group('severityColor', () {
     test('возвращает зелёный для лёгких (0-2)', () {
       expect(severityColor(0), AppColors.severityLow);
@@ -28,17 +33,34 @@ void main() {
   });
 
   group('Constants', () {
-    test('availableTriggers содержит все основные триггеры', () {
-      expect(availableTriggers, contains('Холод'));
-      expect(availableTriggers, contains('Стресс'));
-      expect(availableTriggers, contains('Неизвестно'));
-      expect(availableTriggers.length, greaterThanOrEqualTo(10));
+    test('S.triggerKeys содержит все основные триггеры', () {
+      expect(S.triggerKeys, contains('cold'));
+      expect(S.triggerKeys, contains('stress'));
+      expect(S.triggerKeys, contains('unknown'));
+      expect(S.triggerKeys.length, greaterThanOrEqualTo(10));
     });
 
-    test('fingerNames содержит 10 пальцев (5 левых + 5 правых)', () {
-      expect(fingerNames, hasLength(10));
-      expect(fingerNames.where((f) => f.endsWith('Л')), hasLength(5));
-      expect(fingerNames.where((f) => f.endsWith('П')), hasLength(5));
+    test('S.fingerKeys содержит 5 левых и 5 правых пальцев', () {
+      expect(S.fingerKeysLeft, hasLength(5));
+      expect(S.fingerKeysRight, hasLength(5));
+      expect(S.fingerKeysLeft.every((k) => k.endsWith('_l')), isTrue);
+      expect(S.fingerKeysRight.every((k) => k.endsWith('_r')), isTrue);
+    });
+
+    test('triggerFromKey локализует ru', () {
+      expect(S.current.triggerFromKey('cold'), 'Холод');
+      expect(S.current.triggerFromKey('stress'), 'Стресс');
+    });
+
+    test('fingerFromKey локализует ru', () {
+      expect(S.current.fingerFromKey('thumb_l'), 'Большой Л');
+      expect(S.current.fingerFromKey('pinky_r'), 'Мизинец П');
+    });
+
+    test('fingerFromKey понимает legacy ru-ID', () {
+      // Обратная совместимость со старыми записями
+      expect(S.current.fingerFromKey('Большой Л'), 'Большой Л');
+      expect(S.current.fingerFromKey('Мизинец П'), 'Мизинец П');
     });
 
     test('colorPhases содержит 4 фазы', () {

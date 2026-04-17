@@ -90,7 +90,7 @@ class PdfReportService {
               [
                 S.current.pdfMostCommonTrigger,
                 if (sortedTriggers.isNotEmpty)
-                  sortedTriggers.first.key
+                  S.current.triggerFromKey(sortedTriggers.first.key)
                 else
                   S.current.notAvailable,
               ],
@@ -112,7 +112,7 @@ class PdfReportService {
                 ],
                 ...sortedTriggers.map(
                   (e) => [
-                    e.key,
+                    S.current.triggerFromKey(e.key),
                     '${e.value}',
                     '${(e.value / attacks.length * 100).toStringAsFixed(0)}%',
                   ],
@@ -151,7 +151,7 @@ class PdfReportService {
                   '${a.severity}/10',
                   S.current.phaseFromKey(a.colorPhase),
                   a.temperature?.toStringAsFixed(1) ?? '-',
-                  a.triggers.join(', '),
+                  a.triggers.map(S.current.triggerFromKey).join(', '),
                 ],
               ),
             ],

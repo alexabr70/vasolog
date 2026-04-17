@@ -103,7 +103,7 @@ shoot_lang() {
 # 17=日本語, 18=한국어
 
 declare -A LANGS=(
-  [ru]=2  [de]=3  [fr]=4  [es]=5  [pt]=6
+  [en]=1  [ru]=2  [de]=3  [fr]=4  [es]=5  [pt]=6
   [it]=7  [sv]=8  [fi]=9  [nb]=10 [da]=11
   [nl]=12 [pl]=13 [cs]=14 [hu]=15 [uk]=16
   [ja]=17 [ko]=18
@@ -114,18 +114,14 @@ declare -A LANGS=(
 echo "=== VasoLog AppGallery Screenshots ==="
 echo "Output: $OUT"
 
-# English уже снят — пропускаем
-echo ""
-echo "[0/17] en — уже снят, пропуск"
-
-# Открыть picker для первого языка (ru)
+# Открыть picker для первого языка
 echo ""
 echo "Открываю language picker..."
 open_lang_picker
 
 TOTAL=${#LANGS[@]}
 i=0
-for code in ru de fr es pt it sv fi nb da nl pl cs hu uk ja ko; do
+for code in en ru de fr es pt it sv fi nb da nl pl cs hu uk ja ko; do
   idx=${LANGS[$code]}
   i=$(( i + 1 ))
   echo ""

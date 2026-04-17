@@ -1,15 +1,18 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vasolog/l10n/app_strings.dart';
 
-/// Данные о погоде
+/// Данные о погоде.
+/// `weatherCode` - WMO код (https://open-meteo.com/en/docs).
+/// Храним код, локализацию делаем через `description` геттер -> S.current.wmoDescription.
 class WeatherData {
   WeatherData({
     required this.temperature,
     required this.humidity,
     required this.pressure,
     required this.windSpeed,
-    required this.description,
+    required this.weatherCode,
     DateTime? fetchedAt,
     this.isCached = false,
   }) : fetchedAt = fetchedAt ?? DateTime.now();
@@ -19,7 +22,7 @@ class WeatherData {
     humidity: (json['humidity'] as num).toDouble(),
     pressure: (json['pressure'] as num).toDouble(),
     windSpeed: (json['windSpeed'] as num).toDouble(),
-    description: json['description'] as String,
+    weatherCode: (json['weatherCode'] as num?)?.toInt() ?? -1,
     fetchedAt: DateTime.parse(json['fetchedAt'] as String),
     isCached: true,
   );
@@ -27,9 +30,12 @@ class WeatherData {
   final double humidity;
   final double pressure;
   final double windSpeed;
-  final String description;
+  final int weatherCode;
   final DateTime fetchedAt;
   final bool isCached;
+
+  /// Локализованное описание погоды по текущей локали.
+  String get description => S.current.wmoDescription(weatherCode);
 
   /// Сколько минут назад загружены данные
   int get minutesAgo => DateTime.now().difference(fetchedAt).inMinutes;
@@ -39,7 +45,7 @@ class WeatherData {
     'humidity': humidity,
     'pressure': pressure,
     'windSpeed': windSpeed,
-    'description': description,
+    'weatherCode': weatherCode,
     'fetchedAt': fetchedAt.toIso8601String(),
   };
 }
@@ -49,24 +55,6 @@ class WeatherService {
   static const String _baseUrl = 'https://api.open-meteo.com/v1';
   static const String _cacheKey = 'cached_weather';
   static const int _cacheMaxMinutes = 30;
-
-  /// WMO коды погоды → описание
-  static String _wmoDescription(int code) {
-    return switch (code) {
-      0 => 'Ясно',
-      1 || 2 || 3 => 'Облачно',
-      45 || 48 => 'Туман',
-      51 || 53 || 55 => 'Морось',
-      61 || 63 || 65 => 'Дождь',
-      71 || 73 || 75 => 'Снег',
-      77 => 'Снежная крупа',
-      80 || 81 || 82 => 'Ливень',
-      85 || 86 => 'Снегопад',
-      95 => 'Гроза',
-      96 || 99 => 'Гроза с градом',
-      _ => 'Неизвестно',
-    };
-  }
 
   /// Получить текущую погоду по координатам.
   /// Если кэш свежий (< 5 мин) - вернуть его без HTTP запроса.
@@ -101,9 +89,7 @@ class WeatherService {
           pressure: (current['surface_pressure'] as num).toDouble(),
           // Open-Meteo даёт km/h, конвертируем в m/s
           windSpeed: (current['wind_speed_10m'] as num).toDouble() / 3.6,
-          description: _wmoDescription(
-            (current['weather_code'] as num).toInt(),
-          ),
+          weatherCode: (current['weather_code'] as num).toInt(),
         );
         await _saveToCache(weather);
         return weather;

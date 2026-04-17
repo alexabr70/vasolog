@@ -124,13 +124,14 @@ class _NewAttackScreenState extends State<NewAttackScreen>
     if (mounted) setState(() => _weatherLoading = false);
   }
 
-  /// Подсказка триггеров на основе погоды
+  /// Подсказка триггеров на основе погоды.
+  /// Храним стабильные keys, не локализованные строки.
   void _updateSuggestedTriggers(WeatherData data) {
     _suggestedTriggers.clear();
-    if (data.temperature <= 10) _suggestedTriggers.add(S.current.triggerCold);
-    if (data.temperature <= 5) _suggestedTriggers.add(S.current.triggerColdWater);
-    if (data.windSpeed >= 5) _suggestedTriggers.add(S.current.triggerCold);
-    if (data.humidity >= 85) _suggestedTriggers.add(S.current.triggerStress);
+    if (data.temperature <= 10) _suggestedTriggers.add('cold');
+    if (data.temperature <= 5) _suggestedTriggers.add('cold_water');
+    if (data.windSpeed >= 5) _suggestedTriggers.add('cold');
+    if (data.humidity >= 85) _suggestedTriggers.add('stress');
   }
 
   Future<void> _takePhoto() async {
@@ -171,7 +172,7 @@ class _NewAttackScreenState extends State<NewAttackScreen>
       humidity: _weatherData?.humidity,
       pressure: _weatherData?.pressure,
       windSpeed: _weatherData?.windSpeed,
-      weatherDescription: _weatherData?.description,
+      weatherCode: _weatherData?.weatherCode,
       latitude: _latitude,
       longitude: _longitude,
     );
@@ -642,9 +643,10 @@ class _NewAttackScreenState extends State<NewAttackScreen>
     );
   }
 
-  /// Триггеры отсортированные: подсказанные погодой - первые
+  /// Триггеры отсортированные: подсказанные погодой - первые.
+  /// Работает со стабильными ID; label берётся через S.current.triggerFromKey.
   List<Widget> _buildSortedTriggers() {
-    final sorted = [...availableTriggers];
+    final sorted = [...S.triggerKeys];
     // Подсказанные погодой поднимаем наверх
     sorted.sort((a, b) {
       final aSug = _suggestedTriggers.contains(a) ? 0 : 1;
@@ -652,11 +654,11 @@ class _NewAttackScreenState extends State<NewAttackScreen>
       return aSug.compareTo(bSug);
     });
 
-    return sorted.map((trigger) {
-      final isSelected = _selectedTriggers.contains(trigger);
-      final isSuggested = _suggestedTriggers.contains(trigger);
+    return sorted.map((triggerKey) {
+      final isSelected = _selectedTriggers.contains(triggerKey);
+      final isSuggested = _suggestedTriggers.contains(triggerKey);
       return FilterChip(
-        label: Text(trigger),
+        label: Text(S.current.triggerFromKey(triggerKey)),
         selected: isSelected,
         selectedColor: AppColors.secondary.withValues(alpha: 0.3),
         backgroundColor: isSuggested
@@ -676,9 +678,9 @@ class _NewAttackScreenState extends State<NewAttackScreen>
           HapticFeedback.selectionClick();
           setState(() {
             if (selected) {
-              _selectedTriggers.add(trigger);
+              _selectedTriggers.add(triggerKey);
             } else {
-              _selectedTriggers.remove(trigger);
+              _selectedTriggers.remove(triggerKey);
             }
           });
         },
@@ -782,13 +784,7 @@ class _HandDiagram extends StatelessWidget {
         // Левая рука - без зеркалирования (thumb слева, наружу)
         _HandVisual(
           label: S.current.leftHand,
-          fingers: const [
-            'Большой Л',
-            'Указат. Л',
-            'Средний Л',
-            'Безымян. Л',
-            'Мизинец Л',
-          ],
+          fingers: S.fingerKeysLeft,
           selectedFingers: selectedFingers,
           onFingerTap: onFingerTap,
           mirrored: false,
@@ -797,13 +793,7 @@ class _HandDiagram extends StatelessWidget {
         // Правая рука - зеркалирование (thumb справа, наружу)
         _HandVisual(
           label: S.current.rightHand,
-          fingers: const [
-            'Большой П',
-            'Указат. П',
-            'Средний П',
-            'Безымян. П',
-            'Мизинец П',
-          ],
+          fingers: S.fingerKeysRight,
           selectedFingers: selectedFingers,
           onFingerTap: onFingerTap,
           mirrored: true,
@@ -973,7 +963,9 @@ class _HandVisual extends StatelessWidget {
                           height: tapSize,
                           child: Semantics(
                             button: true,
-                            label: S.current.a11yFingerButton(fingers[i]),
+                            label: S.current.a11yFingerButton(
+                              S.current.fingerFromKey(fingers[i]),
+                            ),
                             selected: selected[i],
                             child: GestureDetector(
                               behavior: HitTestBehavior.opaque,

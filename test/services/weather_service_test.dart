@@ -1,15 +1,20 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:vasolog/l10n/app_strings.dart';
 import 'package:vasolog/services/weather_service.dart';
 
 void main() {
   group('WeatherData', () {
+    setUpAll(() {
+      S.init('ru');
+    });
+
     test('создаётся с правильными полями', () {
       final data = WeatherData(
         temperature: -5,
         humidity: 85,
         pressure: 1015,
         windSpeed: 7,
-        description: 'снег',
+        weatherCode: 71, // snow
       );
       expect(data.temperature, -5.0);
       expect(data.humidity, 85.0);
@@ -22,7 +27,7 @@ void main() {
         humidity: 50,
         pressure: 1013,
         windSpeed: 3,
-        description: 'ясно',
+        weatherCode: 0, // clear
       );
       expect(data.isCached, false);
     });
@@ -33,7 +38,7 @@ void main() {
         humidity: 60,
         pressure: 1020,
         windSpeed: 2.5,
-        description: 'облачно',
+        weatherCode: 3, // cloudy
         fetchedAt: DateTime(2026, 4, 9, 12),
       );
       final json = original.toJson();
@@ -43,7 +48,7 @@ void main() {
       expect(restored.humidity, original.humidity);
       expect(restored.pressure, original.pressure);
       expect(restored.windSpeed, original.windSpeed);
-      expect(restored.description, original.description);
+      expect(restored.weatherCode, original.weatherCode);
       expect(restored.isCached, true); // fromJson всегда isCached=true
     });
 
@@ -53,7 +58,7 @@ void main() {
         humidity: 50,
         pressure: 1013,
         windSpeed: 1,
-        description: 'ясно',
+        weatherCode: 0,
         fetchedAt: DateTime.now().subtract(const Duration(minutes: 15)),
       );
       // Допуск ±1 минута из-за времени выполнения теста
@@ -66,12 +71,27 @@ void main() {
         'humidity': 50,
         'pressure': 1013,
         'windSpeed': 3,
-        'description': 'тест',
+        'weatherCode': 71,
         'fetchedAt': DateTime.now().toIso8601String(),
       };
       final data = WeatherData.fromJson(json);
       expect(data.temperature, 10.0);
       expect(data.humidity, 50.0);
+      expect(data.weatherCode, 71);
+    });
+
+    test('description локализуется через S.current', () {
+      S.init('en');
+      final data = WeatherData(
+        temperature: 0,
+        humidity: 50,
+        pressure: 1013,
+        windSpeed: 1,
+        weatherCode: 0,
+      );
+      expect(data.description, 'Clear');
+      S.init('ru');
+      expect(data.description, 'Ясно');
     });
   });
 }

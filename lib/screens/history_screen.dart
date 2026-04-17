@@ -179,10 +179,14 @@ class HistoryScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               if (attack.triggers.isNotEmpty)
-                                Text('${S.current.labelTriggers}: ${attack.triggers.join(", ")}'),
+                                Text(
+                                  '${S.current.labelTriggers}: '
+                                  '${attack.triggers.map((k) => S.current.triggerFromKey(k)).join(", ")}',
+                                ),
                               if (attack.affectedFingers.isNotEmpty)
                                 Text(
-                                  '${S.current.labelFingers}: ${attack.affectedFingers.join(", ")}',
+                                  '${S.current.labelFingers}: '
+                                  '${attack.affectedFingers.map((k) => S.current.fingerFromKey(k)).join(", ")}',
                                 ),
                               if (attack.durationMinutes > 0)
                                 Text(

@@ -18,31 +18,59 @@ class StorageService {
   Future<void> init() async {
     await Hive.initFlutter();
 
-    // Получаем или генерируем ключ шифрования
-    final encryptionKey = await _getOrCreateKey();
-    final cipher = HiveAesCipher(encryptionKey);
-
-    // Открываем зашифрованный box
-    _box = await Hive.openBox<Map<dynamic, dynamic>>(_boxName, encryptionCipher: cipher);
-
-    // Мигрируем из старого незашифрованного box если есть данные
-    await _migrateFromLegacy(cipher);
+    // Получаем ключ шифрования. Если KeyStore недоступен (Huawei EMUI bug)
+    // падаем на незашифрованное хранилище - данные всё равно только локальные.
+    try {
+      final encryptionKey = await _getOrCreateKey().timeout(
+        const Duration(seconds: 8),
+      );
+      final cipher = HiveAesCipher(encryptionKey);
+      _box = await Hive.openBox<Map<dynamic, dynamic>>(
+        _boxName,
+        encryptionCipher: cipher,
+      ).timeout(const Duration(seconds: 5));
+      await _migrateFromLegacy(cipher);
+    } on Exception catch (e) {
+      debugPrint('[StorageService] encrypted init failed ($e), fallback');
+      // Fallback - открываем/создаём незашифрованный box
+      _box = await Hive.openBox<Map<dynamic, dynamic>>(_boxName);
+    }
   }
 
-  /// Получить ключ шифрования из secure storage или создать новый
+  /// Получить ключ шифрования из secure storage или создать новый.
+  /// Защищено timeout + fallback на regenerate для случаев, когда
+  /// KeyStore возвращает corrupted state (перенос устройств, Huawei issues).
   Future<List<int>> _getOrCreateKey() async {
     const secureStorage = FlutterSecureStorage(
       aOptions: AndroidOptions(encryptedSharedPreferences: true),
     );
 
-    final existingKey = await secureStorage.read(key: _keyAlias);
-    if (existingKey != null) {
-      return base64Url.decode(existingKey);
+    try {
+      final existingKey = await secureStorage
+          .read(key: _keyAlias)
+          .timeout(const Duration(seconds: 5));
+      if (existingKey != null) {
+        return base64Url.decode(existingKey);
+      }
+    } catch (e) {
+      debugPrint('[StorageService] KeyStore read failed ($e), regenerating');
+      // Удалим повреждённый ключ перед regenerate
+      try {
+        await secureStorage
+            .delete(key: _keyAlias)
+            .timeout(const Duration(seconds: 3));
+      } catch (_) {}
     }
 
     // Генерируем новый 256-bit ключ
     final key = Hive.generateSecureKey();
-    await secureStorage.write(key: _keyAlias, value: base64Url.encode(key));
+    try {
+      await secureStorage
+          .write(key: _keyAlias, value: base64Url.encode(key))
+          .timeout(const Duration(seconds: 5));
+    } catch (e) {
+      debugPrint('[StorageService] KeyStore write failed ($e), using in-memory key');
+    }
     return key;
   }
 

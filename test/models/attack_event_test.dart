@@ -1,9 +1,15 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:vasolog/l10n/app_strings.dart';
 import 'package:vasolog/models/attack_event.dart';
 
 void main() {
   group('AttackEvent', () {
     late AttackEvent event;
+
+    setUpAll(() {
+      // Инициализируем локаль для тестов, чтобы severityLabel/colorPhaseLabel работали
+      S.init('ru');
+    });
 
     setUp(() {
       event = AttackEvent(
@@ -12,14 +18,14 @@ void main() {
         severity: 7,
         colorPhase: 'blue',
         durationMinutes: 15,
-        affectedFingers: ['Большой Л', 'Указат. Л'],
-        triggers: ['Холод', 'Стресс'],
+        affectedFingers: ['thumb_l', 'index_l'],
+        triggers: ['cold', 'stress'],
         notes: 'Тестовая заметка',
         temperature: -5.2,
         humidity: 80,
         pressure: 1013,
         windSpeed: 7.5,
-        weatherDescription: 'Снег',
+        weatherCode: 71,
         latitude: 53.9,
         longitude: 27.5,
       );
@@ -31,7 +37,7 @@ void main() {
       expect(event.colorPhase, 'blue');
       expect(event.durationMinutes, 15);
       expect(event.affectedFingers, hasLength(2));
-      expect(event.triggers, contains('Холод'));
+      expect(event.triggers, contains('cold'));
       expect(event.temperature, -5.2);
     });
 
@@ -109,7 +115,7 @@ void main() {
           timestamp: DateTime.now(),
           severity: 1,
         ).colorPhaseLabel,
-        'Белый (ишемия)',
+        'Белый',
       );
       expect(
         AttackEvent(
@@ -118,7 +124,7 @@ void main() {
           severity: 1,
           colorPhase: 'blue',
         ).colorPhaseLabel,
-        'Синий (цианоз)',
+        'Синий',
       );
       expect(
         AttackEvent(
@@ -127,7 +133,7 @@ void main() {
           severity: 1,
           colorPhase: 'red',
         ).colorPhaseLabel,
-        'Красный (реперфузия)',
+        'Красный',
       );
       expect(
         AttackEvent(
@@ -136,7 +142,7 @@ void main() {
           severity: 1,
           colorPhase: 'mixed',
         ).colorPhaseLabel,
-        'Смешанный',
+        'Смешан.',
       );
       expect(
         AttackEvent(
@@ -165,7 +171,7 @@ void main() {
       expect(restored.humidity, event.humidity);
       expect(restored.pressure, event.pressure);
       expect(restored.windSpeed, event.windSpeed);
-      expect(restored.weatherDescription, event.weatherDescription);
+      expect(restored.weatherCode, event.weatherCode);
       expect(restored.latitude, event.latitude);
       expect(restored.longitude, event.longitude);
     });
