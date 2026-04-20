@@ -415,66 +415,147 @@ class _PrivacyConsentScreenState extends State<_PrivacyConsentScreen> {
       builder: (dialogContext) => PopScope(
         canPop: false,
         child: AlertDialog(
-          title: Text(S.current.ppConsentTitle),
+          // Делаем диалог максимально широким - больше места для длинных слов
+          insetPadding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 24,
+          ),
+          titlePadding: const EdgeInsets.fromLTRB(20, 20, 20, 8),
+          contentPadding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
+          actionsPadding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
+          title: Row(
+            children: [
+              const Icon(
+                Icons.privacy_tip_rounded,
+                color: AppColors.primary,
+                size: 26,
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  S.current.ppConsentTitle,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                  ),
+                  softWrap: true,
+                ),
+              ),
+            ],
+          ),
           content: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(S.current.ppConsentIntro),
-                const SizedBox(height: 16),
                 Text(
-                  '${S.current.developerLabel}: ${S.current.appDeveloper}',
-                  style: const TextStyle(fontWeight: FontWeight.w600),
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  S.current.privacyPolicyBody,
-                  style: const TextStyle(fontSize: 13),
+                  S.current.ppConsentIntro,
+                  style: const TextStyle(fontSize: 14, height: 1.4),
                 ),
                 const SizedBox(height: 12),
+                Text(
+                  '${S.current.developerLabel}: ${S.current.appDeveloper}',
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                // Ссылка на полный Privacy Policy - сразу после имени разработчика,
+                // чтобы была всегда видна (до scrollable body ниже).
                 InkWell(
                   onTap: () => launchUrl(
                     Uri.parse(widget.policyUrl),
                     mode: LaunchMode.externalApplication,
                   ),
-                  child: Row(
-                    children: [
-                      const Icon(
-                        Icons.open_in_new,
-                        size: 16,
-                        color: AppColors.primary,
-                      ),
-                      const SizedBox(width: 6),
-                      Flexible(
-                        child: Text(
-                          S.current.fullPrivacyPolicy,
-                          style: const TextStyle(
-                            color: AppColors.primary,
-                            decoration: TextDecoration.underline,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 6),
+                    child: Text.rich(
+                      TextSpan(
+                        children: [
+                          const WidgetSpan(
+                            alignment: PlaceholderAlignment.middle,
+                            child: Padding(
+                              padding: EdgeInsets.only(right: 6),
+                              child: Icon(
+                                Icons.open_in_new,
+                                size: 16,
+                                color: AppColors.primary,
+                              ),
+                            ),
                           ),
-                        ),
+                          TextSpan(text: S.current.fullPrivacyPolicy),
+                        ],
                       ),
-                    ],
+                      style: const TextStyle(
+                        fontSize: 13,
+                        color: AppColors.primary,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
                   ),
+                ),
+                const SizedBox(height: 10),
+                const Divider(height: 1),
+                const SizedBox(height: 10),
+                Text(
+                  S.current.privacyPolicyBody,
+                  style: const TextStyle(fontSize: 13, height: 1.35),
                 ),
               ],
             ),
           ),
+          // Кнопки в Column чтобы длинные локали (DE/FR/RU) не обрезались
           actions: [
-            TextButton(
-              onPressed: SystemNavigator.pop,
-              child: Text(
-                S.current.ppDecline,
-                style: TextStyle(color: Colors.grey[600]),
+            SizedBox(
+              width: double.infinity,
+              child: Column(
+                children: [
+                  SizedBox(
+                    width: double.infinity,
+                    height: 48,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(dialogContext).pop();
+                        widget.onAgree();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary,
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: Text(
+                        S.current.ppAgree,
+                        style: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 44,
+                    child: TextButton(
+                      onPressed: SystemNavigator.pop,
+                      child: Text(
+                        S.current.ppDecline,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey[600],
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(dialogContext).pop();
-                widget.onAgree();
-              },
-              child: Text(S.current.ppAgree),
             ),
           ],
         ),

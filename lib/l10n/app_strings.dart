@@ -2725,7 +2725,7 @@ class S {
   });
   String get fullPrivacyPolicy => _t({
     'en': 'Full Privacy Policy',
-    'ru': 'Полный текст Privacy Policy',
+    'ru': 'Полная политика конфиденциальности',
     'de': 'Vollständige Datenschutzrichtlinie',
     'fr': 'Politique de confidentialité complète',
     'es': 'Política de privacidad completa',
