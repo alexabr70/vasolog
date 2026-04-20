@@ -29,6 +29,7 @@ class AttackProvider extends ChangeNotifier {
       _loadAttacks();
     } catch (e) {
       debugPrint('[AttackProvider] init failed: $e');
+      _isReady = true; // разблокируем UI даже при ошибке хранилища
       notifyListeners();
     }
   }

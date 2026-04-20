@@ -26,6 +26,19 @@ Keep your last episode summary visible on your home screen for quick reference a
 ── DESIGNED WITH PATIENTS IN MIND ──
 VasoLog was designed to be a bridge between you and your healthcare provider. Whether you're newly diagnosed or have lived with Raynaud's for years, clear data leads to better care.
 
+── WHO IS VASOLOG FOR? ──
+VasoLog helps people living with primary Raynaud's phenomenon, secondary Raynaud's (associated with scleroderma, lupus, or other autoimmune conditions), vasospastic disorders, cold-induced circulation issues, and a history of frostbite or cold injury. Whether your doctor calls it Raynaud's syndrome, Raynaud's disease, or vasospasm — this tracker is for you.
+
+── WHY TRACK RAYNAUD'S ATTACKS? ──
+Without a symptom diary, it's hard to tell your rheumatologist or vascular specialist which triggers cause your worst episodes. VasoLog automatically captures weather data, lets you log attacks in 10 seconds, and exports a clean PDF report. Your doctor sees patterns immediately — no guessing from memory, no scrolling through endless notes.
+
+── FREQUENTLY ASKED QUESTIONS ──
+Does VasoLog work offline? Yes, all features work without internet except the real-time weather sync.
+Is my data private? Yes — your data stays on your device only. No cloud storage, no accounts, no analytics.
+Can I export my full history? Yes — generate a PDF report for any date range, including all episodes, triggers, and weather.
+Does VasoLog work for primary and secondary Raynaud's? Yes — the app supports both types and all severity levels.
+Is VasoLog a replacement for medical care? No — always consult your doctor. VasoLog is a tool to help you and your doctor see the full picture together.
+
 Raynaud's affects up to 20% of women in cold climates. You deserve a tool that takes your condition seriously.
 
 Download VasoLog today and start your health journal.
