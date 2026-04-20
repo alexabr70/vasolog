@@ -2,10 +2,12 @@ import 'dart:async';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:uuid/uuid.dart';
 import 'package:vasolog/l10n/app_strings.dart';
 import 'package:vasolog/models/attack_event.dart';
@@ -318,37 +320,184 @@ class _AppRoot extends StatefulWidget {
 }
 
 class _AppRootState extends State<_AppRoot> {
+  static const _ppAcceptedKey = 'pp_accepted_v1';
+  static const _privacyPolicyUrl =
+      'https://alexabr70.github.io/vasolog/privacy_policy.html';
+
   bool? _onboardingDone;
+  bool? _ppAccepted;
 
   @override
   void initState() {
     super.initState();
-    _loadOnboardingFlag();
+    _loadFlags();
   }
 
-  Future<void> _loadOnboardingFlag() async {
+  Future<void> _loadFlags() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       if (mounted) {
-        setState(
-          () => _onboardingDone = prefs.getBool('onboarding_done') ?? false,
-        );
+        setState(() {
+          _onboardingDone = prefs.getBool('onboarding_done') ?? false;
+          _ppAccepted = prefs.getBool(_ppAcceptedKey) ?? false;
+        });
       }
     } catch (_) {
-      if (mounted) setState(() => _onboardingDone = true);
+      if (mounted) {
+        setState(() {
+          _onboardingDone = true;
+          _ppAccepted = true;
+        });
+      }
     }
+  }
+
+  Future<void> _acceptPrivacyPolicy() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool(_ppAcceptedKey, true);
+    } catch (_) {}
+    if (mounted) setState(() => _ppAccepted = true);
   }
 
   @override
   Widget build(BuildContext context) {
     return Consumer<AttackProvider>(
       builder: (context, provider, _) {
-        // Ждём и Hive, и загрузку флага онбординга
-        if (!provider.isReady || _onboardingDone == null) {
+        // Ждём Hive и флаги (онбординг + согласие на PP)
+        if (!provider.isReady ||
+            _onboardingDone == null ||
+            _ppAccepted == null) {
           return const _AppLoadingScreen();
+        }
+        // Попап Privacy Policy при первом запуске (AppGallery rule 7.1)
+        if (!_ppAccepted!) {
+          return _PrivacyConsentScreen(
+            policyUrl: _privacyPolicyUrl,
+            onAgree: _acceptPrivacyPolicy,
+          );
         }
         return _onboardingDone! ? const MainShell() : const OnboardingScreen();
       },
+    );
+  }
+}
+
+/// Экран согласия с Privacy Policy при первом запуске.
+/// Требование AppGallery rule 7.1 - показать попап до использования приложения.
+class _PrivacyConsentScreen extends StatefulWidget {
+  const _PrivacyConsentScreen({
+    required this.policyUrl,
+    required this.onAgree,
+  });
+  final String policyUrl;
+  final VoidCallback onAgree;
+
+  @override
+  State<_PrivacyConsentScreen> createState() => _PrivacyConsentScreenState();
+}
+
+class _PrivacyConsentScreenState extends State<_PrivacyConsentScreen> {
+  bool _dialogShown = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _showDialog());
+  }
+
+  Future<void> _showDialog() async {
+    if (_dialogShown || !mounted) return;
+    _dialogShown = true;
+    await showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (dialogContext) => PopScope(
+        canPop: false,
+        child: AlertDialog(
+          title: Text(S.current.ppConsentTitle),
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(S.current.ppConsentIntro),
+                const SizedBox(height: 16),
+                Text(
+                  '${S.current.developerLabel}: ${S.current.appDeveloper}',
+                  style: const TextStyle(fontWeight: FontWeight.w600),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  S.current.privacyPolicyBody,
+                  style: const TextStyle(fontSize: 13),
+                ),
+                const SizedBox(height: 12),
+                InkWell(
+                  onTap: () => launchUrl(
+                    Uri.parse(widget.policyUrl),
+                    mode: LaunchMode.externalApplication,
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.open_in_new,
+                        size: 16,
+                        color: AppColors.primary,
+                      ),
+                      const SizedBox(width: 6),
+                      Flexible(
+                        child: Text(
+                          S.current.fullPrivacyPolicy,
+                          style: const TextStyle(
+                            color: AppColors.primary,
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: SystemNavigator.pop,
+              child: Text(
+                S.current.ppDecline,
+                style: TextStyle(color: Colors.grey[600]),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+                widget.onAgree();
+              },
+              child: Text(S.current.ppAgree),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Фон под модалкой - градиент как у splash, чтобы не светилось пустотой
+    return Scaffold(
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [AppColors.gradientStart, AppColors.gradientEnd],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: const Center(
+          child: Icon(Icons.ac_unit_rounded, size: 80, color: Colors.white),
+        ),
+      ),
     );
   }
 }

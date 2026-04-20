@@ -171,7 +171,8 @@ class _AboutScreenState extends State<AboutScreen> {
               S.current.privacyPolicy,
               Icons.privacy_tip_rounded,
               AppColors.primary,
-              S.current.privacyPolicyBody,
+              '${S.current.developerLabel}: ${S.current.appDeveloper}\n\n'
+                  '${S.current.privacyPolicyBody}',
             ),
             const SizedBox(height: 8),
             Center(

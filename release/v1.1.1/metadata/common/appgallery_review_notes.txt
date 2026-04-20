@@ -1,0 +1,71 @@
+AppGallery Review Notes - VasoLog v1.1.1 (versionCode 3)
+==========================================================
+
+Dear Reviewer,
+
+This is a resubmission of VasoLog. We have addressed the issues from the
+previous review. Please find below the list of changes corresponding to
+each rejection reason.
+
+1. Rule 7.1 - Privacy Policy consent pop-up on first launch
+-----------------------------------------------------------
+Added: A blocking Privacy Policy consent dialog is now shown on the very
+first launch of the app, BEFORE the onboarding screens. The dialog:
+
+- Cannot be dismissed by tapping outside or pressing back (PopScope).
+- Displays the developer name (Aliaksandr Abrashkin), the full summary
+  of what data is collected, where it is stored, and a clickable link
+  to the full Privacy Policy (https://alexabr70.github.io/vasolog/privacy_policy.html).
+- Has two buttons: "Agree and continue" (proceeds into the app) and
+  "Decline and exit" (closes the app via SystemNavigator.pop()).
+- The consent flag is stored in SharedPreferences (pp_accepted_v1) so
+  the dialog is shown only on first launch.
+
+Implementation:
+- lib/main.dart: _AppRoot + _PrivacyConsentScreen widget
+- Dialog is rendered before OnboardingScreen / MainShell.
+
+How to reproduce: Install fresh -> on first launch, the popup appears
+before any other screen.
+
+2. Rule 7.5 - Developer name in Privacy Policy
+-----------------------------------------------
+The Privacy Policy now explicitly states the developer name in three
+places:
+
+a) Online HTML Privacy Policy (the URL shown in AppGallery listing):
+   https://alexabr70.github.io/vasolog/privacy_policy.html
+   - Overview paragraph: "... developed by Aliaksandr Abrashkin
+     (individual developer)."
+   - Contact section: "Developer: Aliaksandr Abrashkin (individual
+     developer). ..."
+
+b) In-app About screen (Settings -> About):
+   The Privacy Policy section now starts with
+   "Developer: Aliaksandr Abrashkin"
+   followed by the summary text.
+
+c) Privacy Policy consent dialog on first launch (see #1):
+   Shows "Developer: Aliaksandr Abrashkin" in bold above the summary.
+
+3. Chinese mainland removed from distribution regions
+-----------------------------------------------------
+Already done in AppGallery Connect (Distribute -> Availability).
+Chinese mainland is unchecked; app is available in other regions only.
+
+4. Loading screen freeze fix (from previous submission)
+-------------------------------------------------------
+Already fixed in v1.1.0+2 - _isReady flag is set to true even when
+Hive initialization throws, so the splash never hangs on HarmonyOS/EMUI.
+
+==========================================================
+Binary: vasolog-v1.1.1-release.apk (Flutter 3.x, Dart 3.x)
+Supported locales: 18 languages (EN, RU, DE, FR, ES, PT, IT, SV, FI,
+NB, DA, NL, PL, CS, HU, UK, JA, KO)
+Target SDK: 34, Min SDK: 21
+No ads, no trackers, no analytics, no network calls other than
+Open-Meteo API for weather.
+
+Thank you for reviewing.
+- Aliaksandr Abrashkin
+  vasolog.app@gmail.com

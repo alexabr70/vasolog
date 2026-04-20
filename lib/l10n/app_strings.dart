@@ -38,6 +38,125 @@ class S {
 
   // === Общие ===
   String get appName => 'VasoLog';
+  String get appDeveloper => 'Aliaksandr Abrashkin';
+  String get ppConsentTitle => _t({
+    'en': 'Privacy Policy',
+    'ru': 'Политика конфиденциальности',
+    'de': 'Datenschutzrichtlinie',
+    'fr': 'Politique de confidentialité',
+    'es': 'Política de privacidad',
+    'pt': 'Política de privacidade',
+    'it': 'Informativa sulla privacy',
+    'sv': 'Integritetspolicy',
+    'fi': 'Tietosuojakäytäntö',
+    'nb': 'Personvernregler',
+    'da': 'Privatlivspolitik',
+    'nl': 'Privacybeleid',
+    'pl': 'Polityka prywatności',
+    'cs': 'Zásady ochrany osobních údajů',
+    'hu': 'Adatvédelmi irányelvek',
+    'uk': 'Політика конфіденційності',
+    'ja': 'プライバシーポリシー',
+    'ko': '개인정보 처리방침',
+  });
+  String get ppConsentIntro => _t({
+    'en':
+        'Please review our Privacy Policy before using VasoLog. By tapping "Agree and continue" you confirm that you have read and accepted the Privacy Policy.',
+    'ru':
+        'Пожалуйста, ознакомьтесь с нашей Политикой конфиденциальности перед использованием VasoLog. Нажимая «Принять и продолжить», вы подтверждаете, что прочитали и приняли Политику конфиденциальности.',
+    'de':
+        'Bitte lesen Sie unsere Datenschutzrichtlinie, bevor Sie VasoLog verwenden. Mit "Zustimmen und fortfahren" bestätigen Sie, dass Sie die Datenschutzrichtlinie gelesen und akzeptiert haben.',
+    'fr':
+        'Veuillez consulter notre politique de confidentialité avant d\'utiliser VasoLog. En appuyant sur "Accepter et continuer", vous confirmez avoir lu et accepté la politique de confidentialité.',
+    'es':
+        'Revise nuestra Política de privacidad antes de usar VasoLog. Al pulsar "Aceptar y continuar" confirma que ha leído y aceptado la Política de privacidad.',
+    'pt':
+        'Reveja a nossa Política de privacidade antes de usar o VasoLog. Ao tocar em "Aceitar e continuar" confirma que leu e aceitou a Política de privacidade.',
+    'it':
+        'Leggi la nostra Informativa sulla privacy prima di usare VasoLog. Toccando "Accetta e continua" confermi di aver letto e accettato l\'Informativa sulla privacy.',
+    'sv':
+        'Läs vår integritetspolicy innan du använder VasoLog. Genom att trycka på "Godkänn och fortsätt" bekräftar du att du har läst och godkänt integritetspolicyn.',
+    'fi':
+        'Tutustu tietosuojakäytäntöömme ennen VasoLogin käyttöä. Napauttamalla "Hyväksy ja jatka" vahvistat lukeneesi ja hyväksyneesi tietosuojakäytännön.',
+    'nb':
+        'Les våre personvernregler før du bruker VasoLog. Ved å trykke "Godta og fortsett" bekrefter du at du har lest og godtatt personvernreglene.',
+    'da':
+        'Læs vores privatlivspolitik, før du bruger VasoLog. Ved at trykke på "Accepter og fortsæt" bekræfter du, at du har læst og accepteret privatlivspolitikken.',
+    'nl':
+        'Lees ons privacybeleid voordat je VasoLog gebruikt. Door op "Akkoord en doorgaan" te tikken bevestig je dat je het privacybeleid hebt gelezen en geaccepteerd.',
+    'pl':
+        'Zapoznaj się z naszą Polityką prywatności przed korzystaniem z VasoLog. Dotykając "Zgadzam się i kontynuuję" potwierdzasz, że przeczytałeś i zaakceptowałeś Politykę prywatności.',
+    'cs':
+        'Před použitím VasoLogu si přečtěte naše Zásady ochrany osobních údajů. Klepnutím na "Souhlasím a pokračovat" potvrzujete, že jste si Zásady přečetli a přijali je.',
+    'hu':
+        'A VasoLog használata előtt olvassa el az Adatvédelmi irányelveinket. Az "Elfogadom és folytatom" gombra koppintva megerősíti, hogy elolvasta és elfogadta az Adatvédelmi irányelveket.',
+    'uk':
+        'Будь ласка, ознайомтеся з нашою Політикою конфіденційності перед використанням VasoLog. Натискаючи «Прийняти та продовжити», ви підтверджуєте, що прочитали й прийняли Політику конфіденційності.',
+    'ja':
+        'VasoLogを使用する前にプライバシーポリシーをご確認ください。「同意して続ける」をタップすると、プライバシーポリシーを読み、同意したことを確認したものとみなされます。',
+    'ko':
+        'VasoLog를 사용하기 전에 개인정보 처리방침을 확인해 주세요. "동의하고 계속"을 누르면 개인정보 처리방침을 읽고 동의한 것으로 간주됩니다.',
+  });
+  String get ppAgree => _t({
+    'en': 'Agree and continue',
+    'ru': 'Принять и продолжить',
+    'de': 'Zustimmen und fortfahren',
+    'fr': 'Accepter et continuer',
+    'es': 'Aceptar y continuar',
+    'pt': 'Aceitar e continuar',
+    'it': 'Accetta e continua',
+    'sv': 'Godkänn och fortsätt',
+    'fi': 'Hyväksy ja jatka',
+    'nb': 'Godta og fortsett',
+    'da': 'Accepter og fortsæt',
+    'nl': 'Akkoord en doorgaan',
+    'pl': 'Zgadzam się i kontynuuję',
+    'cs': 'Souhlasím a pokračovat',
+    'hu': 'Elfogadom és folytatom',
+    'uk': 'Прийняти та продовжити',
+    'ja': '同意して続ける',
+    'ko': '동의하고 계속',
+  });
+  String get ppDecline => _t({
+    'en': 'Decline and exit',
+    'ru': 'Отклонить и выйти',
+    'de': 'Ablehnen und beenden',
+    'fr': 'Refuser et quitter',
+    'es': 'Rechazar y salir',
+    'pt': 'Recusar e sair',
+    'it': 'Rifiuta ed esci',
+    'sv': 'Avböj och avsluta',
+    'fi': 'Hylkää ja poistu',
+    'nb': 'Avslå og avslutt',
+    'da': 'Afvis og afslut',
+    'nl': 'Weigeren en afsluiten',
+    'pl': 'Odrzuć i zakończ',
+    'cs': 'Odmítnout a ukončit',
+    'hu': 'Elutasítom és kilépek',
+    'uk': 'Відхилити та вийти',
+    'ja': '同意せず終了',
+    'ko': '거부하고 종료',
+  });
+  String get developerLabel => _t({
+    'en': 'Developer',
+    'ru': 'Разработчик',
+    'de': 'Entwickler',
+    'fr': 'Développeur',
+    'es': 'Desarrollador',
+    'pt': 'Programador',
+    'it': 'Sviluppatore',
+    'sv': 'Utvecklare',
+    'fi': 'Kehittäjä',
+    'nb': 'Utvikler',
+    'da': 'Udvikler',
+    'nl': 'Ontwikkelaar',
+    'pl': 'Deweloper',
+    'cs': 'Vývojář',
+    'hu': 'Fejlesztő',
+    'uk': 'Розробник',
+    'ja': '開発者',
+    'ko': '개발자',
+  });
   String get save => _t({
     'en': 'Save',
     'ru': 'Сохранить',

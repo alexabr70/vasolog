@@ -1,0 +1,45 @@
+VasoLog - Privacy Policy
+Last updated: April 20, 2026
+
+Developer: Aliaksandr Abrashkin (individual developer).
+Contact: vasolog.app@gmail.com
+
+OVERVIEW
+VasoLog ("the App") is a personal health tracker for Raynaud's Phenomenon developed by Aliaksandr Abrashkin. We are committed to protecting your privacy. This policy describes what data we collect, how we use it, and your rights.
+
+DATA WE COLLECT
+- Attack records (severity, duration, color phase, triggers, affected fingers, notes). Stored locally on your device only.
+- Photos (optional photos of affected areas). Stored locally on your device only.
+- Location: used solely to fetch weather data from the Open-Meteo API. Not stored on any server.
+- Weather data (temperature, humidity, pressure, wind speed). Cached locally for 30 minutes.
+
+HOW WE USE YOUR DATA
+- All health data is stored exclusively on your device.
+- Location coordinates are sent to the Open-Meteo API only to retrieve current weather conditions. No other data is transmitted.
+- We do not collect analytics, crash reports, or usage statistics.
+- We do not use advertising or tracking SDKs.
+- We do not sell, share, or transfer any personal data to third parties.
+
+THIRD-PARTY SERVICES
+- Open-Meteo API: receives geographic coordinates to provide weather data. Free and open-source service. No API key required. Subject to Open-Meteo Terms of Service (https://open-meteo.com/en/terms).
+
+DATA STORAGE AND SECURITY
+- All data is stored locally on your device using encrypted local storage (Hive).
+- No cloud sync or backup is performed.
+- Deleting the app removes all stored data permanently.
+
+YOUR RIGHTS
+- You can export your data via PDF reports at any time.
+- You can delete all data by uninstalling the app.
+- You can revoke location permission in your device settings.
+- The app works fully offline (except weather features).
+
+CHILDREN'S PRIVACY
+The App is not directed at children under 13. We do not knowingly collect data from children.
+
+CHANGES TO THIS POLICY
+We may update this policy from time to time. Changes will be posted on the online version (https://alexabr70.github.io/vasolog/privacy_policy.html) with an updated date.
+
+CONTACT US
+Developer: Aliaksandr Abrashkin (individual developer).
+If you have questions about this privacy policy, contact us at: vasolog.app@gmail.com
