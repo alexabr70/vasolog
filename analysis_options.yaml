@@ -30,6 +30,9 @@ analyzer:
     - "**/*.mocks.dart"
     - lib/generated/**
     - lib/l10n/generated/**
+    # Утилитарные скрипты генерации mockup'ов - не часть app-кода,
+    # могут использовать устаревший API image lib. Не блокируют push.
+    - scripts/**
 
 linter:
   rules:
