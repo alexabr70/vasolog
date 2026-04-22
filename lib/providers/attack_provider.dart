@@ -13,6 +13,7 @@ class AttackProvider extends ChangeNotifier {
   final StorageService _storage;
   List<AttackEvent> _attacks = [];
   bool _isReady = false;
+  bool _storageOk = false;
 
   /// true после успешного StorageService.init()
   bool get isReady => _isReady;
@@ -26,6 +27,7 @@ class AttackProvider extends ChangeNotifier {
     try {
       await _storage.init();
       _isReady = true;
+      _storageOk = true;
       _loadAttacks();
     } catch (e) {
       debugPrint('[AttackProvider] init failed: $e');
@@ -45,6 +47,7 @@ class AttackProvider extends ChangeNotifier {
   /// Добавить приступ
   Future<void> addAttack(AttackEvent event) async {
     if (!_isReady) return;
+    if (!_storageOk) throw StateError('Storage initialization failed');
     await _storage.saveAttack(event);
     _loadAttacks();
     NotificationService().resetInactivityTimer();
@@ -53,6 +56,7 @@ class AttackProvider extends ChangeNotifier {
   /// Удалить приступ
   Future<void> deleteAttack(String id) async {
     if (!_isReady) return;
+    if (!_storageOk) return;
     await _storage.deleteAttack(id);
     _loadAttacks();
   }

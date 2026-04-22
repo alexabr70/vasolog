@@ -1,8 +1,7 @@
-import 'package:hive/hive.dart';
 import 'package:vasolog/l10n/app_strings.dart';
 
 /// Модель приступа феномена Рейно
-class AttackEvent extends HiveObject {
+class AttackEvent {
   AttackEvent({
     required this.id,
     required this.timestamp,

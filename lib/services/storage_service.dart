@@ -1,115 +1,53 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vasolog/models/attack_event.dart';
 
-/// Сервис локального хранилища (Hive с шифрованием)
-/// Медицинские данные хранятся в зашифрованном box (AES-256)
+/// Сервис локального хранилища (SharedPreferences + JSON)
+/// Надёжно работает на всех Android/Huawei устройствах без зависимости от
+/// файловой системы, Hive, KeyStore или path_provider.
 class StorageService {
-  static const String _boxName = 'attacks_encrypted';
-  static const String _legacyBoxName = 'attacks';
-  static const String _keyAlias = 'vasolog_hive_key';
-  late Box<Map<dynamic, dynamic>> _box;
-
-  // Кэш отсортированных приступов (сбрасывается при изменении)
+  static const String _prefKey = 'vasolog_attacks_v1';
+  late SharedPreferences _prefs;
+  final Map<String, Map<String, dynamic>> _data = {};
   List<AttackEvent>? _cachedAttacks;
 
   Future<void> init() async {
-    await Hive.initFlutter();
+    _prefs = await SharedPreferences.getInstance();
+    _loadFromPrefs();
+  }
 
-    // Получаем ключ шифрования. Если KeyStore недоступен (Huawei EMUI bug)
-    // падаем на незашифрованное хранилище - данные всё равно только локальные.
+  void _loadFromPrefs() {
     try {
-      final encryptionKey = await _getOrCreateKey().timeout(
-        const Duration(seconds: 8),
-      );
-      final cipher = HiveAesCipher(encryptionKey);
-      _box = await Hive.openBox<Map<dynamic, dynamic>>(
-        _boxName,
-        encryptionCipher: cipher,
-      ).timeout(const Duration(seconds: 5));
-      await _migrateFromLegacy(cipher);
-    } on Exception catch (e) {
-      debugPrint('[StorageService] encrypted init failed ($e), fallback');
-      // Fallback - открываем/создаём незашифрованный box
-      _box = await Hive.openBox<Map<dynamic, dynamic>>(_boxName);
+      final json = _prefs.getString(_prefKey);
+      if (json != null && json.isNotEmpty) {
+        final decoded = jsonDecode(json) as Map<String, dynamic>;
+        _data.clear();
+        for (final entry in decoded.entries) {
+          _data[entry.key] = Map<String, dynamic>.from(entry.value as Map);
+        }
+      }
+    } catch (e) {
+      debugPrint('[StorageService] load failed ($e), starting fresh');
+      _data.clear();
     }
   }
 
-  /// Получить ключ шифрования из secure storage или создать новый.
-  /// Защищено timeout + fallback на regenerate для случаев, когда
-  /// KeyStore возвращает corrupted state (перенос устройств, Huawei issues).
-  Future<List<int>> _getOrCreateKey() async {
-    const secureStorage = FlutterSecureStorage(
-      aOptions: AndroidOptions(encryptedSharedPreferences: true),
-    );
-
-    try {
-      final existingKey = await secureStorage
-          .read(key: _keyAlias)
-          .timeout(const Duration(seconds: 5));
-      if (existingKey != null) {
-        return base64Url.decode(existingKey);
-      }
-    } catch (e) {
-      debugPrint('[StorageService] KeyStore read failed ($e), regenerating');
-      // Удалим повреждённый ключ перед regenerate
-      try {
-        await secureStorage
-            .delete(key: _keyAlias)
-            .timeout(const Duration(seconds: 3));
-      } catch (_) {}
-    }
-
-    // Генерируем новый 256-bit ключ
-    final key = Hive.generateSecureKey();
-    try {
-      await secureStorage
-          .write(key: _keyAlias, value: base64Url.encode(key))
-          .timeout(const Duration(seconds: 5));
-    } catch (e) {
-      debugPrint('[StorageService] KeyStore write failed ($e), using in-memory key');
-    }
-    return key;
-  }
-
-  /// Миграция из старого незашифрованного box
-  Future<void> _migrateFromLegacy(HiveAesCipher cipher) async {
-    if (!await Hive.boxExists(_legacyBoxName)) return;
-
-    final legacyBox = await Hive.openBox<Map<dynamic, dynamic>>(_legacyBoxName);
-    if (legacyBox.isEmpty) {
-      await legacyBox.close();
-      return;
-    }
-
-    // Копируем все записи в зашифрованный box
-    debugPrint(
-      '[StorageService] Мигрирую ${legacyBox.length} записей в зашифрованное хранилище',
-    );
-    for (final key in legacyBox.keys) {
-      final value = legacyBox.get(key);
-      if (value != null && !_box.containsKey(key)) {
-        await _box.put(key, value);
-      }
-    }
-
-    // Удаляем старый box
-    await legacyBox.deleteFromDisk();
-    debugPrint('[StorageService] Миграция завершена, старый box удалён');
+  Future<void> _saveToPrefs() async {
+    await _prefs.setString(_prefKey, jsonEncode(_data));
   }
 
   /// Сохранить приступ
   Future<void> saveAttack(AttackEvent event) async {
-    await _box.put(event.id, event.toMap());
-    _cachedAttacks = null; // сброс кэша
+    _data[event.id] = event.toMap();
+    _cachedAttacks = null;
+    await _saveToPrefs();
   }
 
   /// Получить все приступы (отсортированные по дате, новые первые)
   List<AttackEvent> getAllAttacks() {
     if (_cachedAttacks != null) return _cachedAttacks!;
-    final attacks = _box.values.map(AttackEvent.fromMap).toList();
+    final attacks = _data.values.map(AttackEvent.fromMap).toList();
     attacks.sort((a, b) => b.timestamp.compareTo(a.timestamp));
     _cachedAttacks = attacks;
     return attacks;
@@ -130,12 +68,13 @@ class StorageService {
 
   /// Удалить приступ
   Future<void> deleteAttack(String id) async {
-    await _box.delete(id);
-    _cachedAttacks = null; // сброс кэша
+    _data.remove(id);
+    _cachedAttacks = null;
+    await _saveToPrefs();
   }
 
   /// Количество приступов
-  int get attackCount => _box.length;
+  int get attackCount => _data.length;
 
   /// Средняя тяжесть за последние N дней
   double averageSeverity(int days) {

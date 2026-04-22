@@ -1,7 +1,7 @@
 name: vasolog
 description: "VasoLog - Raynaud's Phenomenon Tracker"
 publish_to: 'none'
-version: 1.1.1+3
+version: 1.1.1+8
 
 environment:
   sdk: ^3.11.4
@@ -10,9 +10,6 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
-  # Локальное хранилище (без кодогенерации)
-  hive: ^2.2.3
-  hive_flutter: ^1.1.0
   # Геолокация
   geolocator: ^13.0.2
   # HTTP для погодного API
@@ -35,7 +32,6 @@ dependencies:
   # Разрешения
   permission_handler: ^11.4.0
   shared_preferences: ^2.5.5
-  flutter_secure_storage: ^9.2.4
   flutter_native_splash: ^2.4.7
   url_launcher: ^6.3.1
   in_app_review: ^2.0.10
