@@ -86,11 +86,8 @@
 				</array>
 			</dict>
 		</array>
-		<!-- Background fetch для уведомлений -->
-		<key>UIBackgroundModes</key>
-		<array>
-			<string>fetch</string>
-			<string>remote-notification</string>
-		</array>
+		<!-- UIBackgroundModes удалён: flutter_local_notifications работает
+		     без BGModes, а fetch/remote-notification без реализации = Apple
+		     reject 2.5.4 -->
 	</dict>
 </plist>

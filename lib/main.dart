@@ -33,6 +33,44 @@ void main() async {
   }
 
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Глобальные обработчики ошибок - чтобы необработанное исключение
+  // не приводило к красному экрану смерти (AppGallery/Play за это режут).
+  FlutterError.onError = (FlutterErrorDetails details) {
+    FlutterError.presentError(details);
+    debugPrint('[FlutterError] ${details.exceptionAsString()}');
+  };
+  ui.PlatformDispatcher.instance.onError = (error, stack) {
+    debugPrint('[PlatformError] $error\n$stack');
+    return true;
+  };
+  // Красивый fallback вместо красного экрана в release-сборке.
+  ErrorWidget.builder = (FlutterErrorDetails details) {
+    return Material(
+      color: Colors.white,
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.error_outline, size: 48, color: Colors.grey),
+              const SizedBox(height: 12),
+              Text(
+                'VasoLog',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.grey[700],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  };
+
   await initializeDateFormatting(); // все локали для DateFormat с locale-параметром
   // Раньше был FlutterNativeSplash.preserve() + remove в post-frame callback,
   // но это удерживало native blue splash до первого кадра Flutter (+800ms).

@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:in_app_review/in_app_review.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
@@ -142,8 +145,26 @@ class _NewAttackScreenState extends State<NewAttackScreen>
       maxHeight: 1024,
       imageQuality: 80,
     );
-    if (photo != null) {
-      setState(() => _photoPath = photo.path);
+    if (photo == null) return;
+    // Копируем снимок из временной папки image_picker в постоянный каталог
+    // приложения - иначе после переустановки / очистки кэша путь станет
+    // битым и при рендере карточки упадёт FileImage.
+    try {
+      final docs = await getApplicationDocumentsDirectory();
+      final photosDir = Directory('${docs.path}/photos');
+      if (!photosDir.existsSync()) {
+        photosDir.createSync(recursive: true);
+      }
+      final fileName = '${const Uuid().v4()}.jpg';
+      final saved = await File(photo.path).copy('${photosDir.path}/$fileName');
+      if (mounted) {
+        setState(() => _photoPath = saved.path);
+      }
+    } catch (e) {
+      debugPrint('[NewAttack] photo copy failed: $e, fallback to tmp path');
+      if (mounted) {
+        setState(() => _photoPath = photo.path);
+      }
     }
   }
 

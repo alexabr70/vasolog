@@ -33,8 +33,17 @@ class StorageService {
     }
   }
 
-  Future<void> _saveToPrefs() async {
-    await _prefs.setString(_prefKey, jsonEncode(_data));
+  // Последовательная очередь записей - защищает от race condition
+  // при быстрых подряд saveAttack/deleteAttack (весь массив живёт в одном
+  // ключе SharedPreferences, параллельная запись может затереть данные).
+  Future<void> _writeQueue = Future.value();
+
+  Future<void> _saveToPrefs() {
+    final next = _writeQueue.catchError((Object _) {}).then(
+      (_) => _prefs.setString(_prefKey, jsonEncode(_data)),
+    );
+    _writeQueue = next;
+    return next;
   }
 
   /// Сохранить приступ
