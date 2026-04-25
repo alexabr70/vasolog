@@ -22,38 +22,56 @@
 </head>
 <body>
     <h1>VasoLog - Privacy Policy</h1>
-    <p class="updated">Last updated: April 20, 2026</p>
+    <p class="updated">Last updated: April 25, 2026</p>
 
     <h2>Overview</h2>
     <p>VasoLog ("the App") is a personal health tracker for Raynaud's Phenomenon developed by <strong>Aliaksandr Abrashkin</strong> (individual developer). We are committed to protecting your privacy. This policy describes what data we collect, how we use it, and your rights.</p>
 
     <h2>Data We Collect</h2>
+
+    <h3>Health data (stays on your device)</h3>
     <ul>
         <li><strong>Attack records</strong> - severity, duration, color phase, triggers, affected fingers, notes. Stored locally on your device only.</li>
         <li><strong>Photos</strong> - optional photos of affected areas. Stored locally on your device only.</li>
-        <li><strong>Location</strong> - used solely to fetch weather data from Open-Meteo API. Not stored on any server.</li>
         <li><strong>Weather data</strong> - temperature, humidity, pressure, wind speed. Cached locally for 30 minutes.</li>
+    </ul>
+
+    <h3>Data sent to third parties</h3>
+    <ul>
+        <li><strong>Location coordinates</strong> - sent to Open-Meteo API to fetch weather. Not stored on any server.</li>
+        <li><strong>Crash diagnostics</strong> - if the app crashes, we send the stack trace, device model, OS version, and app version to Firebase Crashlytics so we can fix bugs. No health data, photos, or attack records are included in crash reports.</li>
+        <li><strong>Anonymous usage analytics</strong> - we use Firebase Analytics to count app launches, screen views, and sessions. This helps us understand which features matter and prioritise improvements. Each install is identified by a randomly generated <em>Firebase Installation ID</em>; we do not collect names, emails, phone numbers, IP-based location, or advertising IDs.</li>
     </ul>
 
     <h2>How We Use Your Data</h2>
     <ul>
         <li>All health data is stored exclusively on your device.</li>
-        <li>Location coordinates are sent to Open-Meteo API only to retrieve current weather conditions. No other data is transmitted.</li>
-        <li>We do not collect analytics, crash reports, or usage statistics.</li>
-        <li>We do not use advertising or tracking SDKs.</li>
-        <li>We do not sell, share, or transfer any personal data to third parties.</li>
+        <li>Location coordinates are sent to Open-Meteo API only to retrieve current weather conditions.</li>
+        <li>Crash logs and analytics events are used solely to improve the app's stability and usability. They are never sold, shared, or used for advertising.</li>
+        <li>We do not use advertising SDKs and do not run ads.</li>
+        <li>We do not sell, share, or transfer any personal data to third parties beyond the services listed below.</li>
     </ul>
 
     <h2>Third-Party Services</h2>
     <ul>
-        <li><strong>Open-Meteo API</strong> - receives geographic coordinates to provide weather data. Free and open-source service. No API key required. Subject to <a href="https://open-meteo.com/en/terms">Open-Meteo Terms of Service</a>.</li>
+        <li><strong>Open-Meteo API</strong> (open-meteo.com) - receives geographic coordinates to provide weather data. Free and open-source service. No API key required. Subject to <a href="https://open-meteo.com/en/terms">Open-Meteo Terms of Service</a>.</li>
+        <li><strong>Firebase Crashlytics</strong> (Google LLC, USA) - receives crash diagnostics. Data is stored on Google servers and processed under <a href="https://firebase.google.com/support/privacy">Firebase Privacy and Security</a>.</li>
+        <li><strong>Firebase Analytics / Google Analytics for Firebase</strong> (Google LLC, USA) - receives anonymous app-usage events (app_open, screen_view, session_start). Subject to the same Firebase Privacy and Security policy. IP addresses are truncated and not retained.</li>
+    </ul>
+
+    <h2>How to Opt Out of Analytics and Crash Reporting</h2>
+    <ul>
+        <li>You can disable personalised data on Android: <em>Settings - Google - Ads - Reset advertising ID / Delete advertising ID</em>.</li>
+        <li>If you want a fully analytics-free build, contact us at vasolog.app@gmail.com - we are happy to provide guidance.</li>
+        <li>Future versions will add an in-app toggle to disable analytics/crash reporting. Until then, the data above is sent only when the app is online.</li>
     </ul>
 
     <h2>Data Storage and Security</h2>
     <ul>
-        <li>All data is stored locally on your device using encrypted local storage (Hive).</li>
-        <li>No cloud sync or backup is performed.</li>
-        <li>Deleting the app removes all stored data permanently.</li>
+        <li>Health data (attack records, photos, notes) is stored locally on your device using Android's secure app-private storage. This sandbox is isolated from other apps by the operating system.</li>
+        <li>No cloud sync or backup of health data is performed.</li>
+        <li>Crash logs and analytics events are transmitted over HTTPS to Google Firebase servers (USA / EU) and processed under Google's standard data protection terms.</li>
+        <li>Deleting the app removes all locally stored health data permanently.</li>
     </ul>
 
     <h2>Your Rights</h2>
