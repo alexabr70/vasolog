@@ -3,6 +3,13 @@
 *.keystore
 android/key.properties
 
+# Firebase service account (приватный ключ - никогда в git)
+firebase-service-account.json
+*-service-account.json
+
+# Serena MCP
+.serena/
+
 # AppGallery upload artifacts (derivatives of mockups_final/)
 release/*/store_assets/appgallery/upload_packages/
 

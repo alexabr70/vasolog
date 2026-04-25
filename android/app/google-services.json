@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "521927763381",
+    "project_id": "flutter-mobile-apps-32266",
+    "storage_bucket": "flutter-mobile-apps-32266.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:521927763381:android:3763fa130fc80c8164e5fc",
+        "android_client_info": {
+          "package_name": "com.vasolog.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUZ0bH8oNC9iUKyjQX5-bqvdN2yRImkss"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

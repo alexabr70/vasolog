@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:ui' as ui;
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -9,6 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:uuid/uuid.dart';
+import 'package:vasolog/firebase_options.dart';
 import 'package:vasolog/l10n/app_strings.dart';
 import 'package:vasolog/models/attack_event.dart';
 import 'package:vasolog/providers/attack_provider.dart';
@@ -34,14 +37,18 @@ void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
 
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
   // Глобальные обработчики ошибок - чтобы необработанное исключение
   // не приводило к красному экрану смерти (AppGallery/Play за это режут).
   FlutterError.onError = (FlutterErrorDetails details) {
     FlutterError.presentError(details);
     debugPrint('[FlutterError] ${details.exceptionAsString()}');
+    FirebaseCrashlytics.instance.recordFlutterFatalError(details);
   };
   ui.PlatformDispatcher.instance.onError = (error, stack) {
     debugPrint('[PlatformError] $error\n$stack');
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
     return true;
   };
   // Красивый fallback вместо красного экрана в release-сборке.

@@ -64,7 +64,7 @@ workflows:
     integrations:
       app_store_connect: VasoLog_API_Key  # Настроить в Codemagic UI
     environment:
-      flutter: 3.41.6
+      flutter: 3.41.5
       xcode: latest
       cocoapods: default
       ios_signing:

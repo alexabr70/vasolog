@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyCQnQZNXX_My-jWoI5QaiUd5zQfTEzX4HA</string>
+	<key>GCM_SENDER_ID</key>
+	<string>521927763381</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.vasolog.app</string>
+	<key>PROJECT_ID</key>
+	<string>flutter-mobile-apps-32266</string>
+	<key>STORAGE_BUCKET</key>
+	<string>flutter-mobile-apps-32266.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false/>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false/>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true/>
+	<key>IS_GCM_ENABLED</key>
+	<true/>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true/>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:521927763381:ios:7b2fd76a7bdfa53664e5fc</string>
+</dict>
+</plist>
