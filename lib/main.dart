@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui' as ui;
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
@@ -39,6 +40,11 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  // Сбор Crashlytics/Analytics только в release - в debug засоряет отчёты
+  // и мешает разработке. Best practice Firebase Flutter (apr 2026).
+  await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(!kDebugMode);
+  await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(!kDebugMode);
 
   // Глобальные обработчики ошибок - чтобы необработанное исключение
   // не приводило к красному экрану смерти (AppGallery/Play за это режут).
@@ -262,6 +268,11 @@ class VasoLogApp extends StatelessWidget {
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
+          ],
+          // Авто-трекинг screen_view в Firebase Analytics при переходах
+          // через Navigator (push/pop). Best practice apr 2026.
+          navigatorObservers: [
+            FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
           ],
           supportedLocales: const [
             Locale('en'),
