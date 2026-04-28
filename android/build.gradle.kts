@@ -2,6 +2,8 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        // Huawei HMS зависимости (агенты AppGallery, App Linking, Push и т.д.)
+        maven { url = uri("https://developer.huawei.com/repo/") }
     }
 }
 

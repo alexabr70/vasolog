@@ -64,7 +64,7 @@ workflows:
     integrations:
       app_store_connect: VasoLog_API_Key  # Настроить в Codemagic UI
     environment:
-      flutter: 3.41.5
+      flutter: 3.41.6
       xcode: latest
       cocoapods: default
       ios_signing:
@@ -103,6 +103,59 @@ workflows:
         submit_to_testflight: true
         beta_groups:
           - Internal Testers
+
+  # AppGallery workflow - деплой APK через AGC Publishing API v2
+  # Требует переменные в Codemagic UI (группа appgallery):
+  #   AGC_CLIENT_ID, AGC_CLIENT_SECRET - из AGC консоли → API ключ
+  #   CM_KEYSTORE, CM_KEYSTORE_PASSWORD, CM_KEY_PASSWORD, CM_KEY_ALIAS
+  appgallery-release:
+    name: AppGallery Release
+    max_build_duration: 60
+    instance_type: linux_x2
+    environment:
+      flutter: 3.41.6
+      java: 21
+      groups:
+        - appgallery
+      vars:
+        PACKAGE_NAME: "com.vasolog.app"
+        AGC_APP_ID: "117440803"
+    scripts:
+      - name: Set up keystore
+        script: |
+          echo $CM_KEYSTORE | base64 --decode > /tmp/keystore.jks
+          cat >> "$CM_BUILD_DIR/android/key.properties" <<EOF
+          storePassword=$CM_KEYSTORE_PASSWORD
+          keyPassword=$CM_KEY_PASSWORD
+          keyAlias=$CM_KEY_ALIAS
+          storeFile=/tmp/keystore.jks
+          EOF
+      - name: Get Flutter dependencies
+        script: flutter pub get
+      - name: Flutter analyze
+        script: flutter analyze --no-fatal-infos
+      - name: Flutter test
+        script: flutter test
+      - name: Build APK release
+        # AppGallery принимает APK (не AAB) без сплит-доставки
+        script: flutter build apk --release
+      - name: Deploy to AppGallery via AGC API
+        script: |
+          pip install requests
+          # AGC_CLIENT_ID, AGC_CLIENT_SECRET, AGC_APP_ID берутся из группы appgallery
+          python scripts/deploy_agc.py \
+            build/app/outputs/flutter-apk/app-release.apk \
+            --submit
+    artifacts:
+      - build/**/outputs/**/*.apk
+      - build/**/outputs/**/mapping.txt
+    publishing:
+      email:
+        recipients:
+          - alex@aiassistpro.ru
+        notify:
+          success: true
+          failure: true
 
   pr-check:
     name: PR Check (Analyze + Test)

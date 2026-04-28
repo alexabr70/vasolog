@@ -39,12 +39,23 @@ void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  // Firebase может не инициализироваться на Huawei без Google Mobile Services.
+  // Оборачиваем в try/catch чтобы приложение не крашилось - аналитика и
+  // Crashlytics просто не будут работать, но функционал приложения сохранится.
+  var firebaseAvailable = false;
+  try {
+    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+    firebaseAvailable = true;
+  } catch (e) {
+    debugPrint('[Firebase] init failed (likely no GMS): $e');
+  }
 
   // Сбор Crashlytics/Analytics только в release - в debug засоряет отчёты
   // и мешает разработке. Best practice Firebase Flutter (apr 2026).
-  await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(!kDebugMode);
-  await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(!kDebugMode);
+  if (firebaseAvailable) {
+    await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(!kDebugMode);
+    await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(!kDebugMode);
+  }
 
   // Глобальные обработчики ошибок - чтобы необработанное исключение
   // не приводило к красному экрану смерти (AppGallery/Play за это режут).
@@ -52,13 +63,13 @@ void main() async {
   FlutterError.onError = (FlutterErrorDetails details) {
     FlutterError.presentError(details);
     debugPrint('[FlutterError] ${details.exceptionAsString()}');
-    if (!kDebugMode) {
+    if (!kDebugMode && firebaseAvailable) {
       FirebaseCrashlytics.instance.recordFlutterFatalError(details);
     }
   };
   ui.PlatformDispatcher.instance.onError = (error, stack) {
     debugPrint('[PlatformError] $error\n$stack');
-    if (!kDebugMode) {
+    if (!kDebugMode && firebaseAvailable) {
       FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
     }
     return true;
@@ -112,6 +123,7 @@ void main() async {
       storage: storage,
       attackProvider: attackProvider,
       localeProvider: localeProvider,
+      analyticsEnabled: firebaseAvailable,
     ),
   );
   logStep('runApp called');
@@ -241,11 +253,14 @@ class VasoLogApp extends StatelessWidget {
     required this.storage,
     required this.attackProvider,
     required this.localeProvider,
+    this.analyticsEnabled = false,
     super.key,
   });
   final StorageService storage;
   final AttackProvider attackProvider;
   final LocaleProvider localeProvider;
+  // false на Huawei без GMS - Firebase не инициализирован
+  final bool analyticsEnabled;
 
   @override
   Widget build(BuildContext context) {
@@ -270,9 +285,10 @@ class VasoLogApp extends StatelessWidget {
             GlobalCupertinoLocalizations.delegate,
           ],
           // Авто-трекинг screen_view в Firebase Analytics при переходах
-          // через Navigator (push/pop). Best practice apr 2026.
+          // через Navigator (push/pop). Только если Firebase доступен (нет GMS = нет).
           navigatorObservers: [
-            FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
+            if (analyticsEnabled)
+              FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
           ],
           supportedLocales: const [
             Locale('en'),

@@ -1,3 +1,8 @@
+# AppGallery Connect API credentials
+.env.agc
+# HMS конфиг содержит client_secret - не коммитить
+android/app/agconnect-services.json
+
 # Signing
 *.jks
 *.keystore

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:in_app_review/in_app_review.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -228,7 +229,8 @@ class _NewAttackScreenState extends State<NewAttackScreen>
     }
   }
 
-  /// Запросить отзыв после 5-го приступа (макс 1 раз)
+  /// Запросить отзыв после 5-го приступа (макс 1 раз).
+  /// На Huawei без GMS isAvailable() = false → открываем AppGallery напрямую.
   Future<void> _maybeRequestReview(int totalAttacks) async {
     if (totalAttacks != 5) return;
     final prefs = await SharedPreferences.getInstance();
@@ -236,8 +238,13 @@ class _NewAttackScreenState extends State<NewAttackScreen>
     final review = InAppReview.instance;
     if (await review.isAvailable()) {
       await review.requestReview();
-      await prefs.setBool('review_requested', true);
+    } else {
+      await launchUrl(
+        Uri.parse('https://appgallery.huawei.com/app/C117440803'),
+        mode: LaunchMode.externalApplication,
+      );
     }
+    await prefs.setBool('review_requested', true);
   }
 
   @override

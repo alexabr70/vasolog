@@ -45,6 +45,17 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="vasolog" />
             </intent-filter>
+            <!-- Huawei App Linking: https://vasolog.dre.agconnect.link/F
+                 autoVerify=true включает Android App Links (верификация через .well-known/assetlinks.json)
+                 Huawei AGC автоматически хостит этот файл для agconnect.link домена -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="https"
+                    android:host="vasolog.dre.agconnect.link" />
+            </intent-filter>
         </activity>
         <!-- Scheduled notification receivers -->
         <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />

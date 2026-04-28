@@ -20,15 +20,12 @@ class VasoLogWidgetProvider : HomeWidgetProvider() {
             val weekly = widgetData.getInt("weekly", 0)
 
             views.setTextViewText(R.id.widget_streak, "$streak")
-            views.setTextViewText(R.id.widget_weekly, "За неделю: $weekly")
-
-            // Склонение слова "день"
-            val label = when {
-                streak % 10 == 1 && streak % 100 != 11 -> "день без приступа"
-                streak % 10 in 2..4 && (streak % 100 < 10 || streak % 100 >= 20) -> "дня без приступа"
-                else -> "дней без приступа"
-            }
-            views.setTextViewText(R.id.widget_label, label)
+            // Строки из ресурсов - корректно локализуются на всех языках
+            views.setTextViewText(R.id.widget_label, context.getString(R.string.widget_days_label))
+            views.setTextViewText(
+                R.id.widget_weekly,
+                "${context.getString(R.string.widget_weekly_prefix)} $weekly"
+            )
 
             appWidgetManager.updateAppWidget(widgetId, views)
         }

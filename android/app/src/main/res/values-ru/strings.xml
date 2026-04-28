@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_description">Дни без приступа Рейно</string>
+    <string name="widget_days_label">дней без приступа</string>
+    <string name="widget_weekly_prefix">За неделю:</string>
+</resources>

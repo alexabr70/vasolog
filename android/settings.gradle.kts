@@ -14,6 +14,8 @@ pluginManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
+        // Huawei HMS плагины
+        maven { url = uri("https://developer.huawei.com/repo/") }
     }
 }
 
@@ -25,6 +27,7 @@ plugins {
     id("com.google.firebase.crashlytics") version("3.0.2") apply false
     // END: FlutterFire Configuration
     id("org.jetbrains.kotlin.android") version "2.2.20" apply false
+    id("com.huawei.agconnect") version "1.9.1.301" apply false
 }
 
 include(":app")

@@ -9,6 +9,7 @@ plugins {
     // END: FlutterFire Configuration
     id("kotlin-android")
     id("dev.flutter.flutter-gradle-plugin")
+    id("com.huawei.agconnect")
 }
 
 val keystoreProperties = Properties()
@@ -59,6 +60,8 @@ android {
 
 dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
+    implementation("com.huawei.hms:applinks:6.11.0.302")
+    implementation("com.huawei.agconnect:agconnect-core:1.9.1.301")
 }
 
 flutter {
