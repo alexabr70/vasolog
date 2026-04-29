@@ -9,7 +9,6 @@ plugins {
     // END: FlutterFire Configuration
     id("kotlin-android")
     id("dev.flutter.flutter-gradle-plugin")
-    id("com.huawei.agconnect")
 }
 
 val keystoreProperties = Properties()
@@ -60,10 +59,14 @@ android {
 
 dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
-    implementation("com.huawei.hms:applinks:6.11.0.302")
-    implementation("com.huawei.agconnect:agconnect-core:1.9.1.301")
+    implementation("com.huawei.agconnect:agconnect-applinking:1.9.5.302")
+    implementation("com.huawei.agconnect:agconnect-core:1.9.5.302")
 }
 
 flutter {
     source = "../.."
 }
+
+// HMS AGConnect plugin (agcp) НЕ подключён - несовместим с modern Flutter Plugin DSL + AGP 8.x.
+// agconnect-services.json читается AGConnect Core SDK в runtime через AGConnectServicesConfig.
+// VasoLog использует только AppLinks - этого достаточно без gradle plugin.
