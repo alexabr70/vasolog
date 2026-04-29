@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:uuid/uuid.dart';
@@ -30,7 +31,43 @@ import 'package:vasolog/utils/constants.dart';
 /// Включается через: flutter build apk --dart-define=DEMO_DATA=true
 const _demoData = bool.fromEnvironment('DEMO_DATA');
 
+/// Sentry DSN передаётся через --dart-define=SENTRY_DSN=... в Codemagic.
+/// Если пусто - Sentry просто не инициализируется (debug-сборки, локальный запуск).
+const _sentryDsn = String.fromEnvironment('SENTRY_DSN');
+
 void main() async {
+  // Если Sentry DSN не задан - запускаем приложение без Sentry (debug/local)
+  if (_sentryDsn.isEmpty) {
+    await _bootstrap();
+    return;
+  }
+
+  // SentryFlutter.init с appRunner - ловит ВСЁ включая ошибки до runApp.
+  // Best practice по https://docs.sentry.io/platforms/flutter/
+  await SentryFlutter.init(
+    (options) {
+      options
+        ..dsn = _sentryDsn
+        ..environment = kDebugMode ? 'debug' : 'production'
+        // 10% transactions в prod - укладываемся в 5K errors/мес free tier
+        ..tracesSampleRate = kDebugMode ? 1.0 : 0.1
+        // КРИТИЧНО для медицинского приложения - не отправлять PII и скриншоты,
+        // чтобы данные о приступах юзеров не утекали в Sentry.
+        ..attachScreenshot = false
+        ..sendDefaultPii = false
+        // В debug не шлём - засоряет prod-отчёты
+        ..beforeSend = (event, hint) {
+          if (kDebugMode) return null;
+          return event;
+        };
+    },
+    appRunner: _bootstrap,
+  );
+}
+
+/// Реальный bootstrap приложения. Вынесен в отдельную функцию чтобы Sentry
+/// мог обернуть его через appRunner и при этом тот же код работал без Sentry.
+Future<void> _bootstrap() async {
   // Профайл старта для диагностики долгого splash
   final startStopwatch = Stopwatch()..start();
   void logStep(String step) {
@@ -42,12 +79,18 @@ void main() async {
   // Firebase может не инициализироваться на Huawei без Google Mobile Services.
   // Оборачиваем в try/catch чтобы приложение не крашилось - аналитика и
   // Crashlytics просто не будут работать, но функционал приложения сохранится.
+  // На HMS будет работать Sentry (выше через appRunner).
   var firebaseAvailable = false;
   try {
     await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
     firebaseAvailable = true;
-  } catch (e) {
+  } catch (e, stack) {
     debugPrint('[Firebase] init failed (likely no GMS): $e');
+    // Не отправляем в Sentry в release - "no GMS" это ожидаемое состояние
+    // на Huawei. Если что-то другое - словит ниже PlatformDispatcher.onError.
+    if (kDebugMode) {
+      await Sentry.captureException(e, stackTrace: stack);
+    }
   }
 
   // Сбор Crashlytics/Analytics только в release - в debug засоряет отчёты
@@ -59,18 +102,25 @@ void main() async {
 
   // Глобальные обработчики ошибок - чтобы необработанное исключение
   // не приводило к красному экрану смерти (AppGallery/Play за это режут).
-  // В debug mode не отправляем в Crashlytics чтобы не засорять отчёты.
+  // В debug mode не отправляем в Crashlytics/Sentry чтобы не засорять отчёты.
+  // Sentry работает на любых устройствах (включая HMS); Crashlytics - только GMS.
   FlutterError.onError = (FlutterErrorDetails details) {
     FlutterError.presentError(details);
     debugPrint('[FlutterError] ${details.exceptionAsString()}');
-    if (!kDebugMode && firebaseAvailable) {
-      FirebaseCrashlytics.instance.recordFlutterFatalError(details);
+    if (!kDebugMode) {
+      Sentry.captureException(details.exception, stackTrace: details.stack);
+      if (firebaseAvailable) {
+        FirebaseCrashlytics.instance.recordFlutterFatalError(details);
+      }
     }
   };
   ui.PlatformDispatcher.instance.onError = (error, stack) {
     debugPrint('[PlatformError] $error\n$stack');
-    if (!kDebugMode && firebaseAvailable) {
-      FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    if (!kDebugMode) {
+      Sentry.captureException(error, stackTrace: stack);
+      if (firebaseAvailable) {
+        FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+      }
     }
     return true;
   };
@@ -706,7 +756,7 @@ class _AppLoadingScreenState extends State<_AppLoadingScreen>
             children: [
               // Пульсирующий логотип
               ScaleTransition(
-                scale: Tween<double>(begin: 0.85, end: 1.0).animate(
+                scale: Tween<double>(begin: 0.85, end: 1).animate(
                   CurvedAnimation(
                     parent: _pulseController,
                     curve: Curves.easeInOut,

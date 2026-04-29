@@ -32,8 +32,11 @@ platform :ios do
 
     # 2. Сборка Flutter iOS IPA (версия уже в pubspec.yaml).
     # --obfuscate + --split-debug-info защищают Dart код от reverse engineering.
-    # Символы сохраняются для crash reports (Crashlytics/App Store Connect).
-    sh("cd .. && flutter build ipa --release --export-method=app-store --obfuscate --split-debug-info=./build/symbols")
+    # Символы сохраняются для crash reports (Crashlytics/App Store Connect/Sentry).
+    # SENTRY_DSN передаётся в --dart-define если задан в окружении (GitHub Secrets).
+    sentry_dsn = ENV.fetch("SENTRY_DSN", "")
+    dart_defines = sentry_dsn.empty? ? "" : "--dart-define=SENTRY_DSN=#{sentry_dsn}"
+    sh("cd .. && flutter build ipa --release --export-method=app-store --obfuscate --split-debug-info=./build/symbols #{dart_defines}")
 
     # 3. Загрузка в TestFlight.
     upload_to_testflight(
@@ -81,7 +84,10 @@ platform :android do
     UI.user_error!("JSON key не найден: #{json_key_path}") unless File.exist?(json_key_path)
 
     # 1. Сборка Flutter Android AAB (версия уже в pubspec.yaml).
-    sh("cd .. && flutter build appbundle --release --obfuscate --split-debug-info=./build/symbols")
+    # SENTRY_DSN передаётся в --dart-define если задан в окружении (GitHub Secrets).
+    sentry_dsn = ENV.fetch("SENTRY_DSN", "")
+    dart_defines = sentry_dsn.empty? ? "" : "--dart-define=SENTRY_DSN=#{sentry_dsn}"
+    sh("cd .. && flutter build appbundle --release --obfuscate --split-debug-info=./build/symbols #{dart_defines}")
 
     # 2. Загрузка в Play Console.
     upload_to_play_store(

@@ -10,10 +10,12 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
-  # Firebase
+  # Firebase (только для GMS-устройств - на Huawei graceful fallback)
   firebase_core: ^3.0.0
   firebase_analytics: ^11.0.0
   firebase_crashlytics: ^4.0.0
+  # Sentry - крэш-репорты независимо от GMS (работает на HMS/Huawei)
+  sentry_flutter: ^9.19.0
   # Геолокация
   geolocator: ^13.0.2
   # HTTP для погодного API

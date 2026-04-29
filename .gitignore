@@ -89,3 +89,4 @@ release/*/store_assets/**/raw.bak/
 release/*/store_assets/**/mockups_v2/
 release/*/store_assets/**/mockups_v3/
 release/*/store_assets/**/mockups_v4/
+.env.local

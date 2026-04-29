@@ -20,10 +20,25 @@ echo ""
 
 # 2. Сборка
 echo -e "${YELLOW}[2/3] Сборка APK (${MODE})...${NC}"
-if [ "$MODE" = "release" ]; then
-  flutter build apk --release
+
+# SENTRY_DSN из .env.local (gitignored) или из окружения - для крэш-репортов в Sentry.
+# Если не задан - Sentry не активируется (приложение работает без сбора крэшей).
+DART_DEFINES=""
+if [ -z "${SENTRY_DSN:-}" ] && [ -f ".env.local" ]; then
+  # shellcheck disable=SC1091
+  set -a; . .env.local; set +a
+fi
+if [ -n "${SENTRY_DSN:-}" ]; then
+  DART_DEFINES="--dart-define=SENTRY_DSN=${SENTRY_DSN}"
+  echo "  -> Sentry: enabled"
 else
-  flutter build apk --debug
+  echo "  -> Sentry: disabled (нет SENTRY_DSN в окружении или .env.local)"
+fi
+
+if [ "$MODE" = "release" ]; then
+  flutter build apk --release ${DART_DEFINES}
+else
+  flutter build apk --debug ${DART_DEFINES}
 fi
 
 APK_PATH="build/app/outputs/flutter-apk/app-${MODE}.apk"

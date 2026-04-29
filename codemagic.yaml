@@ -17,6 +17,7 @@ workflows:
       java: 21
       groups:
         - google_play  # Настроить в Codemagic UI: GOOGLE_PLAY_SERVICE_ACCOUNT
+        - sentry       # SENTRY_DSN
       vars:
         PACKAGE_NAME: "com.vasolog.app"
         GOOGLE_PLAY_TRACK: "internal"
@@ -37,9 +38,13 @@ workflows:
       - name: Flutter test
         script: flutter test
       - name: Build AAB
-        script: flutter build appbundle --release
+        script: |
+          flutter build appbundle --release \
+            --dart-define=SENTRY_DSN=$SENTRY_DSN
       - name: Build APK (for testing)
-        script: flutter build apk --release
+        script: |
+          flutter build apk --release \
+            --dart-define=SENTRY_DSN=$SENTRY_DSN
     artifacts:
       - build/**/outputs/**/*.aab
       - build/**/outputs/**/*.apk
@@ -70,6 +75,8 @@ workflows:
       ios_signing:
         distribution_type: app_store
         bundle_identifier: com.vasolog.app
+      groups:
+        - sentry  # SENTRY_DSN
     scripts:
       - name: Set up code signing
         script: xcode-project use-profiles
@@ -86,6 +93,7 @@ workflows:
           BUILD_NUMBER=$(($(app-store-connect get-latest-app-store-build-number "$APP_APPLE_ID") + 1))
           flutter build ipa --release \
             --build-number=$BUILD_NUMBER \
+            --dart-define=SENTRY_DSN=$SENTRY_DSN \
             --export-options-plist=/Users/builder/export_options.plist
     artifacts:
       - build/ios/ipa/*.ipa
@@ -117,6 +125,7 @@ workflows:
       java: 21
       groups:
         - appgallery
+        - sentry  # SENTRY_DSN
       vars:
         PACKAGE_NAME: "com.vasolog.app"
         AGC_APP_ID: "117440803"
@@ -138,7 +147,9 @@ workflows:
         script: flutter test
       - name: Build APK release
         # AppGallery принимает APK (не AAB) без сплит-доставки
-        script: flutter build apk --release
+        script: |
+          flutter build apk --release \
+            --dart-define=SENTRY_DSN=$SENTRY_DSN
       - name: Deploy to AppGallery via AGC API
         script: |
           pip install requests
