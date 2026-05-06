@@ -53,6 +53,12 @@ android {
     buildTypes {
         release {
             signingConfig = signingConfigs.getByName("release")
+            // R8 включён по умолчанию для bundleRelease в Flutter,
+            // подключаем proguard-rules.pro чтобы не падать на Huawei AGC классах
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
 }

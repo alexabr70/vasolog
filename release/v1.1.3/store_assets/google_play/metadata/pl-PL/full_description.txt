@@ -1,0 +1,34 @@
+Tracker zespołu Raynauda dla zimnych dłoni, zmian koloru i problemów z krążeniem. Rejestruj każdy atak w sekundy, identyfikuj swoje wyzwalacze i udostępniaj raport PDF reumatologowi.
+
+VasoLog to dziennik objawów zaprojektowany specjalnie dla osób z chorobą Raynauda (pierwotną lub wtórną). Niezależnie czy właśnie zdiagnozowano, czy od lat żyjesz z zimnymi palcami, fazami biały-niebieski-czerwony i drętwieniem - jasne dane prowadzą do lepszej opieki.
+
+── REJESTRUJ KAŻDY ATAK RAYNAUDA ──
+Dokumentuj każdy epizod w sekundy: dotknięte palce, faza koloru (białe niedokrwienie → niebieska sinica → czerwona reperfuzja), stopień nasilenia w zwalidowanej skali RCS (0-10) i czas trwania. Dodaj zdjęcie i osobiste notatki dla pełnej dokumentacji.
+
+── AUTOMATYCZNE DANE POGODOWE ──
+Każdy atak Raynauda jest automatycznie powiązany z pogodą w czasie rzeczywistym: temperatura, wilgotność, ciśnienie atmosferyczne i prędkość wiatru - w Twojej dokładnej lokalizacji. Bez ręcznego wprowadzania. Zobacz jak zimno i zmiany ciśnienia wywołują Twoje ataki.
+
+── IDENTYFIKUJ SWOJE WYZWALACZE ──
+Wybierz spośród typowych wyzwalaczy Raynauda: ekspozycja na zimno, stres emocjonalny, wibracja, palenie, kofeina i więcej. Z czasem VasoLog ujawnia wzorce - co dokładnie wywołuje Twoje epizody, abyś mógł ich unikać.
+
+── WYKRESY I ANALIZY ──
+Panel pokazuje częstotliwość ataków z ostatnich 7 dni i miesięczne zestawienie wyzwalaczy. Dostrzegaj wzorce, śledź postępy i zrozum jak pory roku wpływają na Twoje krążenie.
+
+── RAPORT PDF DLA TWOJEGO LEKARZA ──
+Wygeneruj profesjonalny raport objawów dla dowolnego okresu jednym dotknięciem. Udostępnij go natychmiast reumatologowi, specjaliście naczyniowemu lub lekarzowi rodzinnemu - oszczędź czas konsultacji i pomóż lekarzowi podejmować świadome decyzje dotyczące Twojego zespołu Raynauda.
+
+── TWOJE DANE POZOSTAJĄ PRYWATNE ──
+Wszystkie dane zdrowotne są przechowywane lokalnie na Twoim urządzeniu. Bez chmury, bez konta, bez śledzenia przez strony trzecie. Pełna prywatność - Twój dziennik objawów należy tylko do Ciebie.
+
+── WIDŻET EKRANU GŁÓWNEGO ──
+Podsumowanie Twojego ostatniego ataku Raynauda zawsze widoczne na ekranie głównym.
+
+── ZAPROJEKTOWANE DLA PACJENTÓW ──
+VasoLog to most między Tobą a Twoim lekarzem. Zespół Raynauda dotyka do 10% populacji i 20% kobiet w zimnym klimacie. Zasługujesz na narzędzie traktujące Twoją chorobę poważnie.
+
+Niezależnie czy masz Raynauda pierwotnego lub wtórnego, sklerodermię, toczeń lub inną chorobę autoimmunologiczną z objawami Raynauda - VasoLog pomaga Ci rejestrować, analizować i komunikować ataki skurczu naczyń.
+
+Pobierz VasoLog dziś i rozpocznij swój dziennik objawów Raynauda.
+
+---
+ZASTRZEŻENIE: VasoLog jest osobistym dziennikiem objawów i nie jest wyrobem medycznym. Nie diagnozuje, nie leczy, nie wyleczy ani nie zapobiega żadnym schorzeniom. Skonsultuj się z wykwalifikowanym pracownikiem służby zdrowia w sprawie porady medycznej, diagnozy lub leczenia.

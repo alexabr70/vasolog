@@ -79,6 +79,9 @@ release/v*/assets/feature_graphics/
 release/v*/*.apk
 release/v*/*.aab
 release/v*/*.ipa
+release/v*/**/*.apk
+release/v*/**/*.aab
+release/v*/**/*.ipa
 scripts/publishing/.tmp/
 
 # Node dependencies (только scripts использует Node)
@@ -89,4 +92,7 @@ release/*/store_assets/**/raw.bak/
 release/*/store_assets/**/mockups_v2/
 release/*/store_assets/**/mockups_v3/
 release/*/store_assets/**/mockups_v4/
+release/*/store_assets/**/mockups_v5/
+# Скриншоты Google Play (v1.1.3) - тяжёлые, регенерируются из mockups + crop_v5.py
+release/v1.1.3/store_assets/google_play/screenshots/
 .env.local

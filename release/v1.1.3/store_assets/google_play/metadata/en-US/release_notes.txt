@@ -1,0 +1,7 @@
+First release of VasoLog on Google Play!
+
+- Track Raynaud's phenomenon attacks in seconds
+- Automatic weather data with each episode
+- Identify your triggers and patterns
+- PDF report for your rheumatologist
+- 100% local storage - your data stays private

@@ -1,0 +1,1 @@
+Première version de VasoLog sur Google Play ! Enregistrez les crises de Raynaud, identifiez vos déclencheurs et partagez des rapports PDF avec votre médecin. Stockage 100% local.

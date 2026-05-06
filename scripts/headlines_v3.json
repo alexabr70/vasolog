@@ -1,0 +1,503 @@
+{
+  "_meta": {
+    "version": "v3",
+    "date": "2026-05-06",
+    "changes": [
+      "Strategic positioning - VasoLog единственный публичный Raynaud-tracker, screen 01 использует это",
+      "Primary keyword sync с real search audit (Mayo Clinic, Terveyskirjasto, MedicalNote, Thuisarts, Oslo Univ)",
+      "Native speaker fixes - все P1+P2 проблемы из аудита",
+      "RCS medical credibility (screen 04 заменён)",
+      "USP badge ko: 독점 (монополия) -> 고유 (уникальный)"
+    ]
+  },
+  "headlines": {
+    "en": {
+      "01_home": {
+        "headline": "Raynaud's disease,\ndecoded.",
+        "subhead": "Built for Raynaud's. Only Raynaud's."
+      },
+      "02_add_top": {
+        "headline": "Log an attack in\n10 seconds",
+        "subhead": "Severity, color, fingers — at a glance"
+      },
+      "03_add_hands": {
+        "headline": "Every finger\ntells a story",
+        "subhead": "Tap exactly where — only here"
+      },
+      "04_history": {
+        "headline": "Track the way\ndoctors do",
+        "subhead": "RCS scale used in clinical trials"
+      },
+      "05_add_bottom": {
+        "headline": "Never forget\nan attack",
+        "subhead": "Photos, notes, full history"
+      },
+      "06_report": {
+        "headline": "Your doctor\nwill thank you",
+        "subhead": "6-month medical PDF — one tap"
+      }
+    },
+    "ru": {
+      "01_home": {
+        "headline": "Синдром Рейно,\nрасшифрован",
+        "subhead": "Создано для Рейно. Только Рейно."
+      },
+      "02_add_top": {
+        "headline": "Запиши приступ\nза 10 секунд",
+        "subhead": "Тяжесть, цвет, пальцы — с одного взгляда"
+      },
+      "03_add_hands": {
+        "headline": "Каждый палец\nрасскажет историю",
+        "subhead": "Отметь точно где — только здесь"
+      },
+      "04_history": {
+        "headline": "Оценивай как\nоценивают врачи",
+        "subhead": "Шкала RCS из клинических исследований"
+      },
+      "05_add_bottom": {
+        "headline": "Не забудь\nни один приступ",
+        "subhead": "Фото, заметки, полная история"
+      },
+      "06_report": {
+        "headline": "Твой врач\nскажет спасибо",
+        "subhead": "6-месячный мед. PDF — в один тап"
+      }
+    },
+    "de": {
+      "01_home": {
+        "headline": "Raynaud-Syndrom\nverstehen",
+        "subhead": "Nur für Raynaud. Sonst nichts."
+      },
+      "02_add_top": {
+        "headline": "Anfall in\n10 Sekunden erfassen",
+        "subhead": "Schwere, Farbe, Finger — auf einen Blick"
+      },
+      "03_add_hands": {
+        "headline": "Jeden Finger\nindividuell erfassen",
+        "subhead": "Genau dort tippen — nur hier"
+      },
+      "04_history": {
+        "headline": "So messen,\nwie Ärzte messen",
+        "subhead": "RCS-Skala aus klinischen Studien"
+      },
+      "05_add_bottom": {
+        "headline": "Keinen Anfall\nvergessen",
+        "subhead": "Fotos, Notizen, volle Historie"
+      },
+      "06_report": {
+        "headline": "Ihre Konsultation\nwird präziser",
+        "subhead": "6-Monats-PDF — mit einem Tipp"
+      }
+    },
+    "fr": {
+      "01_home": {
+        "headline": "Phénomène de Raynaud,\ndécodé",
+        "subhead": "Conçu pour Raynaud. Uniquement."
+      },
+      "02_add_top": {
+        "headline": "Enregistrez une crise\nen 10 secondes",
+        "subhead": "Gravité, couleur, doigts — d'un coup d'œil"
+      },
+      "03_add_hands": {
+        "headline": "Chaque doigt\na son histoire",
+        "subhead": "Indiquez précisément où — unique ici"
+      },
+      "04_history": {
+        "headline": "Évaluez comme\nles médecins",
+        "subhead": "Échelle RCS des essais cliniques"
+      },
+      "05_add_bottom": {
+        "headline": "Ne jamais oublier\nune crise",
+        "subhead": "Photos, notes, historique complet"
+      },
+      "06_report": {
+        "headline": "Votre médecin\nvous remerciera",
+        "subhead": "PDF médical 6 mois — en un tap"
+      }
+    },
+    "es": {
+      "01_home": {
+        "headline": "Síndrome de Raynaud,\ndescifrado",
+        "subhead": "Creado para Raynaud. Solo Raynaud."
+      },
+      "02_add_top": {
+        "headline": "Registra una crisis\nen 10 segundos",
+        "subhead": "Gravedad, color, dedos — al instante"
+      },
+      "03_add_hands": {
+        "headline": "Cada dedo\ncuenta su historia",
+        "subhead": "Toca exactamente dónde — único aquí"
+      },
+      "04_history": {
+        "headline": "Mide como\nlos médicos",
+        "subhead": "Escala RCS de ensayos clínicos"
+      },
+      "05_add_bottom": {
+        "headline": "Nunca olvides\nuna crisis",
+        "subhead": "Fotos, notas, historial completo"
+      },
+      "06_report": {
+        "headline": "Tu médico\nte lo agradecerá",
+        "subhead": "PDF médico de 6 meses — un toque"
+      }
+    },
+    "pt": {
+      "01_home": {
+        "headline": "Fenômeno de Raynaud,\ndecifrado",
+        "subhead": "Criado para Raynaud. Só Raynaud."
+      },
+      "02_add_top": {
+        "headline": "Registre uma crise\nem 10 segundos",
+        "subhead": "Gravidade, cor, dedos — num instante"
+      },
+      "03_add_hands": {
+        "headline": "Cada dedo\nconta uma história",
+        "subhead": "Toque exatamente onde — só aqui"
+      },
+      "04_history": {
+        "headline": "Meça como\nos médicos",
+        "subhead": "Escala RCS de ensaios clínicos"
+      },
+      "05_add_bottom": {
+        "headline": "Nunca esqueça\numa crise",
+        "subhead": "Fotos, notas, histórico completo"
+      },
+      "06_report": {
+        "headline": "Seu médico\nagradecerá",
+        "subhead": "PDF médico 6 meses — um toque"
+      }
+    },
+    "it": {
+      "01_home": {
+        "headline": "Sindrome di Raynaud,\ndecodificata",
+        "subhead": "Creato per Raynaud. Solo Raynaud."
+      },
+      "02_add_top": {
+        "headline": "Registra una crisi\nin 10 secondi",
+        "subhead": "Gravità, colore, dita — all'istante"
+      },
+      "03_add_hands": {
+        "headline": "Ogni dito,\nla sua storia",
+        "subhead": "Indica esattamente dove — solo qui"
+      },
+      "04_history": {
+        "headline": "Misura come\ni medici",
+        "subhead": "Scala RCS degli studi clinici"
+      },
+      "05_add_bottom": {
+        "headline": "Non dimenticare\nuna crisi",
+        "subhead": "Foto, note, cronologia completa"
+      },
+      "06_report": {
+        "headline": "Il tuo medico\nti ringrazierà",
+        "subhead": "PDF medico 6 mesi — un tocco"
+      }
+    },
+    "sv": {
+      "01_home": {
+        "headline": "Raynauds syndrom,\navkodat",
+        "subhead": "Skapad för Raynaud. Bara Raynaud."
+      },
+      "02_add_top": {
+        "headline": "Logga ett anfall\npå 10 sekunder",
+        "subhead": "Svårhet, färg, fingrar — direkt"
+      },
+      "03_add_hands": {
+        "headline": "Varje finger\nberättar en historia",
+        "subhead": "Tryck exakt där — bara här"
+      },
+      "04_history": {
+        "headline": "Mät som\nläkarna mäter",
+        "subhead": "RCS-skalan från kliniska studier"
+      },
+      "05_add_bottom": {
+        "headline": "Glöm aldrig\nett anfall",
+        "subhead": "Foton, anteckningar, hela historiken"
+      },
+      "06_report": {
+        "headline": "Din läkare\nkommer att tacka dig",
+        "subhead": "6-månaders PDF — ett tryck"
+      }
+    },
+    "fi": {
+      "01_home": {
+        "headline": "Valkosormisuus,\nselvitetty",
+        "subhead": "Vain Raynaud'n hoitoon. Ei muuhun."
+      },
+      "02_add_top": {
+        "headline": "Kirjaa kohtaus\n10 sekunnissa",
+        "subhead": "Vakavuus, väri, sormet — heti"
+      },
+      "03_add_hands": {
+        "headline": "Jokainen sormi\nkertoo tarinan",
+        "subhead": "Napauta tarkasti missä — vain täällä"
+      },
+      "04_history": {
+        "headline": "Mittaa kuten\nlääkärit",
+        "subhead": "Kliinisten tutkimusten RCS-asteikko"
+      },
+      "05_add_bottom": {
+        "headline": "Älä unohda\nkohtausta",
+        "subhead": "Kuvat, muistiinpanot, täysi historia"
+      },
+      "06_report": {
+        "headline": "Lääkärisi\nkiittää sinua",
+        "subhead": "6 kk PDF — yhdellä napautuksella"
+      }
+    },
+    "nb": {
+      "01_home": {
+        "headline": "Raynauds fenomen,\ndekodet",
+        "subhead": "Laget for Raynaud. Kun Raynaud."
+      },
+      "02_add_top": {
+        "headline": "Logg et anfall\npå 10 sekunder",
+        "subhead": "Alvor, farge, fingre — straks"
+      },
+      "03_add_hands": {
+        "headline": "Hver finger\nhar en historie",
+        "subhead": "Trykk nøyaktig der — bare her"
+      },
+      "04_history": {
+        "headline": "Mål slik\nlegene måler",
+        "subhead": "RCS-skalaen fra kliniske studier"
+      },
+      "05_add_bottom": {
+        "headline": "Aldri glem\net anfall",
+        "subhead": "Bilder, notater, full historikk"
+      },
+      "06_report": {
+        "headline": "Legen din\nvil takke deg",
+        "subhead": "6-måneders PDF — ett trykk"
+      }
+    },
+    "da": {
+      "01_home": {
+        "headline": "Raynauds syndrom,\ndekodet",
+        "subhead": "Lavet til Raynaud. Kun Raynaud."
+      },
+      "02_add_top": {
+        "headline": "Log et anfald\npå 10 sekunder",
+        "subhead": "Sværhed, farve, fingre — straks"
+      },
+      "03_add_hands": {
+        "headline": "Hver finger\nhar en historie",
+        "subhead": "Tryk præcist hvor — kun her"
+      },
+      "04_history": {
+        "headline": "Mål som\nlægerne måler",
+        "subhead": "RCS-skalaen fra kliniske studier"
+      },
+      "05_add_bottom": {
+        "headline": "Glem aldrig\net anfald",
+        "subhead": "Fotos, noter, fuld historik"
+      },
+      "06_report": {
+        "headline": "Din læge vil\ntakke dig",
+        "subhead": "6-måneders PDF — ét tryk"
+      }
+    },
+    "nl": {
+      "01_home": {
+        "headline": "Fenomeen van Raynaud,\ngedecodeerd",
+        "subhead": "Gemaakt voor Raynaud. Alleen Raynaud."
+      },
+      "02_add_top": {
+        "headline": "Registreer een aanval\nin 10 seconden",
+        "subhead": "Ernst, kleur, vingers — in één oogopslag"
+      },
+      "03_add_hands": {
+        "headline": "Elke vinger\nvertelt een verhaal",
+        "subhead": "Tik precies waar — alleen hier"
+      },
+      "04_history": {
+        "headline": "Meet zoals\nartsen meten",
+        "subhead": "RCS-schaal uit klinische studies"
+      },
+      "05_add_bottom": {
+        "headline": "Vergeet nooit\neen aanval",
+        "subhead": "Foto's, notities, volledige geschiedenis"
+      },
+      "06_report": {
+        "headline": "Je arts zal\nje dankbaar zijn",
+        "subhead": "6-maanden medische PDF — één tik"
+      }
+    },
+    "pl": {
+      "01_home": {
+        "headline": "Zespół Raynauda,\nrozszyfrowany",
+        "subhead": "Stworzone dla Raynauda. Tylko."
+      },
+      "02_add_top": {
+        "headline": "Zapisz atak\nw 10 sekund",
+        "subhead": "Nasilenie, kolor, palce — od razu"
+      },
+      "03_add_hands": {
+        "headline": "Każdy palec\nma swoją historię",
+        "subhead": "Dotknij dokładnie gdzie — tylko tutaj"
+      },
+      "04_history": {
+        "headline": "Mierz tak,\njak lekarze",
+        "subhead": "Skala RCS z badań klinicznych"
+      },
+      "05_add_bottom": {
+        "headline": "Nigdy nie zapomnij\nataku",
+        "subhead": "Zdjęcia, notatki, pełna historia"
+      },
+      "06_report": {
+        "headline": "Twój lekarz\npodziękuje",
+        "subhead": "6-miesięczny PDF — jedno dotknięcie"
+      }
+    },
+    "cs": {
+      "01_home": {
+        "headline": "Raynaudův syndrom,\nrozšifrován",
+        "subhead": "Vytvořeno pro Raynauda. Pouze."
+      },
+      "02_add_top": {
+        "headline": "Zaznamenej záchvat\nza 10 sekund",
+        "subhead": "Závažnost, barva, prsty — okamžitě"
+      },
+      "03_add_hands": {
+        "headline": "Každý prst\nmá svůj příběh",
+        "subhead": "Klepni přesně kde — jen tady"
+      },
+      "04_history": {
+        "headline": "Měř tak,\njak lékaři",
+        "subhead": "Stupnice RCS z klinických studií"
+      },
+      "05_add_bottom": {
+        "headline": "Nikdy nezapomeň\nzáchvat",
+        "subhead": "Fotky, poznámky, plná historie"
+      },
+      "06_report": {
+        "headline": "Tvůj lékař\npoděkuje",
+        "subhead": "6měsíční PDF — jedním klepnutím"
+      }
+    },
+    "hu": {
+      "01_home": {
+        "headline": "Raynaud-szindróma,\ndekódolva",
+        "subhead": "Csak Raynaudra. Másra nem."
+      },
+      "02_add_top": {
+        "headline": "Rögzítsd a rohamot\n10 másodperc alatt",
+        "subhead": "Súlyosság, szín, ujjak — azonnal"
+      },
+      "03_add_hands": {
+        "headline": "Minden ujj\ntörténetet mesél",
+        "subhead": "Érintsd pontosan hol — csak itt"
+      },
+      "04_history": {
+        "headline": "Mérd, ahogy\nazt orvosok",
+        "subhead": "Klinikai vizsgálatok RCS-skálája"
+      },
+      "05_add_bottom": {
+        "headline": "Soha ne felejts\nel egy rohamot sem",
+        "subhead": "Fotók, jegyzetek, teljes előzmény"
+      },
+      "06_report": {
+        "headline": "Az orvosod meg\nfogja köszönni",
+        "subhead": "6 hónapos PDF — egy érintéssel"
+      }
+    },
+    "uk": {
+      "01_home": {
+        "headline": "Синдром Рейно,\nрозшифрований",
+        "subhead": "Створено для Рейно. Тільки."
+      },
+      "02_add_top": {
+        "headline": "Запиши кризу\nза 10 секунд",
+        "subhead": "Важкість, колір, пальці — миттєво"
+      },
+      "03_add_hands": {
+        "headline": "Кожен палець\nрозповість історію",
+        "subhead": "Торкнись точно де — тільки тут"
+      },
+      "04_history": {
+        "headline": "Оцінюй як\nоцінюють лікарі",
+        "subhead": "Шкала RCS з клінічних досліджень"
+      },
+      "05_add_bottom": {
+        "headline": "Не забудь\nжодної кризи",
+        "subhead": "Фото, нотатки, повна історія"
+      },
+      "06_report": {
+        "headline": "Твій лікар\nподякує",
+        "subhead": "6-місячний PDF — один дотик"
+      }
+    },
+    "ja": {
+      "01_home": {
+        "headline": "レイノー現象を\n完全解読",
+        "subhead": "レイノー専用アプリ"
+      },
+      "02_add_top": {
+        "headline": "発作を10秒で\n記録",
+        "subhead": "重症度・色・指 — 一目で"
+      },
+      "03_add_hands": {
+        "headline": "指ごとに\n違う症状",
+        "subhead": "痛い場所を正確に — ここだけ"
+      },
+      "04_history": {
+        "headline": "医師と同じ\n方法で記録",
+        "subhead": "臨床試験のRCSスケール"
+      },
+      "05_add_bottom": {
+        "headline": "発作を\n忘れない",
+        "subhead": "写真・メモ・全履歴"
+      },
+      "06_report": {
+        "headline": "先生に\n喜ばれます",
+        "subhead": "6ヶ月の医療PDF — ワンタップ"
+      }
+    },
+    "ko": {
+      "01_home": {
+        "headline": "레이노 현상,\n완벽 해독",
+        "subhead": "오직 레이노만을 위해"
+      },
+      "02_add_top": {
+        "headline": "발작을 10초\n만에 기록",
+        "subhead": "심각도·색상·손가락 — 한눈에"
+      },
+      "03_add_hands": {
+        "headline": "손가락마다의\n신호",
+        "subhead": "아픈 곳을 정확히 — 여기서만"
+      },
+      "04_history": {
+        "headline": "의사처럼\n측정하세요",
+        "subhead": "임상 시험의 RCS 척도"
+      },
+      "05_add_bottom": {
+        "headline": "발작을\n놓치지 마세요",
+        "subhead": "사진·메모·전체 기록"
+      },
+      "06_report": {
+        "headline": "의사가 신뢰하는\n앱",
+        "subhead": "6개월 의료 PDF — 한 번의 탭"
+      }
+    }
+  },
+  "usp_badges": {
+    "en": "UNIQUE",
+    "ru": "ТОЛЬКО ЗДЕСЬ",
+    "de": "EINZIGARTIG",
+    "fr": "UNIQUE",
+    "es": "ÚNICO",
+    "pt": "ÚNICO",
+    "it": "UNICO",
+    "sv": "UNIKT",
+    "fi": "AINUTLAATUINEN",
+    "nb": "UNIKT",
+    "da": "UNIKT",
+    "nl": "UNIEK",
+    "pl": "UNIKALNE",
+    "cs": "JEDINEČNÉ",
+    "hu": "EGYEDI",
+    "uk": "ЛИШЕ ТУТ",
+    "ja": "独自機能",
+    "ko": "고유 기능"
+  }
+}

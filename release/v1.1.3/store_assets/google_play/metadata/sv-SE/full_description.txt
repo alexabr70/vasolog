@@ -1,0 +1,34 @@
+Raynauds syndrom tracker för kalla händer, färgförändringar och cirkulationsproblem. Logga varje attack på sekunder, identifiera dina triggers och dela en PDF-rapport med din reumatolog.
+
+VasoLog är symtomdagboken designad specifikt för personer med Raynauds fenomen (primärt eller sekundärt). Oavsett om du nyligen fått diagnosen eller levt i åratal med kalla fingrar, vit-blå-röda färgfaser och domningar - tydlig data leder till bättre vård.
+
+── LOGGA VARJE RAYNAUD-ATTACK ──
+Dokumentera varje episod på sekunder: berörda fingrar, färgfas (vit ischemi → blå cyanos → röd reperfusion), svårighetsgrad enligt validerade RCS-skalan (0-10) och varaktighet. Lägg till foto och anteckningar för komplett dokumentation.
+
+── AUTOMATISKA VÄDERDATA ──
+Varje Raynaud-attack kopplas automatiskt till realtidsväder: temperatur, luftfuktighet, lufttryck och vindhastighet - på din exakta plats. Ingen manuell inmatning. Se hur kyla och tryckförändringar provocerar dina attacker.
+
+── IDENTIFIERA DINA TRIGGERS ──
+Välj från vanliga Raynaud-triggers: kalla utsatthet, känslomässig stress, vibration, rökning, koffein och mer. Med tiden visar VasoLog mönster - exakt vad som provocerar dina episoder så att du kan undvika dem.
+
+── DIAGRAM OCH INSIKTER ──
+Instrumentpanelen visar attackfrekvens senaste 7 dagarna och månatlig trigger-uppdelning. Upptäck mönster, följ framsteg och förstå hur säsonger påverkar din cirkulation.
+
+── PDF-RAPPORT TILL DIN LÄKARE ──
+Generera en professionell symtomrapport för valfri period med ett tryck. Dela den direkt med reumatolog, kärlspecialist eller husläkare - spara konsultationstid och hjälp din läkare fatta informerade beslut om ditt Raynauds syndrom.
+
+── DIN DATA FÖRBLIR PRIVAT ──
+All hälsodata lagras lokalt på din enhet. Inget moln, inget konto, ingen tredjepartsspårning. Fullständig integritet - din symtomdagbok tillhör bara dig.
+
+── HEMSKÄRMS-WIDGET ──
+Sammanfattningen av din senaste Raynaud-attack alltid synlig på din hemskärm.
+
+── DESIGNAD FÖR PATIENTER ──
+VasoLog är en bro mellan dig och din läkare. Raynauds syndrom drabbar upp till 10% av befolkningen och 20% av kvinnor i kalla klimat. Du förtjänar ett verktyg som tar ditt tillstånd på allvar.
+
+Oavsett primär eller sekundär Raynaud, sklerodermi, lupus eller annan autoimmun sjukdom med Raynaud-symtom - VasoLog hjälper dig att logga, analysera och kommunicera vasospasm-attacker.
+
+Ladda ner VasoLog idag och starta din Raynaud-symtomdagbok.
+
+---
+ANSVARSFRISKRIVNING: VasoLog är en personlig symtomdagbok och är inte en medicinteknisk produkt. Den diagnostiserar, behandlar, botar eller förebygger inte några medicinska tillstånd. Konsultera kvalificerad sjukvårdspersonal för medicinsk rådgivning, diagnos eller behandling.

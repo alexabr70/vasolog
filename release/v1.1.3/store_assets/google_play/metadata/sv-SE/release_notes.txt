@@ -1,0 +1,1 @@
+Första versionen av VasoLog på Google Play! Logga Raynaud-attacker, identifiera triggers och dela PDF-rapporter med din läkare. 100% lokal lagring.

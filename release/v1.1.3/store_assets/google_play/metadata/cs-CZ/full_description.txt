@@ -1,0 +1,34 @@
+Tracker Raynaudova syndromu pro studené ruce, změny barvy a poruchy oběhu. Zaznamenávejte každý záchvat během sekund, identifikujte své spouštěče a sdílejte PDF zprávu s revmatologem.
+
+VasoLog je deník symptomů navržený speciálně pro lidi s Raynaudovým fenoménem (primárním nebo sekundárním). Ať už jste byli právě diagnostikováni, nebo léta žijete se studenými prsty, fázemi bílá-modrá-červená a necitlivostí - jasná data vedou k lepší péči.
+
+── ZAZNAMENEJTE KAŽDÝ RAYNAUDŮV ZÁCHVAT ──
+Dokumentujte každou epizodu během sekund: postižené prsty, fáze barvy (bílá ischemie → modrá cyanóza → červená reperfuze), závažnost na validované RCS škále (0-10) a trvání. Přidejte foto a osobní poznámky pro úplnou dokumentaci.
+
+── AUTOMATICKÁ DATA O POČASÍ ──
+Každý Raynaudův záchvat je automaticky propojen s počasím v reálném čase: teplota, vlhkost, atmosférický tlak a rychlost větru - na vaší přesné poloze. Bez ručního zadávání. Vidíte, jak chlad a změny tlaku vyvolávají vaše záchvaty.
+
+── IDENTIFIKUJTE SVÉ SPOUŠTĚČE ──
+Vyberte z běžných spouštěčů Raynauda: vystavení chladu, emoční stres, vibrace, kouření, kofein a další. Časem VasoLog odhalí vzorce - co přesně vyvolává vaše epizody, abyste se jim mohli vyhnout.
+
+── GRAFY A ANALÝZY ──
+Dashboard zobrazuje frekvenci záchvatů za posledních 7 dní a měsíční rozložení spouštěčů. Odhalte vzorce, sledujte pokrok a pochopte, jak roční období ovlivňují váš oběh.
+
+── PDF ZPRÁVA PRO VAŠEHO LÉKAŘE ──
+Vygenerujte profesionální zprávu o symptomech za libovolné období jedním klepnutím. Sdílejte ji okamžitě s revmatologem, cévním specialistou nebo praktickým lékařem - ušetříte čas konzultace a pomůžete lékaři přijímat informovaná rozhodnutí o vašem Raynaudově syndromu.
+
+── VAŠE DATA ZŮSTÁVAJÍ SOUKROMÁ ──
+Všechna zdravotní data jsou uložena lokálně na vašem zařízení. Žádný cloud, žádný účet, žádné sledování třetími stranami. Plné soukromí - váš deník symptomů patří jen vám.
+
+── WIDGET DOMOVSKÉ OBRAZOVKY ──
+Souhrn vašeho posledního Raynaudova záchvatu vždy viditelný na domovské obrazovce.
+
+── NAVRŽENO PRO PACIENTY ──
+VasoLog je most mezi vámi a vaším lékařem. Raynaudův syndrom postihuje až 10% populace a 20% žen v chladném klimatu. Zasloužíte si nástroj, který bere váš stav vážně.
+
+Ať už máte primární nebo sekundární Raynauda, sklerodermii, lupus nebo jiné autoimunitní onemocnění s příznaky Raynauda - VasoLog vám pomáhá zaznamenávat, analyzovat a komunikovat záchvaty vazospasmu.
+
+Stáhněte si VasoLog dnes a začněte svůj deník symptomů Raynauda.
+
+---
+UPOZORNĚNÍ: VasoLog je osobní deník symptomů a není zdravotnickým prostředkem. Nediagnostikuje, neléčí, nevyléčí ani nezabraňuje žádnému zdravotnímu stavu. Konzultujte kvalifikovaného zdravotnického pracovníka pro lékařské poradenství, diagnózu nebo léčbu.

@@ -1,0 +1,34 @@
+Valkosormisuuden (Raynaudin oireyhtymän) seuranta kylmille käsille, värimuutoksille ja verenkiertohäiriöille. Tallenna jokainen kohtaus sekunneissa, tunnista laukaisijasi ja jaa PDF-raportti reumatologillesi.
+
+VasoLog on oirepäiväkirja, joka on suunniteltu erityisesti valkosormisuuden eli Raynaudin ilmiön (primaarisen tai sekundaarisen) kanssa eläville. Olitpa juuri saanut diagnoosin tai elänyt vuosia kylmien sormien, valko-sini-punaisten värivaiheiden ja puutumisen kanssa - selkeä data johtaa parempaan hoitoon.
+
+── TALLENNA JOKAINEN RAYNAUDIN KOHTAUS ──
+Dokumentoi jokainen episodi sekunneissa: vaikuttuneet sormet, värivaihe (valkoinen iskemia → sininen syanoosi → punainen reperfuusio), vakavuus validoidulla RCS-asteikolla (0-10) ja kesto. Lisää kuva ja henkilökohtaisia muistiinpanoja täydellistä dokumentaatiota varten.
+
+── AUTOMAATTISET SÄÄTIEDOT ──
+Jokainen Raynaudin kohtaus yhdistetään automaattisesti reaaliaikaiseen säähän: lämpötila, kosteus, ilmanpaine ja tuulen nopeus - tarkassa sijainnissasi. Ei manuaalista syöttöä. Näe miten kylmyys ja painemuutokset aiheuttavat kohtauksesi.
+
+── TUNNISTA LAUKAISIJASI ──
+Valitse yleisistä Raynaudin laukaisijoista: kylmälle altistuminen, emotionaalinen stressi, tärinä, tupakointi, kofeiini ja muut. Ajan myötä VasoLog paljastaa kuvioita - mikä tarkalleen aiheuttaa episodejasi, jotta voit välttää niitä.
+
+── KAAVIOT JA OIVALLUKSET ──
+Kojelauta näyttää kohtaustaajuuden viimeisten 7 päivän ajalta ja kuukausittaisen laukaisijoiden erittelyn. Havaitse kuviot, seuraa edistystä ja ymmärrä miten vuodenajat vaikuttavat verenkiertoosi.
+
+── PDF-RAPORTTI LÄÄKÄRILLESI ──
+Luo ammattimainen oireraportti mille tahansa ajanjaksolle yhdellä napautuksella. Jaa se välittömästi reumatologin, verisuonierikoislääkärin tai yleislääkärin kanssa - säästät konsultaatioaikaa ja autat lääkäriäsi tekemään tietoon perustuvia päätöksiä valkosormisuudestasi.
+
+── TIETOSI PYSYVÄT YKSITYISINÄ ──
+Kaikki terveystiedot tallennetaan paikallisesti laitteellesi. Ei pilveä, ei tiliä, ei kolmannen osapuolen seurantaa. Täydellinen yksityisyys - oirepäiväkirjasi kuuluu vain sinulle.
+
+── ALOITUSNÄYTÖN WIDGET ──
+Viimeisimmän Raynaudin kohtauksen yhteenveto aina näkyvillä aloitusnäytölläsi.
+
+── SUUNNITELTU POTILAILLE ──
+VasoLog on silta sinun ja lääkärisi välillä. Valkosormisuus koskettaa jopa 10% väestöstä ja 20% naisista kylmissä ilmastoissa. Ansaitset työkalun, joka ottaa tilasi vakavasti.
+
+Olipa sinulla primaarinen tai sekundaarinen Raynaud, skleroderma, lupus tai muu autoimmuunisairaus Raynaudin oireilla - VasoLog auttaa sinua tallentamaan, analysoimaan ja kommunikoimaan vasospasmikohtauksia.
+
+Lataa VasoLog tänään ja aloita Raynaudin oirepäiväkirjasi.
+
+---
+VASTUUVAPAUSLAUSEKE: VasoLog on henkilökohtainen oirepäiväkirja, eikä se ole lääkinnällinen laite. Se ei diagnosoi, hoida, paranna tai estä mitään lääketieteellisiä tiloja. Konsultoi pätevää terveydenhuollon ammattilaista lääketieteellisen neuvonnan, diagnoosin tai hoidon saamiseksi.

@@ -1,0 +1,34 @@
+Suivi du phénomène de Raynaud pour mains froides, changements de couleur et troubles de la circulation. Enregistrez chaque crise en quelques secondes, identifiez vos déclencheurs et partagez un rapport PDF avec votre rhumatologue.
+
+VasoLog est le journal de symptômes conçu spécifiquement pour les personnes atteintes du syndrome de Raynaud (primaire ou secondaire). Que vous veniez d'être diagnostiqué(e) ou que vous viviez depuis des années avec des doigts froids, des phases blanc-bleu-rouge et des engourdissements - des données claires mènent à de meilleurs soins.
+
+── ENREGISTREZ CHAQUE CRISE DE RAYNAUD ──
+Documentez chaque épisode en quelques secondes : doigts touchés, phase de couleur (ischémie blanche → cyanose bleue → reperfusion rouge), sévérité sur l'échelle RCS validée (0-10) et durée. Ajoutez photo et notes personnelles.
+
+── DONNÉES MÉTÉO AUTOMATIQUES ──
+Chaque crise de Raynaud est automatiquement associée à la météo en temps réel : température, humidité, pression atmosphérique et vitesse du vent - à votre emplacement exact. Sans saisie manuelle. Voyez comment le froid et les changements de pression provoquent vos crises.
+
+── IDENTIFIEZ VOS DÉCLENCHEURS ──
+Choisissez parmi les déclencheurs courants de Raynaud : exposition au froid, stress émotionnel, vibrations, tabac, caféine et plus. Avec le temps, VasoLog révèle des schémas - ce qui provoque exactement vos épisodes pour pouvoir les éviter.
+
+── GRAPHIQUES & ANALYSES ──
+Le tableau de bord affiche la fréquence de vos crises sur les 7 derniers jours et la répartition mensuelle des déclencheurs. Repérez les schémas, suivez vos progrès et comprenez comment les saisons affectent votre circulation.
+
+── RAPPORT PDF POUR VOTRE MÉDECIN ──
+Générez un rapport professionnel des symptômes pour n'importe quelle période en un clic. Partagez-le instantanément avec votre rhumatologue, spécialiste vasculaire ou médecin traitant - gain de temps en consultation et meilleures décisions médicales pour votre phénomène de Raynaud.
+
+── VOS DONNÉES RESTENT PRIVÉES ──
+Toutes les données de santé sont stockées localement sur votre appareil. Pas de cloud, pas de compte, pas de tracking tiers. Confidentialité totale - votre journal de symptômes vous appartient.
+
+── WIDGET ÉCRAN D'ACCUEIL ──
+Le résumé de votre dernière crise de Raynaud reste visible sur votre écran d'accueil.
+
+── CONÇU POUR LES PATIENTS ──
+VasoLog est un pont entre vous et votre médecin. Le syndrome de Raynaud touche jusqu'à 10% de la population et 20% des femmes en climat froid. Vous méritez un outil qui prend votre condition au sérieux.
+
+Que vous ayez un Raynaud primaire ou secondaire, une sclérodermie, un lupus ou une autre maladie auto-immune avec symptômes de Raynaud - VasoLog vous aide à enregistrer, analyser et communiquer vos crises de vasospasme.
+
+Téléchargez VasoLog aujourd'hui et démarrez votre journal des symptômes de Raynaud.
+
+---
+AVERTISSEMENT : VasoLog est un journal personnel de symptômes et n'est pas un dispositif médical. Il ne diagnostique, ne traite, ne guérit ni ne prévient aucune maladie. Veuillez consulter un professionnel de santé qualifié pour tout avis médical, diagnostic ou traitement.

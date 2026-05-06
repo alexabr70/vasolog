@@ -1,0 +1,34 @@
+Seguimiento del síndrome de Raynaud para manos frías, cambios de color y problemas de circulación. Registra cada crisis en segundos, identifica tus desencadenantes y comparte un informe PDF con tu reumatólogo.
+
+VasoLog es el diario de síntomas diseñado específicamente para personas con síndrome de Raynaud o fenómeno de Raynaud (primario o secundario). Si te acaban de diagnosticar o llevas años conviviendo con dedos fríos, fases blanco-azul-rojo y entumecimiento - los datos claros llevan a una mejor atención.
+
+── REGISTRA CADA CRISIS DE RAYNAUD ──
+Documenta cada episodio en segundos: dedos afectados, fase de color (isquemia blanca → cianosis azul → reperfusión roja), gravedad en la escala RCS validada (0-10) y duración. Añade foto y notas personales.
+
+── DATOS METEOROLÓGICOS AUTOMÁTICOS ──
+Cada crisis de Raynaud se asocia automáticamente con el clima en tiempo real: temperatura, humedad, presión atmosférica y velocidad del viento - en tu ubicación exacta. Sin entrada manual. Ve cómo el frío y los cambios de presión provocan tus crisis.
+
+── IDENTIFICA TUS DESENCADENANTES ──
+Selecciona entre desencadenantes comunes de Raynaud: exposición al frío, estrés emocional, vibración, tabaco, cafeína y más. Con el tiempo, VasoLog revela patrones - qué provoca exactamente tus episodios para poder evitarlos.
+
+── GRÁFICOS Y ANÁLISIS ──
+El panel muestra la frecuencia de crisis de los últimos 7 días y el desglose mensual de desencadenantes. Detecta patrones, sigue tu progreso y comprende cómo las estaciones afectan tu circulación.
+
+── INFORME PDF PARA TU MÉDICO ──
+Genera un informe profesional de síntomas para cualquier periodo con un toque. Compártelo al instante con tu reumatólogo, especialista vascular o médico de cabecera - ahorra tiempo de consulta y ayuda a tu médico a tomar decisiones informadas sobre tu síndrome de Raynaud.
+
+── TUS DATOS SON PRIVADOS ──
+Todos los datos de salud se almacenan localmente en tu dispositivo. Sin nube, sin cuenta, sin seguimiento de terceros. Privacidad completa - tu diario de síntomas te pertenece.
+
+── WIDGET DE PANTALLA DE INICIO ──
+El resumen de tu última crisis de Raynaud siempre visible en tu pantalla de inicio.
+
+── DISEÑADO PARA PACIENTES ──
+VasoLog es un puente entre tú y tu médico. El síndrome de Raynaud afecta hasta al 10% de la población y al 20% de las mujeres en climas fríos. Mereces una herramienta que tome tu condición en serio.
+
+Ya tengas Raynaud primario o secundario, esclerodermia, lupus u otra enfermedad autoinmune con síntomas de Raynaud - VasoLog te ayuda a registrar, analizar y comunicar tus crisis de vasoespasmo.
+
+Descarga VasoLog hoy y comienza tu diario de síntomas de Raynaud.
+
+---
+AVISO LEGAL: VasoLog es un diario personal de síntomas y no es un producto sanitario. No diagnostica, trata, cura ni previene ninguna enfermedad. Consulta a un profesional sanitario cualificado para cualquier consejo médico, diagnóstico o tratamiento.

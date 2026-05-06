@@ -1,0 +1,34 @@
+Raynaud-szindróma követő hideg kezekre, színváltozásokra és keringési problémákra. Rögzítse minden rohamot másodpercek alatt, azonosítsa a kiváltó tényezőket és ossza meg a PDF jelentést a reumatológusával.
+
+A VasoLog kifejezetten Raynaud-jelenséggel élő emberek (primer vagy szekunder) számára tervezett tüneti napló. Akár most kapta meg a diagnózist, akár évek óta él hideg ujjakkal, fehér-kék-piros színfázisokkal és zsibbadással - a tiszta adatok jobb ellátáshoz vezetnek.
+
+── MINDEN RAYNAUD-ROHAM RÖGZÍTÉSE ──
+Dokumentáljon minden epizódot másodpercek alatt: érintett ujjak, színfázis (fehér iszkémia → kék cianózis → piros reperfúzió), súlyosság a validált RCS skálán (0-10) és időtartam. Adjon hozzá fotót és személyes jegyzeteket.
+
+── AUTOMATIKUS IDŐJÁRÁSI ADATOK ──
+Minden Raynaud-roham automatikusan társul a valós idejű időjárással: hőmérséklet, páratartalom, légnyomás és szélsebesség - pontos helyén. Nincs manuális bevitel. Lássa, hogyan váltják ki a hideg és a nyomásváltozások a rohamokat.
+
+── AZONOSÍTSA A KIVÁLTÓ TÉNYEZŐKET ──
+Válasszon a gyakori Raynaud-kiváltók közül: hidegnek való kitettség, érzelmi stressz, vibráció, dohányzás, koffein és más. Idővel a VasoLog mintázatokat tár fel - pontosan mi váltja ki epizódjait, hogy elkerülhesse őket.
+
+── DIAGRAMOK ÉS ELEMZÉSEK ──
+A műszerfal megjeleníti a roham gyakoriságát az elmúlt 7 napban és a havi kiváltó tényezők lebontását. Ismerje fel a mintázatokat, kövesse a fejlődést és értse meg, hogyan befolyásolják az évszakok keringését.
+
+── PDF JELENTÉS AZ ORVOSNAK ──
+Hozzon létre professzionális tüneti jelentést bármely időszakra egy érintéssel. Ossza meg azonnal reumatológusával, érspecialistájával vagy háziorvosával - megspórolja a konzultációs időt és segíti orvosát megalapozott döntések meghozatalában a Raynaud-szindrómájáról.
+
+── ADATAI MAGÁNJELLEGŰEK MARADNAK ──
+Minden egészségügyi adat helyben tárolódik készülékén. Nincs felhő, nincs fiók, nincs harmadik féltől származó követés. Teljes magánélet - tüneti naplója csak az Öné.
+
+── KEZDŐKÉPERNYŐ WIDGET ──
+Legutóbbi Raynaud-rohamának összefoglalója mindig látható kezdőképernyőjén.
+
+── BETEGEKNEK TERVEZVE ──
+A VasoLog híd Ön és orvosa között. A Raynaud-szindróma a lakosság akár 10%-át és a hideg éghajlaton élő nők 20%-át érinti. Megérdemel egy eszközt, amely komolyan veszi állapotát.
+
+Akár primer vagy szekunder Raynaud, sclerodermia, lupusz vagy más Raynaud-tünetekkel járó autoimmun betegsége van - a VasoLog segít rögzíteni, elemezni és kommunikálni a vazospazmus rohamokat.
+
+Töltse le a VasoLog-ot ma és kezdje el Raynaud tüneti naplóját.
+
+---
+NYILATKOZAT: A VasoLog személyes tüneti napló és nem orvostechnikai eszköz. Nem diagnosztizál, nem kezel, nem gyógyít és nem előz meg semmilyen egészségi állapotot. Konzultáljon képzett egészségügyi szakemberrel orvosi tanácsadás, diagnózis vagy kezelés érdekében.

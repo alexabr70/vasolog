@@ -1,0 +1,1 @@
+Erste Veröffentlichung von VasoLog im Google Play! Erfassen Sie Raynaud-Anfälle, identifizieren Sie Trigger und teilen Sie PDF-Berichte mit Ihrem Arzt. 100% lokale Datenspeicherung.
