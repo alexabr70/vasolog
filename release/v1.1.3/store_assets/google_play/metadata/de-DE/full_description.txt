@@ -1,4 +1,4 @@
-Raynaud-Syndrom Tracker für kalte Hände, Farbveränderungen und Durchblutungsstörungen. Dokumentieren Sie jeden Anfall in Sekunden, identifizieren Sie Ihre Trigger und teilen Sie einen PDF-Bericht mit Ihrem Rheumatologen.
+<b>Raynaud-Syndrom Tracker</b> für kalte Hände, Farbveränderungen und Durchblutungsstörungen. Dokumentieren Sie jeden Anfall in Sekunden, identifizieren Sie Ihre Trigger und teilen Sie einen PDF-Bericht mit Ihrem Rheumatologen.
 
 VasoLog ist das Symptomtagebuch speziell für Menschen mit Raynaud-Syndrom, Morbus Raynaud oder Weißfingerkrankheit (primär oder sekundär). Ob frisch diagnostiziert oder seit Jahren mit kalten Fingern, weiß-blau-roten Verfärbungen und Taubheit lebend - klare Daten führen zu besserer Versorgung.
 

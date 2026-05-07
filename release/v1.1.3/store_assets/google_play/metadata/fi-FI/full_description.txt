@@ -1,4 +1,4 @@
-Valkosormisuuden (Raynaudin oireyhtymän) seuranta kylmille käsille, värimuutoksille ja verenkiertohäiriöille. Tallenna jokainen kohtaus sekunneissa, tunnista laukaisijasi ja jaa PDF-raportti reumatologillesi.
+<b>Valkosormisuuden (Raynaudin oireyhtymän) seuranta</b> kylmille käsille, värimuutoksille ja verenkiertohäiriöille. Tallenna jokainen kohtaus sekunneissa, tunnista laukaisijasi ja jaa PDF-raportti reumatologillesi.
 
 VasoLog on oirepäiväkirja, joka on suunniteltu erityisesti valkosormisuuden eli Raynaudin ilmiön (primaarisen tai sekundaarisen) kanssa eläville. Olitpa juuri saanut diagnoosin tai elänyt vuosia kylmien sormien, valko-sini-punaisten värivaiheiden ja puutumisen kanssa - selkeä data johtaa parempaan hoitoon.
 

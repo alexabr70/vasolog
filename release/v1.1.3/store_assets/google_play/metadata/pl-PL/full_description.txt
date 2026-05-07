@@ -1,4 +1,4 @@
-Tracker zespołu Raynauda dla zimnych dłoni, zmian koloru i problemów z krążeniem. Rejestruj każdy atak w sekundy, identyfikuj swoje wyzwalacze i udostępniaj raport PDF reumatologowi.
+<b>Tracker zespołu Raynauda</b> dla zimnych dłoni, zmian koloru i problemów z krążeniem. Rejestruj każdy atak w sekundy, identyfikuj swoje wyzwalacze i udostępniaj raport PDF reumatologowi.
 
 VasoLog to dziennik objawów zaprojektowany specjalnie dla osób z chorobą Raynauda (pierwotną lub wtórną). Niezależnie czy właśnie zdiagnozowano, czy od lat żyjesz z zimnymi palcami, fazami biały-niebieski-czerwony i drętwieniem - jasne dane prowadzą do lepszej opieki.
 

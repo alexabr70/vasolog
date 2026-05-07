@@ -1,4 +1,4 @@
-Raynauds syndrom tracker för kalla händer, färgförändringar och cirkulationsproblem. Logga varje attack på sekunder, identifiera dina triggers och dela en PDF-rapport med din reumatolog.
+<b>Raynauds syndrom tracker</b> för kalla händer, färgförändringar och cirkulationsproblem. Logga varje attack på sekunder, identifiera dina triggers och dela en PDF-rapport med din reumatolog.
 
 VasoLog är symtomdagboken designad specifikt för personer med Raynauds fenomen (primärt eller sekundärt). Oavsett om du nyligen fått diagnosen eller levt i åratal med kalla fingrar, vit-blå-röda färgfaser och domningar - tydlig data leder till bättre vård.
 

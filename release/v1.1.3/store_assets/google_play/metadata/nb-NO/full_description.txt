@@ -1,4 +1,4 @@
-Raynauds fenomen tracker for kalde hender, fargeendringer og sirkulasjonsproblemer. Logg hvert anfall på sekunder, identifiser triggerne dine og del en PDF-rapport med revmatologen din.
+<b>Raynauds fenomen tracker</b> for kalde hender, fargeendringer og sirkulasjonsproblemer. Logg hvert anfall på sekunder, identifiser triggerne dine og del en PDF-rapport med revmatologen din.
 
 VasoLog er symptomdagboken designet spesifikt for personer med Raynauds fenomen eller Raynauds syndrom (primært eller sekundært). Enten du nettopp har fått diagnosen eller har levd i årevis med kalde fingre, hvit-blå-røde fargefaser og nummenhet - klare data fører til bedre behandling.
 

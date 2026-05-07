@@ -1,4 +1,4 @@
-Raynauds syndrom tracker for kolde hænder, farveændringer og kredsløbsproblemer. Registrer hvert anfald på sekunder, identificer dine triggere og del en PDF-rapport med din reumatolog.
+<b>Raynauds syndrom tracker</b> for kolde hænder, farveændringer og kredsløbsproblemer. Registrer hvert anfald på sekunder, identificer dine triggere og del en PDF-rapport med din reumatolog.
 
 VasoLog er symptomdagbogen designet specifikt til personer med Raynauds fænomen (primært eller sekundært). Uanset om du lige er blevet diagnosticeret eller har levet med kolde fingre, hvid-blå-røde farvefaser og følelsesløshed i årevis - klare data fører til bedre behandling.
 

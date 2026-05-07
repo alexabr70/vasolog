@@ -1,4 +1,4 @@
-Monitoramento do fenômeno de Raynaud para mãos frias, mudanças de cor e problemas de circulação. Registre cada crise em segundos, identifique seus gatilhos e compartilhe um relatório PDF com seu reumatologista.
+<b>Monitoramento do fenômeno de Raynaud</b> para mãos frias, mudanças de cor e problemas de circulação. Registre cada crise em segundos, identifique seus gatilhos e compartilhe um relatório PDF com seu reumatologista.
 
 VasoLog é o diário de sintomas projetado especificamente para pessoas com fenômeno de Raynaud ou síndrome de Raynaud (primário ou secundário). Seja você recém-diagnosticado ou viva há anos com dedos frios, fases branco-azul-vermelho e dormência - dados claros levam a melhores cuidados.
 
