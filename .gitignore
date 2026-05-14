@@ -3,6 +3,12 @@
 # HMS конфиг содержит client_secret - не коммитить
 android/app/agconnect-services.json
 
+# Android Developer Verification (ADI) token - sensitive
+android/app/src/main/assets/adi-registration.properties
+
+# Auto-generated build reports
+android/build/reports/
+
 # Signing
 *.jks
 *.keystore
